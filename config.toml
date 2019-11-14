@@ -1,0 +1,66 @@
+languageCode = "en-us"
+ignoreFiles = [ "\\.files/README.md$",  ]
+defaultContentLanguage = "en"
+title = "Streaming Analytics Workshop"
+theme = "learn"
+uglyurls = false
+sectionPagesMenu = "main"
+relativeURLs = true
+
+[blackfriday]
+hrefTargetBlank = true
+
+[params]
+editURL = "https://github.com/aws-samples/streaming-analytics-workshop/edit/master/content/"
+themeVariant = "mine"
+showVisitedLinks = false
+author = "Steffen Hausmann"
+description = "AWS Streaming Analytics Workshop"
+disableSearch = false
+disableAssetsBusting = false
+disableLanguageSwitchingButton = true
+disableShortcutsTitle=false
+disableInlineCopyToClipBoard = false
+ghrepo = "https://github.com/aws-samples/streaming-analytics-workshop/"
+branch = "master"
+pygmentsUseClasses = true
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+pygmentsStyle = "tango"
+
+
+
+#
+
+[menu]
+  [[menu.main]]
+    identifier = "Prerequisites"
+    name = "This is the Mu track"
+    title = "Workshop using Mu"
+    url = "/mu/"
+    weight = -110
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-bookmark'></i> More Resources"
+url = "/more_resources"
+weight = 10
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-users'></i> Authors"
+url = "/authors"
+weight = 20
+
+#[[menu.shortcuts]]
+#name = "<i class='fab fa-github'></i> GitHub Project"
+#url = "https://github.com/aws-samples/eks-workshop"
+#weight = 30
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-envelope'></i> Have questions?"
+url = "mailto:streaming-analytics-workshop@amazon.com"
+weight = 40
+
+
+[outputs]
+home = [ "HTML", "JSON"]
+page = [ "HTML" ]

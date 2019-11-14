@@ -1,0 +1,25 @@
+version: 1.0
+env:
+  variables:
+      VERSION_HUGO: 0.58.3
+frontend:
+  phases:
+    build:
+      commands:
+        - env
+        - wget https://github.com/gohugoio/hugo/releases/download/v${VERSION_HUGO}/hugo_${VERSION_HUGO}_Linux-64bit.tar.gz
+        - tar -xvf hugo_${VERSION_HUGO}_Linux-64bit.tar.gz hugo
+        - mv -v hugo /usr/bin/hugo
+        - chmod +x /usr/bin/hugo
+        - ls -l /usr/bin/hugo
+        - rm -rvf hugo_${VERSION_HUGO}_Linux-64bit.tar.gz
+        - git submodule init && git submodule update
+        - echo "<p class="build-number">${AWS_COMMIT_ID}</p>" >> layouts/partials/menu-footer.html
+        - hugo -v
+  artifacts:
+    # IMPORTANT - Please verify your build output directory
+    baseDirectory: public
+    files:
+      - '**/*'
+  cache:
+    paths: []
