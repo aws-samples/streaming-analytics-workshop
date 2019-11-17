@@ -4,7 +4,7 @@ chapter: false
 weight: 30
 ---
 
-1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting Amazon Elasticsearch Service and Amazon Kinesis Data Analytics for Java Applications.
+1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting Amazon Code Pipeline, Amazon Elasticsearch Service, and Amazon Kinesis Data Analytics for Java Applications.
 
 	[![Launch CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=streaming-analytics-workshop&templateURL=https://s3.amazonaws.com/aws-bigdata-blog/artifacts/kinesis-analytics-taxi-consumer/cfn-templates/StreamingAnalyticsWorkshop.template.json)
 
@@ -16,7 +16,7 @@ weight: 30
 
 1. Accept all default values on the next dialog page by clicking **Next** at the bottom of the page
 
-1. On the last page of the dialog, confirm that CloudFormation may create IAM resource by selecting *I acknowledge that AWS CloudFormation might create IAM resources*. Click on **Create stack** at the bottom of the page.
+1. On the last page of the dialog, confirm that CloudFormation may create IAM resource by selecting *I acknowledge that AWS CloudFormation might create IAM resources**. Click on **Create stack* at the bottom of the page.
 
 	![Lauch stack](/images/cfn-4-confirm-capabilities.png)
 

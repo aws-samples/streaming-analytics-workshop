@@ -4,7 +4,7 @@ chapter: false
 weight: 20
 ---
 
-We'd like to generate statistics about the incoming events. Sepcifically, we'd like to count how many trips are requested in a specific location to identify the most popular pickup locations and how long it takes on average to travel to the airports LaGuardia and JFK.
+We'd like to generate statistics about the incoming events. Specifically, we'd like to count how many trips are requested in a specific location to identify the most popular pickup locations. We'd also like to derive how long it takes on average to travel to the airports LaGuardia and JFK.
 
 
 #### Count trips by pickup locations

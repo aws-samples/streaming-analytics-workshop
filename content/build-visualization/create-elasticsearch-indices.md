@@ -13,12 +13,12 @@ weight: 20
 1. Open Firefox on the Windows instance, eg, by double clicking the Firefox icon on the Desktop, and enter the Kibana URL you have just copied
 
 	{{% notice info %}}
-If you receive an error message that `User: anonymous is not authorized to perform: es:ESHttpGet`, verify that you are accessing Kibana from the Windows instance you connected to through RDP. You won't be able to access Kibana from your own device.
+If you receive an error message that *User: anonymous is not authorized to perform: es:ESHttpGet*, verify that you are accessing Kibana from the Windows instance you connected to through RDP. You won't be able to access Kibana from your own device.
 	{{% /notice %}}
 
 1. When prompted by the Kibana welcome screen, choose **Explore on my own**
 
-1. Navigate to the Kibana Dev Tools and confirm the dialog with **Get to work**. Create an Elasticsearch index with the following command:
+1. Navigate to the Kibana Dev Tools and confirm the dialog with **Get to work**. Create an Elasticsearch index for *pickup_count* documents with the following command:
 
 	```
 	PUT pickup_count?include_type_name=true
@@ -44,10 +44,10 @@ If you receive an error message that `User: anonymous is not authorized to perfo
 	![Kibana create index](/images/kibana-1-create-index.png)
 
 	{{% notice info %}}
-If you encounter an `resource_already_exists_exception` exception, make sure that no instance of the Flink program is currently running and delete the existing index by executing the command `DELETE pickup_count`.
+If you encounter an *resource_already_exists_exception* exception, make sure that no instance of the Flink program is currently running and delete the existing index by executing the command `DELETE pickup_count`.
 	{{% /notice %}}
 
-1. Repeat the process to create a second index
+1. Repeat the process to create a second index for *trip_duration* documents
 
 	```
 	PUT trip_duration?include_type_name=true

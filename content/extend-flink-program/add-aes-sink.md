@@ -6,9 +6,11 @@ weight: 30
 
 Add an Elasticsearch sink to the Flink program to sent the results to Elasticsearch for visualization after the `tripDurations` stream definition in Line 106-110.
 
+<!--
 {{% notice warning %}}
 This code won't work right away. Before you can test this modification, we need to configure Elasticsearch and pass the parameter of the Elasticsearch endpoint to the Flink program. We'll get to it in a minute.
 {{% /notice %}}
+-->
 
 <!--"linenos=table,linenostart=108"-->
 {{< highlight java>}}

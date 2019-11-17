@@ -20,7 +20,7 @@ install:install-file -Dfile=C:\Users\Administrator\Desktop\workshop-resources\fl
 
 	![](/images/intellij-8-maven-install.png)
 
-1. Refresh the dependencies by right clicking on the `pom.xml` file and choosing *Maven* -> *Reimport*
+1. Refresh the project dependencies by right clicking on the `pom.xml` file and choosing **Maven** -> **Reimport**
 
 	![](/images/intellij-12-pom-reimport.png)
 

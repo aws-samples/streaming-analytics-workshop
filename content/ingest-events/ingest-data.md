@@ -5,9 +5,7 @@ weight: 16
 ---
 
 We will use a Java application to replay a historic set of taxi trips made in NYC that are stored in objects in Amazon S3 into the Kinesis stream.
-The java application has already been compiled and loaded onto the EC2 instance for your convenience. The sources, including a CloudFormation template to build the Java application with CodePipeline, are available from [GitHub](https://github.com/aws-samples/amazon-kinesis-replay).
-
-
+The Java application has already been compiled and loaded onto the EC2 instance. If you are interested into the details of the application, you can obtain the sources, including a CloudFormation template to build the Java application with Amazon CodePipeline, from [GitHub](https://github.com/aws-samples/amazon-kinesis-replay).
 
 1. Start the Intellij IDE by double clicking the icon on the desktop
 

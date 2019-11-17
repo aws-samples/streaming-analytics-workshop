@@ -8,7 +8,7 @@ weight: 20
 
 	![](/images/kibana-2-import-objects.png)
 
-1. A JSON file containing the definition of a suitable Kibana dashboard has already been downloaded to the `workshop-resources` folder located on the Windows desktop. Select the `streaming-analytics-workshop-dashboard.json` document from that folder and confirm with **Import** and **Done**.
+1. A JSON file containing the definition of a suitable Kibana dashboard has already been downloaded to the *workshop-resources* folder located on the Windows desktop. Select the `streaming-analytics-workshop-dashboard.json` document from that folder and confirm with **Import** and **Done**.
 
 	![](/images/kibana-3-upload-json.png)
 

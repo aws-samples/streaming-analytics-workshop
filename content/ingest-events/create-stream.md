@@ -5,9 +5,9 @@ weight: 11
 ---
 
 
-1. In the Management Console, navigate to the [Amazon Kinesis services](https://console.aws.amazon.com/kinesis)
+1. Navigate to the [Kinesis Console](https://console.aws.amazon.com/kinesis)
 
-1. When it comes up press **Get Started**
+1. If displayed, up press **Get Started** in the service welcome dialog
 
 1. Select **Create data stream** to navigate to the Amazon Kinesis Data Stream service:
 	![](/images/kinesis-welcome-create-stream.png)
