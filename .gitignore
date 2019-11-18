@@ -1,4 +1,4 @@
-public/
-public
 .DS_Store
 *.swp
+public
+node_modules
