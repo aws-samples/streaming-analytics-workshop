@@ -13,7 +13,7 @@ import { RemovalPolicy, Duration, Stack } from '@aws-cdk/core';
 import { BuildSpec } from '@aws-cdk/aws-codebuild';
 
 
-export class CdkStack extends cdk.Stack {
+export class WorkshopInfrastructure extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
