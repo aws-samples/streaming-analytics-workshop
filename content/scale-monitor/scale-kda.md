@@ -4,7 +4,7 @@ chapter: false
 weight: 40
 ---
 
-As you have increased the throughput of the Kinesis stream by doubling the number of shards, more events are ingested into the stream. However, as a direct result, more events need to be processed. So now the Kinesis Data Analytics for Java application becomes overloaded and can no longer keep up with the increased number of incoming events. You can observe this through the millisBehindLatest metric, which is published to CloudWatch.
+As you have increased the throughput of the Kinesis stream by doubling the number of shards, more events are sent into the stream. However, as a direct result, more events need to be processed. So now the Kinesis Data Analytics for Java application becomes overloaded and can no longer keep up with the increased number of incoming events. You can observe this through the millisBehindLatest metric, which is published to CloudWatch.
 
 In contrast to Kinesis Data Streams, Kinesis Data Analytics for Java Applications natively supports auto scaling. After 10-15 minutes, you can see the effect of the scaling activities in the metrics. The millisBehindLatest metric starts to decrease until it reaches zero, when the processing has caught up with the tip of the Kinesis data stream.
 

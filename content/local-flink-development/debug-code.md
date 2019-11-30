@@ -4,6 +4,8 @@ chapter: false
 weight: 30
 ---
 
+In addition to simply executing the Flink application, you can also set breakpoints and debug the application locally, which is very convenient when implementing and verifying the business logic.
+
 1. Expand the utils package and navigate to and double click the `GeoUtils` class
 
 1. Set a breakpoint by clicking left of a code line, eg, Line 35

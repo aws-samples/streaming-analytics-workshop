@@ -4,6 +4,8 @@ chapter: false
 weight: 40
 ---
 
+Now that you have successfully connected to the Windows instance, the next step is to configure the development environment Intellij. This includes cloning the sources of the Flink application from [this Github repository](https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer) that is used in the following steps to analyze the incoming taxi data in real time.
+
 1. Double click on the Intellij icon on the Desktop
 
 1. When prompted, do not import any settings, confirm that you have read and accept the terms of the User Agreement, and choose to send (or not to send, depending on your preference) user statistics

@@ -4,7 +4,7 @@ chapter: false
 weight: 40
 ---
 
-We can then create the Kinesis Analytics for Java application. A Kinesis Analytics for Java application basically consists of a reference to the Flink application in S3 and some additional configuration data. Once the Kinesis Analytics for Java application has been created, it can be deployed and executed by the services in a fully managed environment.
+You can then create the Kinesis Analytics for Java application. A Kinesis Analytics for Java application basically consists of a reference to the Flink application in S3 and some additional configuration data. Once the Kinesis Analytics for Java application has been created, it can be deployed and executed by the services in a fully managed environment.
 
 1. Navigate to the Kinesis services in the management console and press **Create analytics application**. 
 

@@ -4,6 +4,8 @@ chapter: false
 weight: 20
 ---
 
+You first need to package the Flink application and all its dependencies into a Jar file that can be deployed to a Flink evnironment.
+
 1. Expand the Maven pane and click on the **m** to execute `clean package` as a Maven goal
 
 	![](/images/intellij-7-maven-package.png)

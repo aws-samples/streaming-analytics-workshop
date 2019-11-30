@@ -4,8 +4,5 @@ chapter: true
 weight: 50
 ---
 
-In this chapter, you'll extend the existing Flink program with the advanced capabilities we've just discussed.
+In this chapter, you extend the existing Flink application. The current version is just echoing the events that are ingested into the data stream. However, the goal is to analyze the incoming information to provide timely insights into the current condition of the taxi fleet. You will extend the existing application to generate statistics about hot spots, ie, places in New York that are currently requesting a high number of taxi trip so that operators can proactively send empty taxis there. You will also implement logic to derive the average time it takes taxis to the airports La Guardia and JFK.
 
-{{% notice info %}}
-In the following steps, you are changing the source code of the Flink application. In case you have trouble completing the steps or get lost, you can refer to the `ProcessTaxiStream` class, which contains the final result, and continue from there.
-{{% /notice %}}

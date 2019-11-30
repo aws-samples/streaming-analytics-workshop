@@ -24,3 +24,4 @@ install:install-file -Dfile=C:\Users\Administrator\Desktop\workshop-resources\fl
 
 	![](/images/intellij-12-pom-reimport.png)
 
+After the reimport operation completed successful, all dependencies of the Flink application have been resolved and we can start developing and executing it. However, the Maven pane on the right hand side of Intellij may still display warnings for *amazon-kinesis-analytics-taxi-consumer*, which you can safely ignore.

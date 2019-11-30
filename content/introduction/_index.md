@@ -8,7 +8,7 @@ weight: 10
 
 We use a scenario to analyze the telemetry data of a taxi fleet in New York City in near-real time to optimize the fleet operation. 
 
-In this scenario, every taxi in the fleet is capturing information about completed trips. The tracked information includes the pickup and drop-off locations, number of passengers, and generated revenue. This information is ingested into a Kinesis data stream as a simple JSON blob.
+In this scenario, every taxi in the fleet is capturing information about completed trips. The tracked information includes the pickup and drop-off locations, number of passengers, and generated revenue. This information is produced into a Kinesis data stream as a simple JSON blob.
 
 From there, the data is processed and analyzed to identify areas that are currently requesting a high number of taxi rides. The derived insights are finally visualized in a dashboard for operators to inspect.
 

@@ -4,6 +4,8 @@ chapter: false
 weight: 50
 ---
 
+The skeleton of the application has now been created. But you still need to adapt important configuration options, including the location of the Jar file on S3, the name of the Kinesis data stream to read from, and the Elasticsearch endpoint.
+
 1. On the resulting page press the blue **Configure** button to configure the Kinesis Analytics application.
 
 1. Enter the bucket and prefix of the compiled jar file under **Amazon S3 bucket** and **Path to Amazon S3 object**. You can obtain the correct values from the Output section of the CloudFormation template under **FlinkApplicationJarBucket** and **FlinkApplicationJarObject**.

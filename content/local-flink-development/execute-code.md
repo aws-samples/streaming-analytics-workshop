@@ -4,6 +4,9 @@ chapter: false
 weight: 20
 ---
 
+Now that everything is set up correctly, you can execute the basic Flink program that has been cloned from the Github repository. It will simply read the events that have been sent to the Kinesis stream and print them on standard out.
+
+
 1. Click on **Project** in the upper left of the IntelliJ window
 
 1. Navigate to and double click on the `ProcessTaxiStreamLocal` class by gruadually expanding the tree structure of the project: *amazon-kinesis-analytics-taxi-consumer* -> *src* -> *main* -> *java* -> *com.amazonaws.samples.kaja.taxi.consumer*

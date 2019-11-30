@@ -8,6 +8,6 @@ In this chapter, you will configure the development environment that you will us
 
 
 {{% notice warning %}}
-If you don't like Windows or IntelliJ and are tempted to use your laptop for the lab, **please don't**. You will ingest more than 12 MB/sec into a Kinesis data stream; if you use your own laptop for that, the procedure will either fail, or break the conference network, or both.
+If you don't like Windows or IntelliJ and are tempted to use your laptop for the lab, **please don't**. You will produce more than 12 MB/sec into a Kinesis data stream; if you use your own laptop for that, the procedure will either fail, or break the conference network, or both.
 {{% /notice %}}
 

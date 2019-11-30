@@ -4,6 +4,8 @@ chapter: false
 weight: 20
 ---
 
+Now that the Elasticsearch indices are in place, you can start to visualize the data in Kibana. As a shortcut for this workshop, we have already created a dashboard that you can import through the Kibana web interface.
+
 1. Navigate to the Kibana management screen, select **Saved Object**, and then click on **Import**
 
 	![](/images/kibana-2-import-objects.png)

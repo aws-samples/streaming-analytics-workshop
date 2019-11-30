@@ -4,6 +4,7 @@ chapter: false
 weight: 11
 ---
 
+You start with creating a Kinesis data stream.
 
 1. Navigate to the [Kinesis Console](https://console.aws.amazon.com/kinesis)
 

@@ -4,6 +4,8 @@ chapter: false
 weight: 20
 ---
 
+Elasticsearch stores data in indices. But although Elasticsearch will automatically create indices if you start to ingest data, it will fail to derive the correct data types. So you first need to manually create indices with the correct data types for the geo spacial location information.
+
 1. Navigate to the [Amazon Elasticsearch Sercive console](https://console.aws.amazon.com/es/) and choose the Elasticsearch domain that has been created by CloudFormation for this workshop. If you are unsure, you can verify the correct domain name in the output section of the CloudFormation template that you visited earlier.
 
 1. Take a note of the **Endpoint** URL and copy the link to the **Kibana** dashboard
