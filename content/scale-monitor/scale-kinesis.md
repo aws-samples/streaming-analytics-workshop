@@ -8,7 +8,7 @@ When you closely expect the output of the producer application, you will notice 
 
 ![](/images/intellij-13-replay-lag-copy.png)
 
-1. Navigate to the Kinesis console and select the *kda-java-workshop* data stream on the dashboard
+1. Navigate to the Kinesis console and select the *streaming-analytics-workshop* data stream on the dashboard
 
 1. Under **Shards** choose **Edit** and increase the shard count of the stream to `16`. Confirm with **Save**.
 
