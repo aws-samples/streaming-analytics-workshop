@@ -5,7 +5,7 @@ weight: 30
 ---
 
 
-To sent the results to Elasticsearch for visualization add an Elasticsearch sink to the Flink application after the `tripDurations` stream definition in Line 106-110.
+To sent the results to Elasticsearch for visualization add an Elasticsearch sink to the Flink application after the `tripDurations` stream definition you've added in the previous step in Line 106-110.
 
 <!--"linenos=table,linenostart=108"-->
 {{< highlight java>}}
