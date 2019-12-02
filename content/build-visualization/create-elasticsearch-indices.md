@@ -46,7 +46,7 @@ If you receive an error message that *User: anonymous is not authorized to perfo
 	![Kibana create index](/images/kibana-1-create-index.png)
 
 	{{% notice info %}}
-If you encounter an *resource_already_exists_exception* exception, make sure that no instance of the Flink program is currently running and delete the existing index by executing the command `DELETE pickup_count`.
+If you encounter an *resource_already_exists_exception* exception, make sure that the Flink application is currently not running and delete the existing index by executing the command `DELETE pickup_count`.
 	{{% /notice %}}
 
 1. Repeat the process to create a second index for *trip_duration* documents
