@@ -220,9 +220,20 @@ export class WorkshopInfrastructure extends cdk.Stack {
             # Install choco
             iex ((New-Object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 
-            choco install git.install --no-progress -y
-            choco install firefox --no-progress -y
-            choco install intellijidea-community --no-progress --version 2019.2.4 -y
+            Do {
+              Start-Sleep -Seconds 5
+              choco install git --no-progress -y
+            } Until ($LASTEXITCODE -eq 0)
+
+            Do {
+              Start-Sleep -Seconds 5
+              choco install firefox --no-progress -y
+            } Until ($LASTEXITCODE -eq 0)
+
+            Do {
+              Start-Sleep -Seconds 5
+              choco install intellijidea-community --no-progress --version 2019.2.4 -y
+            } Until ($LASTEXITCODE -eq 0)
 
             # Add IntelliJ Java 11 to the path
             $PATH = [Environment]::GetEnvironmentVariable("PATH", "Machine")
