@@ -11,8 +11,6 @@ The Java application has already been compiled and loaded onto the EC2 instance.
 IntelliJ will eventually display an error message that the *flink-connector-kinesis* artifact could not be found on Maven central. That is fine for now, we will address it in one of the future steps.
 {{% /notice %}}
 
-1. Start the Intellij IDE by double clicking the icon on the desktop
-
 1. Click on the **Terminal** icon in the bottom of Intellij to open a shell
 
 	![](/images/intellij-3-ingest.png)
