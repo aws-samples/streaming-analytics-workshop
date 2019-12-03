@@ -4,11 +4,9 @@ chapter: false
 weight: 30
 ---
 
+Finally, we want to send the derived insights to Elasticsearch and Kibana for visualization. To this end, we use an Elasticsearch sink that has been extended to sign the requests with IAM credentials so that they are accepted by Amazon Elasticsearch Service.
 
-To sent the results to Elasticsearch for visualization add an Elasticsearch sink to the Flink application after the `tripDurations` stream definition you've added in the previous step in Line 106-110.
-
-<!--"linenos=table,linenostart=108"-->
-{{< highlight java>}}
+{{< highlight java "linenos=inline,linenostart=129">}}
 if (parameter.has("ElasticsearchEndpoint")) {
   String elasticsearchEndpoint = parameter.get("ElasticsearchEndpoint");
   final String region = parameter.get("Region", DEFAULT_REGION_NAME);
@@ -18,8 +16,11 @@ if (parameter.has("ElasticsearchEndpoint")) {
     elasticsearchEndpoint = elasticsearchEndpoint.substring(0, elasticsearchEndpoint.length()-1);
   }
 
-  pickupCounts.addSink(AmazonElasticsearchSink.buildElasticsearchSink(elasticsearchEndpoint, region, "pickup_count", "pickup_count"));
-  tripDurations.addSink(AmazonElasticsearchSink.buildElasticsearchSink(elasticsearchEndpoint, region, "trip_duration", "trip_duration"));
+  pickupCounts.addSink(AmazonElasticsearchSink.buildElasticsearchSink(
+      elasticsearchEndpoint, region, "pickup_count", "pickup_count"));
+
+  tripDurations.addSink(AmazonElasticsearchSink.buildElasticsearchSink(
+      elasticsearchEndpoint, region, "trip_duration", "trip_duration"));
 }
 {{< / highlight >}}
 

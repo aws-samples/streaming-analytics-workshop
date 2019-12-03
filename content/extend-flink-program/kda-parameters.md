@@ -1,7 +1,7 @@
 ---
 title: "Read parameters from Application Properties"
 chapter: false
-weight: 40
+weight: 5
 ---
 
 Eventually, we'd like to deploy the program to KDA for Java Applications. However, instead of logging in to a cluster and directly submitting a job to the Flink runtime, you upload the respective fat JAR to Amazon S3 and start the execution by calling an API. So we don't get access to the Flink cluster and we hence need to adapt the way we pass parameters to the Flink application.
@@ -10,10 +10,7 @@ If the Flink application is executed with Kinesis Data Analytics, we can obtain 
 
 If the Flink application is executed in the local development environment, we continue to use the command line arguments that are specified when the `main` method is invoked.
 
-Replace the code that reads parameters from the program `args` in Line 56 with the following code:
-
-<!--"linenos=table,linenostart=56"-->
-{{< highlight java >}}
+{{< highlight java "linenos=inline,linenostart=55" >}}
 ParameterTool parameter;
 
 if (env instanceof LocalStreamEnvironment) {
@@ -26,7 +23,7 @@ if (env instanceof LocalStreamEnvironment) {
   Properties flinkProperties = applicationProperties.get("FlinkApplicationProperties");
 
   if (flinkProperties == null) {
-    throw new RuntimeException("Unable to load FlinkApplicationProperties properties from the Kinesis Analytics Runtime.");
+    throw new RuntimeException("Unable to load FlinkApplicationProperties properties from the runtime.");
   }
 
   parameter = ParameterToolUtils.fromApplicationProperties(flinkProperties);
