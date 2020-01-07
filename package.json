@@ -10,8 +10,7 @@
     "theme": "git submodule init && git submodule update",
     "drafts": "hugo server -w -v -DF --disableFastRender --enableGitInfo --bind=0.0.0.0",
     "server": "hugo server -w -v --enableGitInfo --bind=0.0.0.0 --port 8080 --navigateToChanged",
-    "build": "hugo -v",
-    "test": "docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --log-level ':debug'"
+    "build": "hugo -v"
   },
   "main": "index.js",
   "repository": {

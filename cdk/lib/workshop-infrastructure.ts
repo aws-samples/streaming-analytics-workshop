@@ -110,15 +110,15 @@ export class WorkshopInfrastructure extends cdk.Stack {
       generateSecretString: {
         secretStringTemplate: JSON.stringify({ username: 'Administrator' }),
         generateStringKey: 'password',
-        passwordLength: 24,
-        excludeCharacters: '"@\'$`'
+        passwordLength: 16,
+        excludePunctuation: true,
+        includeSpace: false
       }
     });
 
     
     const eip = new ec2.CfnEIP(this, 'InstanceEip');
 
-    
     const es = new elasticsearch.CfnDomain(this, 'ElasticsearchDomain', {
       elasticsearchClusterConfig: {
         instanceCount: 1,
@@ -172,7 +172,10 @@ export class WorkshopInfrastructure extends cdk.Stack {
     const ami = new ec2.WindowsImage(ec2.WindowsVersion.WINDOWS_SERVER_2019_ENGLISH_FULL_BASE);
 
     const instanceRole = new iam.Role(this, 'InstanceRole', {
-      assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
+      assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
+      ]
     });
 
     instanceRole.addToPolicy(new iam.PolicyStatement({
@@ -190,7 +193,9 @@ export class WorkshopInfrastructure extends cdk.Stack {
     }));
 
     const instanceProfile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
-      roles: [instanceRole.roleName]
+      roles: [
+        instanceRole.roleName
+      ]
     });
 
     const waitHandle = new cfn.CfnWaitConditionHandle(this, 'InstanceWaitHandle');
@@ -214,24 +219,28 @@ export class WorkshopInfrastructure extends cdk.Stack {
           groups: [sg.securityGroupId]
         }],
         userData: cdk.Fn.base64(
-          `<powershell>
+          `<powershell>            
             Import-Module AWSPowerShell
 
             # Install choco
             iex ((New-Object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 
+            # Add gitter and retry to install commands
+            $iter = 0
+            $sleep = 5
+
             Do {
-              Start-Sleep -Seconds 5
+              Start-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))
               choco install git --no-progress -y
             } Until ($LASTEXITCODE -eq 0)
 
             Do {
-              Start-Sleep -Seconds 5
+              Start-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))
               choco install firefox --no-progress -y
             } Until ($LASTEXITCODE -eq 0)
 
             Do {
-              Start-Sleep -Seconds 5
+              Start-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))
               choco install intellijidea-community --no-progress --version 2019.2.4 -y
             } Until ($LASTEXITCODE -eq 0)
 
