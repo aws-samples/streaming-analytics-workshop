@@ -14,4 +14,4 @@ When you closely expect the output of the producer application, you will notice 
 
 	![](/images/kds-update-shards.png)
 
-1. The scaling operation will add additional shard to the Kinesis stream, effectively doubling it's throughput
+1. The scaling operation will add additional shard to the Kinesis stream, effectively doubling its throughput
