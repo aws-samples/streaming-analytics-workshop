@@ -4,7 +4,7 @@ chapter: false
 weight: 20
 ---
 
-To localize places in New York that are requesting currently requesting a high number of taxi trip and to generate average trip durations to the airports, we use time windows. Every time window will span an hour according to event time and we can then consider all events within that one hour window to generate the statistics we are interested in for this particular hour.
+To localize places in New York that are requesting currently requesting a high number of taxi trips and to generate average trip durations to the airports, we use time windows. Every time window will span an hour according to event time and we can then consider all events within that one hour window to generate the statistics we are interested in for this particular hour.
 
 #### Count trips by pickup locations
 
