@@ -47,6 +47,7 @@ If you receive an error message that *User: anonymous is not authorized to perfo
 
 	{{% notice info %}}
 If you encounter an *resource_already_exists_exception* exception, make sure that the Flink application is currently not running and delete the existing index by executing the command `DELETE pickup_count`.
+Make sure your cursor is *marking the first line* while executing the command, just like SQL.
 	{{% /notice %}}
 
 1. Repeat the process to create a second index for *trip_duration* documents
