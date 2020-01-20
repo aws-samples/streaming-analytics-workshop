@@ -4,7 +4,7 @@ chapter: false
 weight: 10
 ---
 
-When you closely expect the output of the producer application, you will notice that it is experiencing write provisioned throughput exceeded exceptions and cannot send data fast enough. For the purpose of the workshop, the Kinesis data stream has been deliberately under provisioned. As this would be a major problem for production environments, you'll now scale the stream to increase its capacity.
+When you closely inspect the output of the producer application, you will notice that it is experiencing write provisioned throughput exceeded exceptions and cannot send data fast enough. For the purpose of the workshop, the Kinesis data stream has been deliberately under provisioned. As this would be a major problem for production environments, you'll now scale the stream to increase its capacity.
 
 ![](/images/intellij-13-replay-lag-copy.png)
 

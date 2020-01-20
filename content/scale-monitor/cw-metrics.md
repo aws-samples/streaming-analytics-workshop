@@ -20,7 +20,7 @@ Now that the Kinesis data stream is scaling, we'll take a look at how we can ide
 
 	![](/images/cw-dashboard-2-select-metrics.png)
 
-1. Adapt the period of both metrics to **1 Minute** and change the **Statistic** to *Sum* and *Maximum*, respectively. Switch the **Y Axis** of the GetRecords.IteratorAgeMilliseconds metric and confirm with **Update**.
+1. Adjust the period of both metrics to **1 Minute** and change the **Statistic** to *Sum* and *Maximum*, respectively. Switch the **Y Axis** of the GetRecords.IteratorAgeMilliseconds metric and confirm with **Update**.
 
 	![](/images/cw-dashboard-3-metric-properties.png)
 

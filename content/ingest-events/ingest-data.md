@@ -5,7 +5,7 @@ weight: 16
 ---
 
 We will use a Java application to replay a historic set of taxi trips made in NYC that are stored in objects in Amazon S3 into the Kinesis stream.
-The Java application has already been compiled and loaded onto the EC2 instance. If you are interested into the details of the application, you can obtain the sources, including a CloudFormation template to build the Java application with Amazon CodePipeline, from [GitHub](https://github.com/aws-samples/amazon-kinesis-replay).
+The Java application has already been compiled and loaded onto the EC2 instance. If you are interested in the details of the application, you can obtain the sources, including a CloudFormation template to build the Java application with Amazon CodePipeline, from [GitHub](https://github.com/aws-samples/amazon-kinesis-replay).
 
 {{% notice info %}}
 IntelliJ will eventually display an error message that the *flink-connector-kinesis* artifact could not be found on Maven central. That is fine for now, we will address it in one of the future steps.

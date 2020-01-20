@@ -4,7 +4,7 @@ chapter: false
 weight: 60
 ---
 
-The application is finally ready for execution through the Kinesis Data Analytics service in a fully managed Flink environment. You can now start the execution and send events into the Kinesis data stream, this time with a substantially higher throughput. The Flink application will then continuously processing the data that is ingested into the data stream and send derived insights to Elasticsearch for visualization.
+The application is finally ready for execution through the Kinesis Data Analytics service in a fully managed Flink environment. You can now start the execution and send events into the Kinesis data stream, this time with a substantially higher throughput. The Flink application will then continuously process the data that is ingested into the data stream and send derived insights to Elasticsearch for visualization.
 
 {{% notice warning %}}
 Before you proceed, make sure that you are currently not producing any events into the Kinesis stream. Navigate to the Terminal pane in IntelliJ and if the Java producer application is still running, terminate it by pressing *Ctrl-C*.

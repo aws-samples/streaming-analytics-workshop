@@ -4,7 +4,7 @@ chapter: false
 weight: 10
 ---
 
-Using event time for window operators provides much more stable semantics compared to processing time, as it it more robust against reordering of events and late arriving events. To activate event time processing, we first need to configure the Flink execution environment appropriately.
+Using event time for window operators provides much more stable semantics compared to processing time, as it is more robust against reordering of events and late arriving events. To activate event time processing, we first need to configure the Flink execution environment appropriately.
 
 {{< highlight java "linenos=inline,linenostart=75">}}
 if (parameter.get("EventTime", "true").equals("true")) {
