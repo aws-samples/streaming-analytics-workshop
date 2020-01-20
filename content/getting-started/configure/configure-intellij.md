@@ -20,4 +20,4 @@ Now that you have successfully connected to the Windows instance, the next step 
 	
 	![Lauch stack](/images/intellij-2-clone.png)
 
-1. When asked whether to open the IntelliJ IDEA project file, choose **Yes**. You can then already proceed to the next step, while the project is still being build.
+1. When asked whether to open the IntelliJ IDEA project file, choose **Yes**. Note that, you will get a dependency failure after the completion of this step. This is expected and we have a remedy in the upcoming steps. For now move on to the next steps as the dependencies are being loaded.
