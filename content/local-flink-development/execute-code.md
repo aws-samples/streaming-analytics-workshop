@@ -9,7 +9,7 @@ Now that everything is set up correctly, you can execute the basic Flink program
 
 1. Click on **Project** in the upper left of the IntelliJ window
 
-1. Navigate to and double click on the `ProcessTaxiStreamLocal` class by gruadually expanding the tree structure of the project: *amazon-kinesis-analytics-taxi-consumer* -> *src* -> *main* -> *java* -> *com.amazonaws.samples.kaja.taxi.consumer*
+1. Navigate to and double click on the `ProcessTaxiStreamLocal` class by gradually expanding the tree structure of the project: *amazon-kinesis-analytics-taxi-consumer* -> *src* -> *main* -> *java* -> *com.amazonaws.samples.kaja.taxi.consumer*
 
 1. Start the execution of the program by clicking on the green arrow next to the `main` method and then choosing **Run**
 
