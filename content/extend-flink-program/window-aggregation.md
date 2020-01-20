@@ -8,7 +8,7 @@ To localize places in New York that are currently requesting a high number of ta
 
 #### Count trips by pickup locations
 
-To identify popular pickup locations, we'll generate a geo hash with a reduced precision. Therefore, events in a similar geographic location will have the same geo hash. We then group together all events with the same geo hash with `keyBy` based and apply a time window of one hour (remember that this is according to event time, not actual processing time) to the resulting stream. In this way, all events with the same geo hash will be collected in the same window and we can easily determine the overall count for that time window. Finally, we actually count the number of events and emit a new `PickupCount` event that contains the resulting count for each time window and geo hash.
+To identify popular pickup locations, we'll generate a geo hash with a reduced precision. Therefore, events in a similar geographic location will have the same geo hash. We then group together all events with the same geo hash with `keyBy` and apply a time window of one hour (remember that this is according to event time, not actual processing time) to the resulting stream. In this way, all events with the same geo hash will be collected in the same window and we can easily determine the overall count for that time window. Finally, we actually count the number of events and emit a new `PickupCount` event that contains the resulting count for each time window and geo hash.
 
 {{< highlight java "linenos=inline,linenostart=112">}}
 DataStream<PickupCount> pickupCounts = trips
