@@ -32,7 +32,25 @@ export class WorkshopInfrastructure extends cdk.Stack {
     new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
       url: 'https://github.com/aws-samples/amazon-kinesis-replay/archive/master.zip',
       bucket: bucket,
-      extract: true
+      extract: true,
+      buildspec: BuildSpec.fromObject({
+        version: '0.2',
+        phases: {
+          build: {
+            commands: [
+              'cd amazon-kinesis-replay-master',
+              'mvn clean package -Daws.kpl.version=0.13.1 -B'
+            ]
+          }
+        },
+        artifacts: {
+          files: [
+            `target/amazon-kinesis-replay-*.jar`
+          ],
+          'discard-paths': false,
+          'base-directory': 'amazon-kinesis-replay-master'
+        }
+      })
     });
 
 
@@ -358,10 +376,23 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     const kdaRole = new iam.Role(this, 'KdaRole', {
       assumedBy: new iam.ServicePrincipal('kinesisanalytics.amazonaws.com'),
-      inlinePolicies: {
-        WorkshopPermissions: policy
-      }
+
     });
+
+    kdaRole.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        'logs:Describe*', 'logs:PutLogEvents',
+        'kinesis:List*', 'kinesis:Describe*', 'kinesis:Get*', 'kinesis:SubscribeToShard',
+      ],
+      resources: ['*']
+    }));
+
+    kdaRole.addToPolicy(new iam.PolicyStatement({
+      actions: [ 'es:ES*' ],
+      resources: [ es.attrArn ]
+    }));
+
+    bucket.grantRead(kdaRole);
 
 
     new cdk.CfnOutput(this, 'InstanceIp', { value: eip.ref });

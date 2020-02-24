@@ -41,8 +41,6 @@ export class GithubBuildPipeline extends cdk.Construct {
     const downloadLambda =  new lambda.Function(this, 'DownloadLambda', {
       runtime: lambda.Runtime.PYTHON_3_7,
       timeout: Duration.seconds(30),
-//      code: lambda.Code.fromAsset('lambda'),
-//      handler: 'build-pipeline-helper.download_sources',
       code: lambda.Code.inline(lambdaSource),
       handler: 'index.download_sources',
       environment: {
