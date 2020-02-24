@@ -182,13 +182,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     policy.addStatements(new iam.PolicyStatement({
       actions: [
-        'es:ESHttpPut', 'es:ESHttpPost', 'es:ESHttpHead'
-      ],
-      resources: [ es.attrArn ]
-    }));
-
-    policy.addStatements(new iam.PolicyStatement({
-      actions: [
         'secretsmanager:GetSecretValue',
       ],
       resources: [ localAdminPassword.secretArn ]
@@ -202,7 +195,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
         'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
         'kinesisanalytics:CreateApplication', 'kinesisanalytics:StartApplication', 'kinesisanalytics:UpdateApplication',
       ],
-      resources: ['*']
+      resources: [ '*' ]
     }));
 
     policy.addStatements(new iam.PolicyStatement({
@@ -384,12 +377,12 @@ export class WorkshopInfrastructure extends cdk.Stack {
         'logs:Describe*', 'logs:PutLogEvents',
         'kinesis:List*', 'kinesis:Describe*', 'kinesis:Get*', 'kinesis:SubscribeToShard',
       ],
-      resources: ['*']
+      resources: [ '*' ]
     }));
 
     kdaRole.addToPolicy(new iam.PolicyStatement({
-      actions: [ 'es:ES*' ],
-      resources: [ es.attrArn ]
+      actions: [ 'es:ESHttp*' ],
+      resources: [ `${es.attrArn}/*` ]
     }));
 
     bucket.grantRead(kdaRole);

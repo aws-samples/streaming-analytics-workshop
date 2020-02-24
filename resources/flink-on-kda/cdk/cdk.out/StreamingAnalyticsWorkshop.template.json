@@ -3693,20 +3693,6 @@
             "PolicyDocument": {
               "Statement": [
                 {
-                  "Action": [
-                    "es:ESHttpPut",
-                    "es:ESHttpPost",
-                    "es:ESHttpHead"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::GetAtt": [
-                      "ElasticsearchDomain",
-                      "Arn"
-                    ]
-                  }
-                },
-                {
                   "Action": "secretsmanager:GetSecretValue",
                   "Effect": "Allow",
                   "Resource": {
@@ -4010,12 +3996,20 @@
               "Resource": "*"
             },
             {
-              "Action": "es:ES*",
+              "Action": "es:ESHttp*",
               "Effect": "Allow",
               "Resource": {
-                "Fn::GetAtt": [
-                  "ElasticsearchDomain",
-                  "Arn"
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "ElasticsearchDomain",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
                 ]
               }
             },
