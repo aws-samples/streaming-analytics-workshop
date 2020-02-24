@@ -11,6 +11,7 @@ import elasticsearch = require('@aws-cdk/aws-elasticsearch');
 import { GithubBuildPipeline } from './github-build-pipeline';
 import { RemovalPolicy, Duration, Stack } from '@aws-cdk/core';
 import { BuildSpec } from '@aws-cdk/aws-codebuild';
+import { EmptyBucketOnDelete } from './empty-bucket';
 
 
 export class WorkshopInfrastructure extends cdk.Stack {
@@ -23,7 +24,10 @@ export class WorkshopInfrastructure extends cdk.Stack {
       removalPolicy: RemovalPolicy.DESTROY
     });
 
-    const blogBucket = s3.Bucket.fromBucketName(this, 'BigDataBucket', 'aws-bigdata-blog');
+    new EmptyBucketOnDelete(this, 'EmptyBucket', {
+      bucket: bucket
+    });
+
 
     new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
       url: 'https://github.com/aws-samples/amazon-kinesis-replay/archive/master.zip',
@@ -146,7 +150,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
             "Condition": {
               "IpAddress": {
                 "aws:SourceIp": [
-                  `${eip.ref}`
+                  eip.ref
                 ]
               }
             }
@@ -154,6 +158,53 @@ export class WorkshopInfrastructure extends cdk.Stack {
         ]
       }
     });
+
+
+    const policy = new iam.PolicyDocument();
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        'es:ESHttpPut', 'es:ESHttpPost', 'es:ESHttpHead'
+      ],
+      resources: [ es.attrArn ]
+    }));
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        'secretsmanager:GetSecretValue',
+      ],
+      resources: [ localAdminPassword.secretArn ]
+    }));
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        'ec2:AssociateAddress',
+        'cloudwatch:PutMetricData',
+        'logs:Describe*', 'logs:PutLogEvents',
+        'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
+        'kinesisanalytics:CreateApplication', 'kinesisanalytics:StartApplication', 'kinesisanalytics:UpdateApplication',
+      ],
+      resources: ['*']
+    }));
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        'cloudformation:DescribeStacks'
+      ],
+      resources: [ cdk.Aws.STACK_ID ]
+    }));
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        's3:GetObject*', 's3:GetBucket*', 's3:List*'
+      ],
+      resources: [
+        bucket.bucketArn,
+        `${bucket.bucketArn}/*`,
+        `arn:${cdk.Aws.PARTITION}:s3:::aws-bigdata-blog`,
+        `arn:${cdk.Aws.PARTITION}:s3:::aws-bigdata-blog/*`,
+      ]
+    }));
 
 
     const vpc = new ec2.Vpc(this, 'Vpc', {
@@ -169,50 +220,17 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3389));
 
-
     const ami = new ec2.WindowsImage(ec2.WindowsVersion.WINDOWS_SERVER_2019_ENGLISH_FULL_BASE);
 
     const instanceRole = new iam.Role(this, 'InstanceRole', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
-      ]
+      ],
+      inlinePolicies: {
+        WorkshopPermissions: policy
+      }
     });
-
-    instanceRole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'es:ESHttpPut', 'es:ESHttpPost', 'es:ESHttpHead'
-      ],
-      resources: [ es.attrArn ]
-    }));
-
-    bucket.grantRead(instanceRole);
-    blogBucket.grantRead(instanceRole);
-
-    instanceRole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'secretsmanager:GetSecretValue',
-      ],
-      resources: [ localAdminPassword.secretArn ]
-    }));
-
-    instanceRole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'ec2:AssociateAddress',
-        'cloudwatch:PutMetricData',
-        'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
-        'kinesisanalytics:CreateApplication', 'kinesisanalytics:StartApplication', 'kinesisanalytics:UpdateApplication',
-      ],
-      resources: ['*']
-    }));
-
-    instanceRole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'cloudformation:DescribeStacks'
-      ],
-      resources: [ `arn:${cdk.Aws.PARTITION}:cloudformation:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:stack/${cdk.Aws.STACK_NAME}/${cdk.Aws.STACK_ID}`]
-    }));
-
 
     const instanceProfile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
       roles: [
@@ -222,7 +240,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     const waitHandle = new cfn.CfnWaitConditionHandle(this, 'InstanceWaitHandle');
 
-    new cfn.CfnWaitCondition(this, 'InstanceBootstrapWaitCondition', {
+    const waitCondition = new cfn.CfnWaitCondition(this, 'InstanceBootstrapWaitCondition', {
       count: 1,
       handle: waitHandle.ref,
       timeout: Duration.minutes(20).toSeconds().toString()
@@ -307,8 +325,10 @@ export class WorkshopInfrastructure extends cdk.Stack {
       }
     });
 
+    waitCondition.addDependsOn(launchTemplate);
 
-    const asg = new autoscaling.CfnAutoScalingGroup(this, 'AutoScalingGroup', {
+
+    new autoscaling.CfnAutoScalingGroup(this, 'AutoScalingGroup', {
       mixedInstancesPolicy: {
         launchTemplate: {
           launchTemplateSpecification: {
@@ -337,26 +357,11 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
 
     const kdaRole = new iam.Role(this, 'KdaRole', {
-      assumedBy: new iam.ServicePrincipal('kinesisanalytics.amazonaws.com')
+      assumedBy: new iam.ServicePrincipal('kinesisanalytics.amazonaws.com'),
+      inlinePolicies: {
+        WorkshopPermissions: policy
+      }
     });
-
-    kdaRole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'logs:Describe*', 'logs:PutLogEvents',
-        'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
-      ],
-      resources: ['*']
-    }));
-
-    bucket.grantRead(kdaRole);
-    blogBucket.grantRead(kdaRole);
-
-    kdaRole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'es:ESHttpPut', 'es:ESHttpPost', 'es:ESHttpHead'
-      ],
-      resources: [ es.attrArn ]
-    }));
 
 
     new cdk.CfnOutput(this, 'InstanceIp', { value: eip.ref });
