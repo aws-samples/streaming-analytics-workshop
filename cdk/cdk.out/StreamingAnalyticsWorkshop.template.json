@@ -1,0 +1,4060 @@
+{
+  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced)",
+  "Resources": {
+    "Bucket83908E77": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Bucket/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicyBF6DD429": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "Bucket83908E77",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicyBF6DD429",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineDownloadLambda3BF1DB4C": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.download_sources",
+        "Role": {
+          "Fn::GetAtt": [
+            "KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/master.zip",
+            "bucket": {
+              "Ref": "Bucket83908E77"
+            },
+            "key": "sources/amazon-kinesis-replay-master.zip"
+          }
+        },
+        "Timeout": 30
+      },
+      "DependsOn": [
+        "KinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicyBF6DD429",
+        "KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/DownloadLambda/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineDownloadLambdaResource381B544B": {
+      "Type": "AWS::CloudFormation::CustomResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "KinesisReplayBuildPipelineDownloadLambda3BF1DB4C",
+            "Arn"
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/DownloadLambdaResource/Default"
+      }
+    },
+    "KinesisReplayBuildPipelineCodebuildProjectRole088416D9": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicy88D54FBA": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "KinesisReplayBuildPipelineCodebuildProject39AB80D2"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "KinesisReplayBuildPipelineCodebuildProject39AB80D2"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicy88D54FBA",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayBuildPipelineCodebuildProjectRole088416D9"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodebuildProject39AB80D2": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "CODEPIPELINE"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/java:openjdk-11",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "KinesisReplayBuildPipelineCodebuildProjectRole088416D9",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-replay-master\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-replay-master\"\n  }\n}",
+          "Type": "CODEPIPELINE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineWaitHandle670CA7B8": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/WaitHandle"
+      }
+    },
+    "KinesisReplayBuildPipelineWaitCondition04932765": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "Properties": {
+        "Count": 1,
+        "Handle": {
+          "Ref": "KinesisReplayBuildPipelineWaitHandle670CA7B8"
+        },
+        "Timeout": "1200"
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/WaitCondition"
+      }
+    },
+    "KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicy6B2E66BF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codepipeline:PutJobSuccessResult",
+                "codepipeline:PutJobFailureResult"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicy6B2E66BF",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineNotifyLambda8B0DA1ED": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.notify_build_success",
+        "Role": {
+          "Fn::GetAtt": [
+            "KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "waitHandleUrl": {
+              "Ref": "KinesisReplayBuildPipelineWaitHandle670CA7B8"
+            }
+          }
+        },
+        "Timeout": 10
+      },
+      "DependsOn": [
+        "KinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicy6B2E66BF",
+        "KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/NotifyLambda/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineRole5917B240": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codepipeline.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy2BA178C3": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy2BA178C3",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayBuildPipelineCodePipelineRole5917B240"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipeline6A859BDA": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "KinesisReplayBuildPipelineCodePipelineRole5917B240",
+            "Arn"
+          ]
+        },
+        "Stages": [
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "S3Bucket": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "S3ObjectKey": "sources/amazon-kinesis-replay-master.zip"
+                },
+                "Name": "SourceAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Source"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "KinesisReplayBuildPipelineCodebuildProject39AB80D2"
+                  }
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "Name": "BuildAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Build"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "BucketName": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "Extract": "true"
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "Name": "CopyAction",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Invoke",
+                  "Owner": "AWS",
+                  "Provider": "Lambda",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "FunctionName": {
+                    "Ref": "KinesisReplayBuildPipelineNotifyLambda8B0DA1ED"
+                  }
+                },
+                "Name": "InvokeAction",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 2
+              }
+            ],
+            "Name": "Copy"
+          }
+        ],
+        "ArtifactStore": {
+          "Location": {
+            "Ref": "Bucket83908E77"
+          },
+          "Type": "S3"
+        }
+      },
+      "DependsOn": [
+        "KinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy2BA178C3",
+        "KinesisReplayBuildPipelineCodePipelineRole5917B240"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy334675EB": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy334675EB",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy7DBFA69D": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:StopBuild"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayBuildPipelineCodebuildProject39AB80D2",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy7DBFA69D",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyD2AE2A89": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyD2AE2A89",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy8EF812D1": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:ListFunctions",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayBuildPipelineNotifyLambda8B0DA1ED",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy8EF812D1",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleAC8991F2": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/DownloadLambda/ServiceRole/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleDefaultPolicyD5F18B5E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "Bucket83908E77",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleDefaultPolicyD5F18B5E",
+        "Roles": [
+          {
+            "Ref": "FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleAC8991F2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineDownloadLambda24002D5A": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.download_sources",
+        "Role": {
+          "Fn::GetAtt": [
+            "FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleAC8991F2",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "url": "https://github.com/apache/flink/archive/release-1.6.2.zip",
+            "bucket": {
+              "Ref": "Bucket83908E77"
+            },
+            "key": "sources/flink-release-1.6.2.zip"
+          }
+        },
+        "Timeout": 30
+      },
+      "DependsOn": [
+        "FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleDefaultPolicyD5F18B5E",
+        "FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleAC8991F2"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/DownloadLambda/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineDownloadLambdaResource2F1EBC5A": {
+      "Type": "AWS::CloudFormation::CustomResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "FlinkConnectorKinesisPipelineDownloadLambda24002D5A",
+            "Arn"
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/DownloadLambdaResource/Default"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodebuildProjectRole81A322E9": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodebuildProject/Role/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodebuildProjectRoleDefaultPolicyBCF5C37E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkConnectorKinesisPipelineCodebuildProjectRoleDefaultPolicyBCF5C37E",
+        "Roles": [
+          {
+            "Ref": "FlinkConnectorKinesisPipelineCodebuildProjectRole81A322E9"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "CODEPIPELINE"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/java:openjdk-11",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "FlinkConnectorKinesisPipelineCodebuildProjectRole81A322E9",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd flink-release-1.6.2\",\n        \"mvn clean package -B -DskipTests -Dfast -Pinclude-kinesis -pl flink-connectors/flink-connector-kinesis\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"cd flink-connectors/flink-connector-kinesis/target\",\n        \"mv dependency-reduced-pom.xml flink-connector-kinesis_2.11-1.6.2.pom.xml\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/flink-connector-kinesis_2.11-1.6.2.jar\",\n      \"target/flink-connector-kinesis_2.11-1.6.2.pom.xml\"\n    ],\n    \"base-directory\": \"flink-release-1.6.2/flink-connectors/flink-connector-kinesis\",\n    \"discard-paths\": true\n  }\n}",
+          "Type": "CODEPIPELINE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodebuildProject/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineWaitHandle2092DDAA": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/WaitHandle"
+      }
+    },
+    "FlinkConnectorKinesisPipelineWaitConditionB522DB60": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "Properties": {
+        "Count": 1,
+        "Handle": {
+          "Ref": "FlinkConnectorKinesisPipelineWaitHandle2092DDAA"
+        },
+        "Timeout": "1200"
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/WaitCondition"
+      }
+    },
+    "FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleE56E3F0F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/NotifyLambda/ServiceRole/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleDefaultPolicy8FCACA58": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codepipeline:PutJobSuccessResult",
+                "codepipeline:PutJobFailureResult"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleDefaultPolicy8FCACA58",
+        "Roles": [
+          {
+            "Ref": "FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleE56E3F0F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineNotifyLambda036C4408": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.notify_build_success",
+        "Role": {
+          "Fn::GetAtt": [
+            "FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleE56E3F0F",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "waitHandleUrl": {
+              "Ref": "FlinkConnectorKinesisPipelineWaitHandle2092DDAA"
+            }
+          }
+        },
+        "Timeout": 10
+      },
+      "DependsOn": [
+        "FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleDefaultPolicy8FCACA58",
+        "FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleE56E3F0F"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/NotifyLambda/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineRole5A3951BA": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codepipeline.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Role/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineRoleDefaultPolicyFE36D398": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB168F8C8",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRole66986CFD",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA5E8A52E",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRole36CA492B",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkConnectorKinesisPipelineCodePipelineRoleDefaultPolicyFE36D398",
+        "Roles": [
+          {
+            "Ref": "FlinkConnectorKinesisPipelineCodePipelineRole5A3951BA"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Role/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipeline700323FB": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "FlinkConnectorKinesisPipelineCodePipelineRole5A3951BA",
+            "Arn"
+          ]
+        },
+        "Stages": [
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "S3Bucket": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "S3ObjectKey": "sources/flink-release-1.6.2.zip"
+                },
+                "Name": "SourceAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB168F8C8",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Source"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F"
+                  }
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "Name": "BuildAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRole66986CFD",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Build"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "BucketName": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "Extract": "false",
+                  "ObjectKey": "target/flink-connector-kinesis_2.11-1.6.2.zip"
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "Name": "CopyAction",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA5E8A52E",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Invoke",
+                  "Owner": "AWS",
+                  "Provider": "Lambda",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "FunctionName": {
+                    "Ref": "FlinkConnectorKinesisPipelineNotifyLambda036C4408"
+                  }
+                },
+                "Name": "InvokeAction",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRole36CA492B",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 2
+              }
+            ],
+            "Name": "Copy"
+          }
+        ],
+        "ArtifactStore": {
+          "Location": {
+            "Ref": "Bucket83908E77"
+          },
+          "Type": "S3"
+        }
+      },
+      "DependsOn": [
+        "FlinkConnectorKinesisPipelineCodePipelineRoleDefaultPolicyFE36D398",
+        "FlinkConnectorKinesisPipelineCodePipelineRole5A3951BA"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB168F8C8": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicyCD0DD965": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicyCD0DD965",
+        "Roles": [
+          {
+            "Ref": "FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB168F8C8"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRole66986CFD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicyB9D108B0": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:StopBuild"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicyB9D108B0",
+        "Roles": [
+          {
+            "Ref": "FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRole66986CFD"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA5E8A52E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy83E990D0": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy83E990D0",
+        "Roles": [
+          {
+            "Ref": "FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA5E8A52E"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRole36CA492B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy1ECFBF94": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:ListFunctions",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkConnectorKinesisPipelineNotifyLambda036C4408",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy1ECFBF94",
+        "Roles": [
+          {
+            "Ref": "FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRole36CA492B"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineDownloadLambdaServiceRoleB4A621D6": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/DownloadLambda/ServiceRole/Resource"
+      }
+    },
+    "FlinkApplicationPipelineDownloadLambdaServiceRoleDefaultPolicyDEDF49EF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "Bucket83908E77",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineDownloadLambdaServiceRoleDefaultPolicyDEDF49EF",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineDownloadLambdaServiceRoleB4A621D6"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineDownloadLambda49ACAF94": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.download_sources",
+        "Role": {
+          "Fn::GetAtt": [
+            "FlinkApplicationPipelineDownloadLambdaServiceRoleB4A621D6",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/master.zip",
+            "bucket": {
+              "Ref": "Bucket83908E77"
+            },
+            "key": "sources/amazon-kinesis-analytics-taxi-consumer-master.zip"
+          }
+        },
+        "Timeout": 30
+      },
+      "DependsOn": [
+        "FlinkApplicationPipelineDownloadLambdaServiceRoleDefaultPolicyDEDF49EF",
+        "FlinkApplicationPipelineDownloadLambdaServiceRoleB4A621D6"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/DownloadLambda/Resource"
+      }
+    },
+    "FlinkApplicationPipelineDownloadLambdaResource29B64B52": {
+      "Type": "AWS::CloudFormation::CustomResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "FlinkApplicationPipelineDownloadLambda49ACAF94",
+            "Arn"
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/DownloadLambdaResource/Default"
+      }
+    },
+    "FlinkApplicationPipelineCodebuildProjectRole636634FB": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodebuildProject/Role/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodebuildProjectRoleDefaultPolicy1BF6DBB5": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "FlinkApplicationPipelineCodebuildProject98D9991E"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "FlinkApplicationPipelineCodebuildProject98D9991E"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineCodebuildProjectRoleDefaultPolicy1BF6DBB5",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineCodebuildProjectRole636634FB"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodebuildProject98D9991E": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "CODEPIPELINE"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/java:openjdk-11",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "FlinkApplicationPipelineCodebuildProjectRole636634FB",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"mvn install:install-file -B -Dfile=$CODEBUILD_SRC_DIR_FlinkKinesisConnector/flink-connector-kinesis_2.11-1.6.2.jar -DpomFile=$CODEBUILD_SRC_DIR_FlinkKinesisConnector/flink-connector-kinesis_2.11-1.6.2.pom.xml\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-analytics-taxi-consumer-*\",\n        \"mvn clean package -B -Dflink.version=1.6.2\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-analytics-taxi-consumer-*.jar\"\n    ],\n    \"base-directory\": \"amazon-kinesis-analytics-taxi-consumer-*\",\n    \"discard-paths\": false\n  }\n}",
+          "Type": "CODEPIPELINE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodebuildProject/Resource"
+      }
+    },
+    "FlinkApplicationPipelineWaitHandleF5BA99FE": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/WaitHandle"
+      }
+    },
+    "FlinkApplicationPipelineWaitCondition869ACC37": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "Properties": {
+        "Count": 1,
+        "Handle": {
+          "Ref": "FlinkApplicationPipelineWaitHandleF5BA99FE"
+        },
+        "Timeout": "1200"
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/WaitCondition"
+      }
+    },
+    "FlinkApplicationPipelineNotifyLambdaServiceRoleB02DBD02": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/NotifyLambda/ServiceRole/Resource"
+      }
+    },
+    "FlinkApplicationPipelineNotifyLambdaServiceRoleDefaultPolicy442DF2BD": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codepipeline:PutJobSuccessResult",
+                "codepipeline:PutJobFailureResult"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineNotifyLambdaServiceRoleDefaultPolicy442DF2BD",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineNotifyLambdaServiceRoleB02DBD02"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineNotifyLambdaF0468951": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.notify_build_success",
+        "Role": {
+          "Fn::GetAtt": [
+            "FlinkApplicationPipelineNotifyLambdaServiceRoleB02DBD02",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "waitHandleUrl": {
+              "Ref": "FlinkApplicationPipelineWaitHandleF5BA99FE"
+            }
+          }
+        },
+        "Timeout": 10
+      },
+      "DependsOn": [
+        "FlinkApplicationPipelineNotifyLambdaServiceRoleDefaultPolicy442DF2BD",
+        "FlinkApplicationPipelineNotifyLambdaServiceRoleB02DBD02"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/NotifyLambda/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineRoleF0786C9D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codepipeline.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Role/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineRoleDefaultPolicy569DF6E5": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB3752D3D",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRole81705404",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRoleFEC74616",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRole06FD2A69",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRole87F3A534",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineCodePipelineRoleDefaultPolicy569DF6E5",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineCodePipelineRoleF0786C9D"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Role/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipeline5FFF77FE": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "FlinkApplicationPipelineCodePipelineRoleF0786C9D",
+            "Arn"
+          ]
+        },
+        "Stages": [
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "S3Bucket": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "S3ObjectKey": "sources/amazon-kinesis-analytics-taxi-consumer-master.zip"
+                },
+                "Name": "SourceAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB3752D3D",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "S3Bucket": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "S3ObjectKey": "target/flink-connector-kinesis_2.11-1.6.2.zip"
+                },
+                "Name": "FlinkKinesisConnectorSourceAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "FlinkKinesisConnector"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRole81705404",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Source"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "FlinkApplicationPipelineCodebuildProject98D9991E"
+                  },
+                  "PrimarySource": "Artifact_Source_SourceAction"
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  },
+                  {
+                    "Name": "FlinkKinesisConnector"
+                  }
+                ],
+                "Name": "BuildAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRoleFEC74616",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Build"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "BucketName": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "Extract": "true"
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "Name": "CopyAction",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRole06FD2A69",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Invoke",
+                  "Owner": "AWS",
+                  "Provider": "Lambda",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "FunctionName": {
+                    "Ref": "FlinkApplicationPipelineNotifyLambdaF0468951"
+                  }
+                },
+                "Name": "InvokeAction",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "FlinkApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRole87F3A534",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 2
+              }
+            ],
+            "Name": "Copy"
+          }
+        ],
+        "ArtifactStore": {
+          "Location": {
+            "Ref": "Bucket83908E77"
+          },
+          "Type": "S3"
+        }
+      },
+      "DependsOn": [
+        "FlinkApplicationPipelineCodePipelineRoleDefaultPolicy569DF6E5",
+        "FlinkApplicationPipelineCodePipelineRoleF0786C9D"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB3752D3D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy76D6F337": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy76D6F337",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB3752D3D"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRole81705404": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Source/FlinkKinesisConnectorSourceAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRoleDefaultPolicy521F3E4E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRoleDefaultPolicy521F3E4E",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRole81705404"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Source/FlinkKinesisConnectorSourceAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRoleFEC74616": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy9D87B1FE": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:StopBuild"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkApplicationPipelineCodebuildProject98D9991E",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy9D87B1FE",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRoleFEC74616"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRole06FD2A69": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyC1E25F05": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyC1E25F05",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRole06FD2A69"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRole87F3A534": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "FlinkApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyA956DD1E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:ListFunctions",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkApplicationPipelineNotifyLambdaF0468951",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyA956DD1E",
+        "Roles": [
+          {
+            "Ref": "FlinkApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRole87F3A534"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/FlinkApplicationPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "TemplatedSecret3D98B577": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "GenerateSecretString": {
+          "ExcludePunctuation": true,
+          "GenerateStringKey": "password",
+          "IncludeSpace": false,
+          "PasswordLength": 16,
+          "SecretStringTemplate": "{\"username\":\"Administrator\"}"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/TemplatedSecret/Resource"
+      }
+    },
+    "InstanceEip": {
+      "Type": "AWS::EC2::EIP",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/InstanceEip"
+      }
+    },
+    "ElasticsearchDomain": {
+      "Type": "AWS::Elasticsearch::Domain",
+      "Properties": {
+        "AccessPolicies": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": [
+                "es:ESHttp*"
+              ],
+              "Resource": "*",
+              "Condition": {
+                "IpAddress": {
+                  "aws:SourceIp": [
+                    {
+                      "Ref": "InstanceEip"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "EBSOptions": {
+          "EBSEnabled": true,
+          "VolumeSize": 10,
+          "VolumeType": "gp2"
+        },
+        "ElasticsearchClusterConfig": {
+          "InstanceCount": 1,
+          "InstanceType": "t2.medium.elasticsearch"
+        },
+        "ElasticsearchVersion": "7.1"
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/ElasticsearchDomain"
+      }
+    },
+    "Vpc8378EB38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "StreamingAnalyticsWorkshop/Vpc"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/Resource"
+      }
+    },
+    "VpcpublicSubnet1Subnet2BB74ED7": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/17",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "StreamingAnalyticsWorkshop/Vpc/publicSubnet1"
+          },
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/publicSubnet1/Subnet"
+      }
+    },
+    "VpcpublicSubnet1RouteTable15C15F8E": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "StreamingAnalyticsWorkshop/Vpc/publicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/publicSubnet1/RouteTable"
+      }
+    },
+    "VpcpublicSubnet1RouteTableAssociation4E83B6E4": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcpublicSubnet1RouteTable15C15F8E"
+        },
+        "SubnetId": {
+          "Ref": "VpcpublicSubnet1Subnet2BB74ED7"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/publicSubnet1/RouteTableAssociation"
+      }
+    },
+    "VpcpublicSubnet1DefaultRouteB88F9E93": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcpublicSubnet1RouteTable15C15F8E"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "VpcIGWD7BA715C"
+        }
+      },
+      "DependsOn": [
+        "VpcVPCGWBF912B6E"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/publicSubnet1/DefaultRoute"
+      }
+    },
+    "VpcpublicSubnet2SubnetE34B022A": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.128.0/17",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "StreamingAnalyticsWorkshop/Vpc/publicSubnet2"
+          },
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/publicSubnet2/Subnet"
+      }
+    },
+    "VpcpublicSubnet2RouteTableC5A6DF77": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "StreamingAnalyticsWorkshop/Vpc/publicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/publicSubnet2/RouteTable"
+      }
+    },
+    "VpcpublicSubnet2RouteTableAssociationCCE257FF": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcpublicSubnet2RouteTableC5A6DF77"
+        },
+        "SubnetId": {
+          "Ref": "VpcpublicSubnet2SubnetE34B022A"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/publicSubnet2/RouteTableAssociation"
+      }
+    },
+    "VpcpublicSubnet2DefaultRoute732F0BEB": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcpublicSubnet2RouteTableC5A6DF77"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "VpcIGWD7BA715C"
+        }
+      },
+      "DependsOn": [
+        "VpcVPCGWBF912B6E"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/publicSubnet2/DefaultRoute"
+      }
+    },
+    "VpcIGWD7BA715C": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "StreamingAnalyticsWorkshop/Vpc"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/IGW"
+      }
+    },
+    "VpcVPCGWBF912B6E": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "InternetGatewayId": {
+          "Ref": "VpcIGWD7BA715C"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/Vpc/VPCGW"
+      }
+    },
+    "SecurityGroupDD263621": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "StreamingAnalyticsWorkshop/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:3389",
+            "FromPort": 3389,
+            "IpProtocol": "tcp",
+            "ToPort": 3389
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/SecurityGroup/Resource"
+      }
+    },
+    "InstanceRole3CCE2F1D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "ec2.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonSSMManagedInstanceCore"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/InstanceRole/Resource"
+      }
+    },
+    "InstanceRoleDefaultPolicy1531605C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "es:ESHttpPut",
+                "es:ESHttpPost",
+                "es:ESHttpHead"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ElasticsearchDomain",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::aws-bigdata-blog"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::aws-bigdata-blog/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "secretsmanager:GetSecretValue",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "TemplatedSecret3D98B577"
+              }
+            },
+            {
+              "Action": [
+                "ec2:AssociateAddress",
+                "cloudwatch:PutMetricData",
+                "kinesis:DescribeStream",
+                "kinesis:ListShards",
+                "kinesis:GetShardIterator",
+                "kinesis:GetRecords",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords",
+                "kinesisanalytics:CreateApplication",
+                "kinesisanalytics:StartApplication",
+                "kinesisanalytics:UpdateApplication"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "cloudformation:DescribeStacks",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":cloudformation:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":stack/",
+                    {
+                      "Ref": "AWS::StackName"
+                    },
+                    "/",
+                    {
+                      "Ref": "AWS::StackId"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "InstanceRoleDefaultPolicy1531605C",
+        "Roles": [
+          {
+            "Ref": "InstanceRole3CCE2F1D"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/InstanceRole/DefaultPolicy/Resource"
+      }
+    },
+    "InstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "InstanceRole3CCE2F1D"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/InstanceProfile"
+      }
+    },
+    "InstanceWaitHandle": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle",
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/InstanceWaitHandle"
+      }
+    },
+    "InstanceBootstrapWaitCondition": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "Properties": {
+        "Count": 1,
+        "Handle": {
+          "Ref": "InstanceWaitHandle"
+        },
+        "Timeout": "1200"
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/InstanceBootstrapWaitCondition"
+      }
+    },
+    "LaunchTemplate": {
+      "Type": "AWS::EC2::LaunchTemplate",
+      "Properties": {
+        "LaunchTemplateData": {
+          "IamInstanceProfile": {
+            "Arn": {
+              "Fn::GetAtt": [
+                "InstanceProfile",
+                "Arn"
+              ]
+            }
+          },
+          "ImageId": {
+            "Ref": "SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter"
+          },
+          "NetworkInterfaces": [
+            {
+              "AssociatePublicIpAddress": true,
+              "DeleteOnTermination": true,
+              "DeviceIndex": 0,
+              "Groups": [
+                {
+                  "Fn::GetAtt": [
+                    "SecurityGroupDD263621",
+                    "GroupId"
+                  ]
+                }
+              ]
+            }
+          ],
+          "UserData": {
+            "Fn::Base64": {
+              "Fn::Join": [
+                "",
+                [
+                  "<powershell>            \nImport-Module AWSPowerShell\n\n# Install choco\niex ((New-Object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))\n\n# Add gitter and retry to install commands\n$iter = 0\n$sleep = 5\n\nDo {\nStart-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))\nchoco install git --no-progress -y\n} Until ($LASTEXITCODE -eq 0)\n\nDo {\nStart-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))\nchoco install firefox --no-progress -y\n} Until ($LASTEXITCODE -eq 0)\n\nDo {\nStart-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))\nchoco install intellijidea-community --no-progress --version 2019.2.4 -y\n} Until ($LASTEXITCODE -eq 0)\n\n# Add IntelliJ Java 11 to the path\n$PATH = [Environment]::GetEnvironmentVariable(\"PATH\", \"Machine\")\n$intellij_path = \"C:\\Program Files\\JetBrains\\IntelliJ IDEA Community Edition 2019.2.4\\jbr\\bin\"\n[Environment]::SetEnvironmentVariable(\"PATH\", \"$PATH;$intellij_path\", \"Machine\")\n\n$desktop = \"C:\\Users\\Administrator\\Desktop\"\n\n# Create desktop shortcuts\nRemove-Item -path \"$desktop\\*.website\"\nCopy-Item \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\JetBrains\\*.lnk\" \"$desktop\"\n\n# Change password\n$password = ((Get-SECSecretValue -SecretId '",
+                  {
+                    "Ref": "TemplatedSecret3D98B577"
+                  },
+                  "').SecretString | ConvertFrom-Json).Password\nnet.exe user Administrator \"$password\"\n\n# Associate EIP\n$instanceId = Invoke-RestMethod -uri http://169.254.169.254/latest/meta-data/instance-id\nRegister-EC2Address -InstanceId \"$instanceId\" -AllocationId \"",
+                  {
+                    "Fn::GetAtt": [
+                      "InstanceEip",
+                      "AllocationId"
+                    ]
+                  },
+                  "\"\n\n# Signal success to CFN\ncfn-signal.exe --success true --region \"",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  "\" \"",
+                  {
+                    "Ref": "InstanceWaitHandle"
+                  },
+                  "\"\n\n\n# Download artifacts\nNew-Item -Path \"$desktop\" -Name \"workshop-resources\" -ItemType \"directory\"\n\n$url = \"https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/master/misc/streaming-analytics-workshop-dashboard.json\"\n$file = \"$desktop\\workshop-resources\\streaming-analytics-workshop-dashboard.json\"\n(New-Object System.Net.WebClient).DownloadFile($url, $file)\n\n# Wait until build pipelines have successfully build all artifacts\nWait-CFNStack -StackName \"",
+                  {
+                    "Ref": "AWS::StackName"
+                  },
+                  "\" -Timeout 600\n\nCopy-S3Object -BucketName \"",
+                  {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "\" -KeyPrefix target -LocalFolder \"$desktop\\workshop-resources\"\n\nExpand-Archive \"$desktop\\workshop-resources\\flink-connector-kinesis*.zip\" \"$desktop\\workshop-resources\"\n</powershell>"
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/LaunchTemplate"
+      }
+    },
+    "AutoScalingGroup": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "MaxSize": "1",
+        "MinSize": "1",
+        "DesiredCapacity": "1",
+        "MixedInstancesPolicy": {
+          "InstancesDistribution": {
+            "OnDemandBaseCapacity": 1
+          },
+          "LaunchTemplate": {
+            "LaunchTemplateSpecification": {
+              "LaunchTemplateId": {
+                "Ref": "LaunchTemplate"
+              },
+              "Version": {
+                "Fn::GetAtt": [
+                  "LaunchTemplate",
+                  "DefaultVersionNumber"
+                ]
+              }
+            },
+            "Overrides": [
+              {
+                "InstanceType": "m5.2xlarge"
+              },
+              {
+                "InstanceType": "c5.2xlarge"
+              },
+              {
+                "InstanceType": "m3.2xlarge"
+              },
+              {
+                "InstanceType": "m5.xlarge"
+              },
+              {
+                "InstanceType": "c5.xlarge"
+              },
+              {
+                "InstanceType": "m4.xlarge"
+              },
+              {
+                "InstanceType": "c4.xlarge"
+              }
+            ]
+          }
+        },
+        "VPCZoneIdentifier": [
+          {
+            "Ref": "VpcpublicSubnet1Subnet2BB74ED7"
+          },
+          {
+            "Ref": "VpcpublicSubnet2SubnetE34B022A"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/AutoScalingGroup"
+      }
+    },
+    "KdaRoleB7DD543E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "kinesisanalytics.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KdaRole/Resource"
+      }
+    },
+    "KdaRoleDefaultPolicy88A47211": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:Describe*",
+                "logs:PutLogEvents",
+                "kinesis:DescribeStream",
+                "kinesis:ListShards",
+                "kinesis:GetShardIterator",
+                "kinesis:GetRecords",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::aws-bigdata-blog"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::aws-bigdata-blog/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "es:ESHttpPut",
+                "es:ESHttpPost",
+                "es:ESHttpHead"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ElasticsearchDomain",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KdaRoleDefaultPolicy88A47211",
+        "Roles": [
+          {
+            "Ref": "KdaRoleB7DD543E"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KdaRole/DefaultPolicy/Resource"
+      }
+    }
+  },
+  "Parameters": {
+    "SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+      "Default": "/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base"
+    }
+  },
+  "Outputs": {
+    "InstanceIp": {
+      "Value": {
+        "Ref": "InstanceEip"
+      }
+    },
+    "InstanceLoginCredentials": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://console.aws.amazon.com/secretsmanager/#/secret?name=",
+            {
+              "Ref": "TemplatedSecret3D98B577"
+            }
+          ]
+        ]
+      }
+    },
+    "ElasticsearchDomainName": {
+      "Value": {
+        "Fn::GetAtt": [
+          "ElasticsearchDomain",
+          "DomainEndpoint"
+        ]
+      }
+    },
+    "KinesisAnalyticsServiceRole": {
+      "Value": {
+        "Ref": "KdaRoleB7DD543E"
+      }
+    },
+    "FlinkApplicationJarBucket": {
+      "Value": {
+        "Ref": "Bucket83908E77"
+      }
+    },
+    "FlinkApplicationJarObject": {
+      "Value": "target/amazon-kinesis-analytics-taxi-consumer-1.0-SNAPSHOT.jar"
+    }
+  }
+}

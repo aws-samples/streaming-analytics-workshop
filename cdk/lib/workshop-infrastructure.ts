@@ -23,6 +23,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
       removalPolicy: RemovalPolicy.DESTROY
     });
 
+    const blogBucket = s3.Bucket.fromBucketName(this, 'BigDataBucket', 'aws-bigdata-blog');
 
     new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
       url: 'https://github.com/aws-samples/amazon-kinesis-replay/archive/master.zip',
@@ -180,17 +181,38 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     instanceRole.addToPolicy(new iam.PolicyStatement({
       actions: [
+        'es:ESHttpPut', 'es:ESHttpPost', 'es:ESHttpHead'
+      ],
+      resources: [ es.attrArn ]
+    }));
+
+    bucket.grantRead(instanceRole);
+    blogBucket.grantRead(instanceRole);
+
+    instanceRole.addToPolicy(new iam.PolicyStatement({
+      actions: [
         'secretsmanager:GetSecretValue',
-        'cloudformation:DescribeStacks',
+      ],
+      resources: [ localAdminPassword.secretArn ]
+    }));
+
+    instanceRole.addToPolicy(new iam.PolicyStatement({
+      actions: [
         'ec2:AssociateAddress',
         'cloudwatch:PutMetricData',
         'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
         'kinesisanalytics:CreateApplication', 'kinesisanalytics:StartApplication', 'kinesisanalytics:UpdateApplication',
-        's3:GetObject', 's3:ListBucket',
-        'es:ESHttpPut', 'es:ESHttpPost', 'es:ESHttpHead',
       ],
       resources: ['*']
     }));
+
+    instanceRole.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        'cloudformation:DescribeStacks'
+      ],
+      resources: [ `arn:${cdk.Aws.PARTITION}:cloudformation:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:stack/${cdk.Aws.STACK_NAME}/${cdk.Aws.STACK_ID}`]
+    }));
+
 
     const instanceProfile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
       roles: [
@@ -320,12 +342,20 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     kdaRole.addToPolicy(new iam.PolicyStatement({
       actions: [
-        's3:GetObject', 's3:ListBucket',
         'logs:Describe*', 'logs:PutLogEvents',
-        'kinesis:List*', 'kinesis:Describe*', 'kinesis:Get*', 'kinesis:SubscribeToShard',
-        'es:ESHttp*'
+        'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
       ],
       resources: ['*']
+    }));
+
+    bucket.grantRead(kdaRole);
+    blogBucket.grantRead(kdaRole);
+
+    kdaRole.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        'es:ESHttpPut', 'es:ESHttpPost', 'es:ESHttpHead'
+      ],
+      resources: [ es.attrArn ]
     }));
 
 
