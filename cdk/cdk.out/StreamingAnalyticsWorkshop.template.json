@@ -417,7 +417,7 @@
           ]
         },
         "Source": {
-          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-replay-master\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-replay-master\"\n  }\n}",
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-replay-master\",\n        \"mvn clean package -Daws.kpl.version=0.13.1 -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-replay-master\"\n  }\n}",
           "Type": "CODEPIPELINE"
         }
       },
@@ -3986,121 +3986,81 @@
             }
           ],
           "Version": "2012-10-17"
-        },
-        "Policies": [
-          {
-            "PolicyDocument": {
-              "Statement": [
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KdaRole/Resource"
+      }
+    },
+    "KdaRoleDefaultPolicy88A47211": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:Describe*",
+                "logs:PutLogEvents",
+                "kinesis:List*",
+                "kinesis:Describe*",
+                "kinesis:Get*",
+                "kinesis:SubscribeToShard"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "es:ES*",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ElasticsearchDomain",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
                 {
-                  "Action": [
-                    "es:ESHttpPut",
-                    "es:ESHttpPost",
-                    "es:ESHttpHead"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Fn::GetAtt": [
-                      "ElasticsearchDomain",
-                      "Arn"
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
                     ]
-                  }
-                },
-                {
-                  "Action": "secretsmanager:GetSecretValue",
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Ref": "TemplatedSecret3D98B577"
-                  }
-                },
-                {
-                  "Action": [
-                    "ec2:AssociateAddress",
-                    "cloudwatch:PutMetricData",
-                    "logs:Describe*",
-                    "logs:PutLogEvents",
-                    "kinesis:DescribeStream",
-                    "kinesis:ListShards",
-                    "kinesis:GetShardIterator",
-                    "kinesis:GetRecords",
-                    "kinesis:PutRecord",
-                    "kinesis:PutRecords",
-                    "kinesisanalytics:CreateApplication",
-                    "kinesisanalytics:StartApplication",
-                    "kinesisanalytics:UpdateApplication"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": "*"
-                },
-                {
-                  "Action": "cloudformation:DescribeStacks",
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Ref": "AWS::StackId"
-                  }
-                },
-                {
-                  "Action": [
-                    "s3:GetObject*",
-                    "s3:GetBucket*",
-                    "s3:List*"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": [
-                    {
-                      "Fn::GetAtt": [
-                        "Bucket83908E77",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        "",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "Bucket83908E77",
-                              "Arn"
-                            ]
-                          },
-                          "/*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        "",
-                        [
-                          "arn:",
-                          {
-                            "Ref": "AWS::Partition"
-                          },
-                          ":s3:::aws-bigdata-blog"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        "",
-                        [
-                          "arn:",
-                          {
-                            "Ref": "AWS::Partition"
-                          },
-                          ":s3:::aws-bigdata-blog/*"
-                        ]
-                      ]
-                    }
                   ]
                 }
-              ],
-              "Version": "2012-10-17"
-            },
-            "PolicyName": "WorkshopPermissions"
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KdaRoleDefaultPolicy88A47211",
+        "Roles": [
+          {
+            "Ref": "KdaRoleB7DD543E"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "StreamingAnalyticsWorkshop/KdaRole/Resource"
+        "aws:cdk:path": "StreamingAnalyticsWorkshop/KdaRole/DefaultPolicy/Resource"
       }
     }
   },
