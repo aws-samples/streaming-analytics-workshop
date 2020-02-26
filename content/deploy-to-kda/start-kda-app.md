@@ -17,5 +17,5 @@ Before you proceed, make sure that you are currently not producing any events in
 2. You can now start producing data into the Kinesis stream again. However, this time we can substantially increase the speedup factor and hence the throughput of events.
 
 	```
-java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-1.0-SNAPSHOT.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName streaming-analytics-workshop -speedup 4320 
+java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName streaming-analytics-workshop -speedup 4320 
 	```
