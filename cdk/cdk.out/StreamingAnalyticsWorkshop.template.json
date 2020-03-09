@@ -2265,11 +2265,11 @@
         "Runtime": "python3.7",
         "Environment": {
           "Variables": {
-            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/release-0.1.1.zip",
+            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/release-0.2.0.zip",
             "bucket": {
               "Ref": "Bucket83908E77"
             },
-            "key": "sources/amazon-kinesis-analytics-taxi-consumer-release-0.1.1.zip"
+            "key": "sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.0.zip"
           }
         },
         "Timeout": 30
@@ -2710,7 +2710,7 @@
                   "S3Bucket": {
                     "Ref": "Bucket83908E77"
                   },
-                  "S3ObjectKey": "sources/amazon-kinesis-analytics-taxi-consumer-release-0.1.1.zip"
+                  "S3ObjectKey": "sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.0.zip"
                 },
                 "Name": "SourceAction",
                 "OutputArtifacts": [
@@ -3879,7 +3879,7 @@
                   {
                     "Ref": "InstanceWaitHandle"
                   },
-                  "\"\n\n\n# Download artifacts\nNew-Item -Path \"$desktop\" -Name \"workshop-resources\" -ItemType \"directory\"\n\n$url = \"https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/release-0.1.1/misc/streaming-analytics-workshop-dashboard.json\"\n$file = \"$desktop\\workshop-resources\\streaming-analytics-workshop-dashboard.json\"\n(New-Object System.Net.WebClient).DownloadFile($url, $file)\n\n# Wait until build pipelines have successfully build all artifacts\nWait-CFNStack -StackName \"",
+                  "\"\n\n\n# Download artifacts\nNew-Item -Path \"$desktop\" -Name \"workshop-resources\" -ItemType \"directory\"\n\n$url = \"https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/release-0.2.0/misc/streaming-analytics-workshop-dashboard.json\"\n$file = \"$desktop\\workshop-resources\\streaming-analytics-workshop-dashboard.json\"\n(New-Object System.Net.WebClient).DownloadFile($url, $file)\n\n# Wait until build pipelines have successfully build all artifacts\nWait-CFNStack -StackName \"",
                   {
                     "Ref": "AWS::StackName"
                   },
@@ -4102,7 +4102,7 @@
       }
     },
     "FlinkApplicationJarObject": {
-      "Value": "target/amazon-kinesis-analytics-taxi-consumer-0.1.1.jar"
+      "Value": "target/amazon-kinesis-analytics-taxi-consumer-0.2.0.jar"
     }
   }
 }

@@ -11,8 +11,8 @@ new WorkshopInfrastructure(app, 'StreamingAnalyticsWorkshop', {
     flinkVersion: '1.8.2',
     flinkScalaVersion: '2.11',
     kinesisReplayVersion: 'release-0.1.0',
-    consumerApplicationVersion: 'release-0.1.1',
-    consumerApplicationJarObject: 'amazon-kinesis-analytics-taxi-consumer-0.1.1.jar'
+    consumerApplicationVersion: 'release-0.2.0',
+    consumerApplicationJarObject: 'amazon-kinesis-analytics-taxi-consumer-0.2.0.jar'
 });
 
 new WorkshopInfrastructure(app, 'StreamingAnalyticsWorkshopEventEngine', {
@@ -20,8 +20,8 @@ new WorkshopInfrastructure(app, 'StreamingAnalyticsWorkshopEventEngine', {
     flinkVersion: '1.8.2',
     flinkScalaVersion: '2.11',
     kinesisReplayVersion: 'release-0.1.0',
-    consumerApplicationVersion: 'release-0.1.1',
-    consumerApplicationJarObject: 'amazon-kinesis-analytics-taxi-consumer-0.1.1.jar'
+    consumerApplicationVersion: 'release-0.2.0',
+    consumerApplicationJarObject: 'amazon-kinesis-analytics-taxi-consumer-0.2.0.jar'
 });
 
 new BuildWorkshopResources(app, 'BuildStreamingAnalyticsWorkshopResources');
