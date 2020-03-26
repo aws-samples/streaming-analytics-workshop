@@ -194,7 +194,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     policy.addStatements(new iam.PolicyStatement({
       actions: [
-        's3:GetObject*', 's3:GetBucket*', 's3:List*'
+        's3:GetObject*', 's3:PutObject', 's3:GetBucket*', 's3:List*'
       ],
       resources: [
         bucket.bucketArn,
