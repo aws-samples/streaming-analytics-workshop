@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced-2020-03-26)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced-2020-04-15)",
   "Resources": {
     "Bucket83908E77": {
       "Type": "AWS::S3::Bucket",
@@ -3711,9 +3711,7 @@
                     "kinesis:GetRecords",
                     "kinesis:PutRecord",
                     "kinesis:PutRecords",
-                    "kinesisanalytics:CreateApplication",
-                    "kinesisanalytics:StartApplication",
-                    "kinesisanalytics:UpdateApplication"
+                    "kinesisanalytics:StartApplication"
                   ],
                   "Effect": "Allow",
                   "Resource": "*"
@@ -3728,7 +3726,6 @@
                 {
                   "Action": [
                     "s3:GetObject*",
-                    "s3:PutObject",
                     "s3:GetBucket*",
                     "s3:List*"
                   ],
