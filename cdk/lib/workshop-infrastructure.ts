@@ -180,7 +180,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
         'cloudwatch:PutMetricData',
         'logs:Describe*', 'logs:PutLogEvents',
         'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
-        'kinesisanalytics:CreateApplication', 'kinesisanalytics:StartApplication', 'kinesisanalytics:UpdateApplication',
+        'kinesisanalytics:StartApplication'
       ],
       resources: [ '*' ]
     }));
@@ -194,7 +194,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     policy.addStatements(new iam.PolicyStatement({
       actions: [
-        's3:GetObject*', 's3:PutObject', 's3:GetBucket*', 's3:List*'
+        's3:GetObject*', 's3:GetBucket*', 's3:List*'
       ],
       resources: [
         bucket.bucketArn,
