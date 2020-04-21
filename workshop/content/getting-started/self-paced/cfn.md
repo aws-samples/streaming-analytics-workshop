@@ -16,7 +16,7 @@ weight: 30
 
 1. Accept all default values on the next dialog page by clicking **Next** at the bottom of the page
 
-1. On the last page of the dialog, confirm that CloudFormation may create IAM resource by selecting *I acknowledge that AWS CloudFormation might create IAM resources**. Click on **Create stack* at the bottom of the page.
+1. On the last page of the dialog, confirm that CloudFormation may create IAM resource by selecting **I acknowledge that AWS CloudFormation might create IAM resources**. Click on **Create stack** at the bottom of the page.
 
 	![Lauch stack](/images/cfn-4-confirm-capabilities.png)
 

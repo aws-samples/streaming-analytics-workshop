@@ -23,5 +23,3 @@ if (parameter.has("ElasticsearchEndpoint")) {
       elasticsearchEndpoint, region, "trip_duration", "trip_duration"));
 }
 {{< / highlight >}}
-
-

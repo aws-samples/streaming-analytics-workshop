@@ -14,9 +14,9 @@ Starting with Flink 1.10, the Flink Kinesis connector will be available from Mav
 
 1. Click on the **m** to execute the following Maven goal to import the missing Flink Kinesis connector dependency into the local maven repository
 
-	```
+	{{< highlight plain >}}
 install:install-file -Dfile=C:\Users\Administrator\Desktop\workshop-resources\flink-connector-kinesis_2.11-1.8.2.jar -DpomFile=C:\Users\Administrator\Desktop\workshop-resources\flink-connector-kinesis_2.11-1.8.2.pom.xml
-	```
+{{< /highlight >}}
 
 	![](/images/intellij-8-maven-install.png)
 

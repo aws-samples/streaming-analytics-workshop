@@ -24,14 +24,14 @@ pygmentsStyle = "monokai"
   disableAssetsBusting = true
   disableLanguageSwitchingButton = false
   disableShortcutsTitle = true
-  disableInlineCopyToClipBoard = true
+  disableInlineCopyToClipBoard = false
 
 [outputs]
-home = [ "HTML", "RSS", "JSON"]
+  home = [ "HTML", "RSS", "JSON"]
 
 [blackfriday]
-plainIDAnchors = true
-hrefTargetBlank = true
+  plainIDAnchors = true
+  hrefTargetBlank = true
 
 [markup]
   defaultMarkdownHandler = "goldmark"
@@ -40,12 +40,12 @@ hrefTargetBlank = true
       unsafe = true
 
 [Languages]
-[Languages.en]
-title = "Streaming Analytics Workshop"
-weight = 1
-languageName = "English"
-
-[Languages.fr]
-title = "Mon atelier AWS"
-weight = 2
-languageName = "Français"
+  [Languages.en]
+    title = "Streaming Analytics Workshop"
+    weight = 1
+    languageName = "English"
+  
+  [Languages.fr]
+    title = "Mon atelier AWS"
+    weight = 2
+    languageName = "Français"

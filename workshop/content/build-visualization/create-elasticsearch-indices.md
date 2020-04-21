@@ -22,26 +22,26 @@ If you receive an error message that *User: anonymous is not authorized to perfo
 
 1. Navigate to the Kibana Dev Tools and confirm the dialog with **Get to work**. Create an Elasticsearch index for *pickup_count* documents with the following command:
 
-	```
-	PUT pickup_count?include_type_name=true
-	{
-	  "mappings": {
-	    "pickup_count": {
-	      "properties": {
-	        "location": {
-	          "type": "geo_point"
-	        },
-	        "pickup_count": {
-	          "type": "long"
-	        },
-	        "timestamp": {
-	          "type": "date"
-	        }
-	      }
-	    }
-	  }
-	}
-	```
+	{{< highlight plain>}}
+PUT pickup_count?include_type_name=true
+{
+  "mappings": {
+    "pickup_count": {
+      "properties": {
+        "location": {
+          "type": "geo_point"
+        },
+        "pickup_count": {
+          "type": "long"
+        },
+        "timestamp": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}
+{{< /highlight >}}
 
 	![Kibana create index](/images/kibana-1-create-index.png)
 
@@ -52,28 +52,28 @@ Make sure your cursor is *marking the first line* while executing the command, j
 
 1. Repeat the process to create a second index for *trip_duration* documents
 
-	```
-	PUT trip_duration?include_type_name=true
-	{
-	  "mappings": {
-	    "trip_duration": {
-	      "properties": {
-	        "airport_code": {
-	          "type": "keyword"
-	        },
-	        "location": {
-	          "fields": {
-	            "raw": {
-	              "type": "keyword"
-	            }
-	          },
-	          "type": "geo_point"
-	        },
-	        "timestamp": {
-	          "type": "date"
-	        }
-	      }
-	    }
-	  }
-	}
-	```
+	{{< highlight plain>}}
+PUT trip_duration?include_type_name=true
+{
+  "mappings": {
+    "trip_duration": {
+      "properties": {
+        "airport_code": {
+          "type": "keyword"
+        },
+        "location": {
+          "fields": {
+            "raw": {
+              "type": "keyword"
+            }
+          },
+          "type": "geo_point"
+        },
+        "timestamp": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}
+{{< /highlight >}}
