@@ -3,7 +3,7 @@ CanonifyURLs=true
 languageCode = "en-US"
 defaultContentLanguage = "en"
 
-title = "My AWS Workshop"
+title = "Streaming Analytics Workshop"
 theme = "learn"
 metaDataFormat = "yaml"
 defaultContentLanguageInSubdir= true
@@ -14,9 +14,9 @@ pygmentsCodeFences = true
 pygmentsStyle = "monokai"
 
 [params]
-  editURL = "https://code.amazon.com/packages/Aws-workshop-template/blobs/master/--/workshop/content/"
-  description = "My AWS Workshop"
-  author = "Jane Architect"
+  editURL = "https://github.com/aws-samples/streaming-analytics-workshop/edit/master/content/"
+  description = "Streaming Analytics Workshop"
+  author = "Steffen Hausmann"
   disableBreadcrumb = false
   disableNextPrev = false
   themeVariant = "aws"
@@ -41,7 +41,7 @@ hrefTargetBlank = true
 
 [Languages]
 [Languages.en]
-title = "My AWS Workshop"
+title = "Streaming Analytics Workshop"
 weight = 1
 languageName = "English"
 

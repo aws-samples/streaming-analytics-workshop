@@ -1,26 +1,17 @@
-#name - DNS-friendly name for the workshop. This will be used when generating the hosting URL (ie. https://my-first-workshop.workshops.aws/)
-name: my-first-workshop
-#title - The title of your workshop
-title: My First Workshop 
-#description - A short description that will be displayed in search results
-description: Creating unicorns with serverless bitcoin magic! 
-#categories - Refer to official AWS categories covered by the workshop content here
+name: streaming-analytics
+title: Streaming Analytics Workshop
+description: Analyze the telemetry data of a taxi fleet in New York City in near-real time to optimize the fleet operation
 categories: 
-  - Networking
-  - Compute
-#services - Refer to the official AWS service names covered by the workshop content here
+  - Analytics
 services: 
-   - Api Gateway
-   - Lambda
-#level - Approximate skill level needed for this workshop
-level: 100 
-#duration - Estimated duration in minutes
-duration: 60 
+   - Kinesis Data Streams
+   - Kinesis Data Analytics
+   - Amazon Elasticsearch Service
+level: 400 
+duration: 120 
 #cost - Cost in USD. If the content is offered without cost, enter 0
 cost: 0 
-#author - Amazon alias of the primary author of the content
-author: mpgoetz 
-#audience - Names of the personas associated with this workshop
+author: shausma 
 audience: 
   - IT Professional
   - Developer
