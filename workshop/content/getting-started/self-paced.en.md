@@ -1,8 +1,16 @@
 ---
-title: "Execute CFN template"
-chapter: false
-weight: 30
+title: "...on your own"
+weight: 20
 ---
+
+### Running the workshop on your own
+
+<!--
+{{% notice warning %}}
+Only complete this section if you are running the workshop on your own.
+{{% /notice %}}
+-->
+
 
 1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting these resource types: **Amazon Code Pipeline**, **Amazon Elasticsearch Service**, and **Amazon Kinesis Data Analytics for Java Applications**.
 
@@ -20,4 +28,4 @@ weight: 30
 
 	![Lauch stack](/images/cfn-4-confirm-capabilities.png)
 
-It takes approximately 10 minutes for the stack associated with this CloudFormation template to deploy. You can continue with the next step [Configure development environment](../../configure) while the stack is being deployed.
+It takes approximately 10 minutes for the stack associated with this CloudFormation template to deploy. You can continue with the next step [Configure development environment]({{< ref "/configure" >}}) while the stack is being deployed.

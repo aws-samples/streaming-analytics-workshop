@@ -2,11 +2,11 @@ RelativeURLs=true
 CanonifyURLs=true
 languageCode = "en-US"
 defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = true
 
 title = "Streaming Analytics Workshop"
 theme = "learn"
 metaDataFormat = "yaml"
-defaultContentLanguageInSubdir= true
 
 uglyurls = true
 sectionPagesMenu = "main"
@@ -27,7 +27,7 @@ pygmentsStyle = "monokai"
   disableInlineCopyToClipBoard = false
 
 [outputs]
-  home = [ "HTML", "RSS", "JSON"]
+  home = [ "HTML", "RSS", "JSON" ]
 
 [blackfriday]
   plainIDAnchors = true
