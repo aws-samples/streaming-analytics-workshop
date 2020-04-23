@@ -44,3 +44,19 @@ pygmentsStyle = "monokai"
     title = "Streaming Analytics Workshop"
     weight = 1
     languageName = "English"
+
+
+[[menu.shortcuts]]
+  name = "<i class='fas fa-bookmark'></i> More Resources"
+  url = "/more_resources.html"
+  weight = 10
+
+[[menu.shortcuts]]
+  name = "<i class='fab fa-github'></i> GitHub Project"
+  url = "https://github.com/aws-samples/streaming-analytics-workshop"
+  weight = 30
+
+[[menu.shortcuts]]
+  name = "<i class='fas fa-envelope'></i> Have questions?"
+  url = "mailto:streaming-analytics-workshop@amazon.com"
+  weight = 40
