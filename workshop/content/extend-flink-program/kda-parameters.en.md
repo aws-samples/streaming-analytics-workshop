@@ -1,5 +1,6 @@
 ---
 title: "Read parameters from Application Properties"
+menuTitle: "Read parameters"
 chapter: false
 weight: 5
 ---
