@@ -1,6 +1,6 @@
 ---
 title: "Local Flink development"
-chapter: true
+chapter: false
 weight: 40
 ---
 

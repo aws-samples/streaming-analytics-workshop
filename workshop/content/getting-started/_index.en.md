@@ -1,6 +1,6 @@
 ---
 title: "Getting started"
-chapter: true
+chapter: false
 weight: 20
 ---
 

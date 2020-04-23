@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-chapter: true
+chapter: false
 weight: 10
 ---
 

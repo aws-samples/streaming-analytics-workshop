@@ -1,6 +1,6 @@
 ---
 title: "Deploy to KDA for Java"
-chapter: true
+chapter: false
 weight: 60
 ---
 

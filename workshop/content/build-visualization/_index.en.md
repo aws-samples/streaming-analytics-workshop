@@ -1,6 +1,6 @@
 ---
 title: "Build visualizations"
-chapter: true
+chapter: false
 weight: 55
 ---
 

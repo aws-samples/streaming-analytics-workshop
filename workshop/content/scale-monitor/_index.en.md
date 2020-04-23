@@ -1,6 +1,6 @@
 ---
 title: "Scale and Monitor"
-chapter: true
+chapter: false
 weight: 70
 ---
 

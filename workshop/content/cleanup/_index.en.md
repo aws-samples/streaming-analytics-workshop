@@ -1,6 +1,6 @@
 ---
 title: "Cleanup"
-chapter: true
+chapter: false
 weight: 80
 ---
 
@@ -11,4 +11,4 @@ Congratulations! You have not only built a reliable, scalable, and highly availa
 
 If you are running the workshop on your own and have completed all steps, make sure you delete the resources you have created to avoid causing unnecessary costs.
 
-First, delete the Kinesis data analytics application. Once the application has been deleted, also delete the Kinesis data stream, the CloudWatch dashboard, and the CloudFromation template (you need to manually delete or empty the S3 bucket created by the template).
+First, delete the Kinesis data analytics application. Once the application has been deleted, also delete the Kinesis data stream and the CloudWatch dashboard. Finally delete the CloudFromation template and verify that all resources have been successfully removed.

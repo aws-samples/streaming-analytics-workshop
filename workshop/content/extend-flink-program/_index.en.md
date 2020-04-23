@@ -1,6 +1,6 @@
 ---
 title: "Extend the Flink program"
-chapter: true
+chapter: false
 weight: 50
 ---
 

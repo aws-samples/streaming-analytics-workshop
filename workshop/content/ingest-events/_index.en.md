@@ -1,7 +1,7 @@
 ---
 title: "Ingest events"
-chapter: true
-weight: 30
+chapter: false
+weight: 35
 ---
 
 This chapter focusses on the ingestion part of the architecture. You first create a Kinesis data stream, which serves as a short term streaming store for the events that are created by the taxi fleet. You then start producing a historic set of taxi trips into the Kinesis data stream. 

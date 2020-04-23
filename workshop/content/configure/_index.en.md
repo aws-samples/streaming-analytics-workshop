@@ -1,5 +1,6 @@
 ---
 title: "Configure development environment"
+menuTitle: "Configure dev environment"
 chapter: false
 weight: 30
 ---
