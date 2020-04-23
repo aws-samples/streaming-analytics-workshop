@@ -7,6 +7,7 @@ Discover more AWS resources for building and running your application on AWS:
 
 #### Blog Posts
 
+- [Streaming ETL with Apache Flink and Amazon Kinesis Data Analytics](https://aws.amazon.com/blogs/big-data/streaming-etl-with-apache-flink-and-amazon-kinesis-data-analytics/)
 - [Build and run streaming applications with Apache Flink and Amazon Kinesis Data Analytics for Java Applications](https://aws.amazon.com/blogs/big-data/build-and-run-streaming-applications-with-apache-flink-and-amazon-kinesis-data-analytics-for-java-applications/)
 - [Build a Real-time Stream Processing Pipeline with Apache Flink on AWS](https://aws.amazon.com/blogs/big-data/build-a-real-time-stream-processing-pipeline-with-apache-flink-on-aws/)
 
