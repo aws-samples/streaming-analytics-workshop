@@ -1,5 +1,5 @@
 ---
-title: "Create a Kinesis Data Stream"
+title: "Create a Kinesis data stream"
 chapter: false
 weight: 11
 ---
