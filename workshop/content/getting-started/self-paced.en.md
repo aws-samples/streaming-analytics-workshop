@@ -3,14 +3,12 @@ title: "...on your own"
 weight: 20
 ---
 
-### Running the workshop on your own
-
-<!--
 {{% notice warning %}}
-Only complete this section if you are running the workshop on your own.
+Only complete this section if you are running the workshop on your own. If you are at an AWS hosted event (such as re:Invent,
+Loft, Immersion Day, or any other event hosted by an AWS employee), continue with [**Configure development environment**]({{< ref "/configure" >}}).
 {{% /notice %}}
--->
 
+### Running the workshop on your own
 
 1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting these resource types: **Amazon Code Pipeline**, **Amazon Elasticsearch Service**, and **Amazon Kinesis Data Analytics for Java Applications**.
 
