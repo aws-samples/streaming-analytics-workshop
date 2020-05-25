@@ -18,3 +18,5 @@ Now that everything is set up correctly, you can execute the basic Flink program
 1. Once the Flink job has initialized, the *TripEvents* that are received from the Kinesis stream are displayed in the lower part of the IDE
 
 	![](/images/intellij-5-execute-flink-output.png)
+
+1. Stop the local execution of the Flink application by pressing the red square or by choosing *Run* -> *Stop* from the menu

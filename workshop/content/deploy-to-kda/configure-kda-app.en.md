@@ -29,4 +29,4 @@ Enabling snapshots allows the service to maintain the state of a Flink applicati
 
 	![Configure Monitoring](/images/kda-monitoring.png)
 
-1. Keep the default settings for **Scaling** and press the blue **Update** button at the bottom of the page to update the properties of the application
+1. Keep the default settings for **Scaling** and **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application

@@ -20,7 +20,11 @@ If you receive an error message that *User: anonymous is not authorized to perfo
 
 1. When prompted by the Kibana welcome screen, choose **Explore on my own**
 
-1. Navigate to the Kibana Dev Tools and confirm the dialog with **Get to work**. Create an Elasticsearch index for *pickup_count* documents with the following command:
+1. Navigate to the Kibana Dev Tools and confirm the dialog with **Get to work**
+
+	![Kibana create index](/images/kibana-1-create-index.png)
+
+1. Create an Elasticsearch index for *pickup_count* documents with the following command. Make sure your cursor is *marking a line* of the command to execute it.
 
 	{{< highlight plain>}}
 PUT pickup_count?include_type_name=true
@@ -43,11 +47,9 @@ PUT pickup_count?include_type_name=true
 }
 {{< /highlight >}}
 
-	![Kibana create index](/images/kibana-1-create-index.png)
 
 	{{% notice info %}}
 If you encounter an *resource_already_exists_exception* exception, make sure that the Flink application is currently not running and delete the existing index by executing the command `DELETE pickup_count`.
-Make sure your cursor is *marking the first line* while executing the command, just like SQL.
 	{{% /notice %}}
 
 1. Repeat the process to create a second index for *trip_duration* documents

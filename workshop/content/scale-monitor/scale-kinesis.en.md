@@ -8,10 +8,12 @@ When you closely inspect the output of the producer application, you will notice
 
 ![](/images/intellij-13-replay-lag-copy.png)
 
-1. Navigate to the Kinesis console and select the *streaming-analytics-workshop* data stream on the dashboard
+1. Go to the [Kinesis Data Streams console](https://console.aws.amazon.com/kinesis/home#/streams/list) and click on the *streaming-analytics-workshop* data stream
 
-1. Under **Shards** choose **Edit** and increase the shard count of the stream to `16`. Confirm with **Save**.
+1. Navigate to the **Configuration** tab and choose **Edit** under **Stream capacity**
 
 	![](/images/kds-update-shards.png)
+
+1. In the resulting dialog, change the *Number of open shards* to `16` and confirm with **Save changes**
 
 1. The scaling operation will add additional shard to the Kinesis stream, effectively doubling its throughput
