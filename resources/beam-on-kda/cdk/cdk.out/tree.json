@@ -1,0 +1,2190 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree"
+      },
+      "BeamWorkshop": {
+        "id": "BeamWorkshop",
+        "path": "BeamWorkshop",
+        "children": {
+          "Bucket": {
+            "id": "Bucket",
+            "path": "BeamWorkshop/Bucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BeamWorkshop/Bucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "versioningConfiguration": {
+                      "status": "Enabled"
+                    }
+                  }
+                }
+              },
+              "Notifications": {
+                "id": "Notifications",
+                "path": "BeamWorkshop/Bucket/Notifications"
+              }
+            }
+          },
+          "EmptyBucket": {
+            "id": "EmptyBucket",
+            "path": "BeamWorkshop/EmptyBucket",
+            "children": {
+              "EmptyBucketLambda": {
+                "id": "EmptyBucketLambda",
+                "path": "BeamWorkshop/EmptyBucket/EmptyBucketLambda",
+                "children": {
+                  "ServiceRole": {
+                    "id": "ServiceRole",
+                    "path": "BeamWorkshop/EmptyBucket/EmptyBucketLambda/ServiceRole",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "BeamWorkshop/EmptyBucket/EmptyBucketLambda/ServiceRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "lambda.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "managedPolicyArns": [
+                              {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                                  ]
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "BeamWorkshop/EmptyBucket/EmptyBucketLambda/ServiceRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "BeamWorkshop/EmptyBucket/EmptyBucketLambda/ServiceRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*",
+                                        "s3:DeleteObject*",
+                                        "s3:PutObject*",
+                                        "s3:Abort*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "Bucket83908E77",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "Bucket83908E77",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF",
+                                "roles": [
+                                  {
+                                    "Ref": "EmptyBucketEmptyBucketLambdaServiceRole67452BDD"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "BeamWorkshop/EmptyBucket/EmptyBucketLambda/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "code": {
+                          "zipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\n\ndef empty_bucket(event, context):\n    bucket_name = os.environ['bucket_name']\n\n    try:\n        if event['RequestType'] == 'Delete':\n            print(\"empty bucket: \" + bucket_name)\n            \n            bucket = boto3.resource('s3').Bucket(bucket_name)\n            bucket.object_versions.delete()\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})"
+                        },
+                        "handler": "index.empty_bucket",
+                        "role": {
+                          "Fn::GetAtt": [
+                            "EmptyBucketEmptyBucketLambdaServiceRole67452BDD",
+                            "Arn"
+                          ]
+                        },
+                        "runtime": "python3.7",
+                        "environment": {
+                          "variables": {
+                            "bucket_name": {
+                              "Ref": "Bucket83908E77"
+                            }
+                          }
+                        },
+                        "memorySize": 512,
+                        "timeout": 900
+                      }
+                    }
+                  }
+                }
+              },
+              "EmptyBucketResource": {
+                "id": "EmptyBucketResource",
+                "path": "BeamWorkshop/EmptyBucket/EmptyBucketResource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::CustomResource",
+                  "aws:cdk:cloudformation:props": {
+                    "serviceToken": {
+                      "Fn::GetAtt": [
+                        "EmptyBucketEmptyBucketLambdaD0E9E93D",
+                        "Arn"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "KinesisReplayBuildPipeline": {
+            "id": "KinesisReplayBuildPipeline",
+            "path": "BeamWorkshop/KinesisReplayBuildPipeline",
+            "children": {
+              "DownloadLambda": {
+                "id": "DownloadLambda",
+                "path": "BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda",
+                "children": {
+                  "ServiceRole": {
+                    "id": "ServiceRole",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "lambda.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "managedPolicyArns": [
+                              {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                                  ]
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:PutObject*",
+                                        "s3:Abort*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            {
+                                              "Fn::GetAtt": [
+                                                "Bucket83908E77",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/*"
+                                          ]
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "KinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicyBF6DD429",
+                                "roles": [
+                                  {
+                                    "Ref": "KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "code": {
+                          "zipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
+                        },
+                        "handler": "index.download_sources",
+                        "role": {
+                          "Fn::GetAtt": [
+                            "KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6",
+                            "Arn"
+                          ]
+                        },
+                        "runtime": "python3.7",
+                        "environment": {
+                          "variables": {
+                            "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/release-0.1.0.zip",
+                            "bucket": {
+                              "Ref": "Bucket83908E77"
+                            },
+                            "key": "sources/amazon-kinesis-replay-release-0.1.0.zip"
+                          }
+                        },
+                        "timeout": 30
+                      }
+                    }
+                  }
+                }
+              },
+              "DownloadLambdaResource": {
+                "id": "DownloadLambdaResource",
+                "path": "BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambdaResource",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambdaResource/Default"
+                  }
+                }
+              },
+              "CodebuildProject": {
+                "id": "CodebuildProject",
+                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject",
+                "children": {
+                  "Role": {
+                    "id": "Role",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "codebuild.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "arn:",
+                                              {
+                                                "Ref": "AWS::Partition"
+                                              },
+                                              ":logs:eu-west-1:399220903411:log-group:/aws/codebuild/",
+                                              {
+                                                "Ref": "KinesisReplayBuildPipelineCodebuildProject39AB80D2"
+                                              }
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "arn:",
+                                              {
+                                                "Ref": "AWS::Partition"
+                                              },
+                                              ":logs:eu-west-1:399220903411:log-group:/aws/codebuild/",
+                                              {
+                                                "Ref": "KinesisReplayBuildPipelineCodebuildProject39AB80D2"
+                                              },
+                                              ":*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "codebuild:CreateReportGroup",
+                                        "codebuild:CreateReport",
+                                        "codebuild:UpdateReport",
+                                        "codebuild:BatchPutTestCases"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":codebuild:eu-west-1:399220903411:report-group/",
+                                            {
+                                              "Ref": "KinesisReplayBuildPipelineCodebuildProject39AB80D2"
+                                            },
+                                            "-*"
+                                          ]
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*",
+                                        "s3:DeleteObject*",
+                                        "s3:PutObject*",
+                                        "s3:Abort*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "Bucket83908E77",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "Bucket83908E77",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "KinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicy88D54FBA",
+                                "roles": [
+                                  {
+                                    "Ref": "KinesisReplayBuildPipelineCodebuildProjectRole088416D9"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
+                      "aws:cdk:cloudformation:props": {
+                        "artifacts": {
+                          "type": "CODEPIPELINE"
+                        },
+                        "environment": {
+                          "type": "LINUX_CONTAINER",
+                          "image": "aws/codebuild/java:openjdk-11",
+                          "privilegedMode": false,
+                          "computeType": "BUILD_GENERAL1_SMALL"
+                        },
+                        "serviceRole": {
+                          "Fn::GetAtt": [
+                            "KinesisReplayBuildPipelineCodebuildProjectRole088416D9",
+                            "Arn"
+                          ]
+                        },
+                        "source": {
+                          "type": "CODEPIPELINE",
+                          "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-replay-release-0.1.0\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-replay-release-0.1.0\"\n  }\n}"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "WaitHandle": {
+                "id": "WaitHandle",
+                "path": "BeamWorkshop/KinesisReplayBuildPipeline/WaitHandle",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::WaitConditionHandle",
+                  "aws:cdk:cloudformation:props": {}
+                }
+              },
+              "WaitCondition": {
+                "id": "WaitCondition",
+                "path": "BeamWorkshop/KinesisReplayBuildPipeline/WaitCondition",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::WaitCondition",
+                  "aws:cdk:cloudformation:props": {
+                    "count": 1,
+                    "handle": {
+                      "Ref": "KinesisReplayBuildPipelineWaitHandle670CA7B8"
+                    },
+                    "timeout": "1200"
+                  }
+                }
+              },
+              "NotifyLambda": {
+                "id": "NotifyLambda",
+                "path": "BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda",
+                "children": {
+                  "ServiceRole": {
+                    "id": "ServiceRole",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "lambda.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "managedPolicyArns": [
+                              {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                                  ]
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "codepipeline:PutJobSuccessResult",
+                                        "codepipeline:PutJobFailureResult"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": "*"
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "KinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicy6B2E66BF",
+                                "roles": [
+                                  {
+                                    "Ref": "KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "code": {
+                          "zipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
+                        },
+                        "handler": "index.notify_build_success",
+                        "role": {
+                          "Fn::GetAtt": [
+                            "KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8",
+                            "Arn"
+                          ]
+                        },
+                        "runtime": "python3.7",
+                        "environment": {
+                          "variables": {
+                            "waitHandleUrl": {
+                              "Ref": "KinesisReplayBuildPipelineWaitHandle670CA7B8"
+                            }
+                          }
+                        },
+                        "timeout": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "CodePipeline": {
+                "id": "CodePipeline",
+                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline",
+                "children": {
+                  "Role": {
+                    "id": "Role",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "codepipeline.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*",
+                                        "s3:DeleteObject*",
+                                        "s3:PutObject*",
+                                        "s3:Abort*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "Bucket83908E77",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "Bucket83908E77",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05",
+                                          "Arn"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A",
+                                          "Arn"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07",
+                                          "Arn"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF",
+                                          "Arn"
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "KinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy2BA178C3",
+                                "roles": [
+                                  {
+                                    "Ref": "KinesisReplayBuildPipelineCodePipelineRole5917B240"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CodePipeline::Pipeline",
+                      "aws:cdk:cloudformation:props": {
+                        "roleArn": {
+                          "Fn::GetAtt": [
+                            "KinesisReplayBuildPipelineCodePipelineRole5917B240",
+                            "Arn"
+                          ]
+                        },
+                        "stages": [
+                          {
+                            "name": "Source",
+                            "actions": [
+                              {
+                                "name": "SourceAction",
+                                "outputArtifacts": [
+                                  {
+                                    "name": "Artifact_Source_SourceAction"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Source",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "S3"
+                                },
+                                "configuration": {
+                                  "S3Bucket": {
+                                    "Ref": "Bucket83908E77"
+                                  },
+                                  "S3ObjectKey": "sources/amazon-kinesis-replay-release-0.1.0.zip"
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "Build",
+                            "actions": [
+                              {
+                                "name": "BuildAction",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "Artifact_Source_SourceAction"
+                                  }
+                                ],
+                                "outputArtifacts": [
+                                  {
+                                    "name": "Artifact_Build_BuildAction"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Build",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeBuild"
+                                },
+                                "configuration": {
+                                  "ProjectName": {
+                                    "Ref": "KinesisReplayBuildPipelineCodebuildProject39AB80D2"
+                                  }
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "Copy",
+                            "actions": [
+                              {
+                                "name": "CopyAction",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "Artifact_Build_BuildAction"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Deploy",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "S3"
+                                },
+                                "configuration": {
+                                  "BucketName": {
+                                    "Ref": "Bucket83908E77"
+                                  },
+                                  "Extract": "true"
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07",
+                                    "Arn"
+                                  ]
+                                }
+                              },
+                              {
+                                "name": "InvokeAction",
+                                "actionTypeId": {
+                                  "category": "Invoke",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "Lambda"
+                                },
+                                "configuration": {
+                                  "FunctionName": {
+                                    "Ref": "KinesisReplayBuildPipelineNotifyLambda8B0DA1ED"
+                                  }
+                                },
+                                "runOrder": 2,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        ],
+                        "artifactStore": {
+                          "type": "S3",
+                          "location": {
+                            "Ref": "Bucket83908E77"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Source": {
+                    "id": "Source",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source",
+                    "children": {
+                      "SourceAction": {
+                        "id": "SourceAction",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":iam::399220903411:root"
+                                                ]
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    }
+                                  }
+                                }
+                              },
+                              "DefaultPolicy": {
+                                "id": "DefaultPolicy",
+                                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy",
+                                "children": {
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                      "aws:cdk:cloudformation:props": {
+                                        "policyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": [
+                                                "s3:GetObject*",
+                                                "s3:GetBucket*",
+                                                "s3:List*"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": [
+                                                {
+                                                  "Fn::GetAtt": [
+                                                    "Bucket83908E77",
+                                                    "Arn"
+                                                  ]
+                                                },
+                                                {
+                                                  "Fn::Join": [
+                                                    "",
+                                                    [
+                                                      {
+                                                        "Fn::GetAtt": [
+                                                          "Bucket83908E77",
+                                                          "Arn"
+                                                        ]
+                                                      },
+                                                      "/*"
+                                                    ]
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "Action": [
+                                                "s3:DeleteObject*",
+                                                "s3:PutObject*",
+                                                "s3:Abort*"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": [
+                                                {
+                                                  "Fn::GetAtt": [
+                                                    "Bucket83908E77",
+                                                    "Arn"
+                                                  ]
+                                                },
+                                                {
+                                                  "Fn::Join": [
+                                                    "",
+                                                    [
+                                                      {
+                                                        "Fn::GetAtt": [
+                                                          "Bucket83908E77",
+                                                          "Arn"
+                                                        ]
+                                                      },
+                                                      "/*"
+                                                    ]
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        },
+                                        "policyName": "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy334675EB",
+                                        "roles": [
+                                          {
+                                            "Ref": "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Build": {
+                    "id": "Build",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build",
+                    "children": {
+                      "BuildAction": {
+                        "id": "BuildAction",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":iam::399220903411:root"
+                                                ]
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    }
+                                  }
+                                }
+                              },
+                              "DefaultPolicy": {
+                                "id": "DefaultPolicy",
+                                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy",
+                                "children": {
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                      "aws:cdk:cloudformation:props": {
+                                        "policyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": [
+                                                "codebuild:BatchGetBuilds",
+                                                "codebuild:StartBuild",
+                                                "codebuild:StopBuild"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": {
+                                                "Fn::GetAtt": [
+                                                  "KinesisReplayBuildPipelineCodebuildProject39AB80D2",
+                                                  "Arn"
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        },
+                                        "policyName": "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy7DBFA69D",
+                                        "roles": [
+                                          {
+                                            "Ref": "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Copy": {
+                    "id": "Copy",
+                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy",
+                    "children": {
+                      "CopyAction": {
+                        "id": "CopyAction",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":iam::399220903411:root"
+                                                ]
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    }
+                                  }
+                                }
+                              },
+                              "DefaultPolicy": {
+                                "id": "DefaultPolicy",
+                                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy",
+                                "children": {
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                      "aws:cdk:cloudformation:props": {
+                                        "policyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": [
+                                                "s3:DeleteObject*",
+                                                "s3:PutObject*",
+                                                "s3:Abort*"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": [
+                                                {
+                                                  "Fn::GetAtt": [
+                                                    "Bucket83908E77",
+                                                    "Arn"
+                                                  ]
+                                                },
+                                                {
+                                                  "Fn::Join": [
+                                                    "",
+                                                    [
+                                                      {
+                                                        "Fn::GetAtt": [
+                                                          "Bucket83908E77",
+                                                          "Arn"
+                                                        ]
+                                                      },
+                                                      "/*"
+                                                    ]
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "Action": [
+                                                "s3:GetObject*",
+                                                "s3:GetBucket*",
+                                                "s3:List*"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": [
+                                                {
+                                                  "Fn::GetAtt": [
+                                                    "Bucket83908E77",
+                                                    "Arn"
+                                                  ]
+                                                },
+                                                {
+                                                  "Fn::Join": [
+                                                    "",
+                                                    [
+                                                      {
+                                                        "Fn::GetAtt": [
+                                                          "Bucket83908E77",
+                                                          "Arn"
+                                                        ]
+                                                      },
+                                                      "/*"
+                                                    ]
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        },
+                                        "policyName": "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyD2AE2A89",
+                                        "roles": [
+                                          {
+                                            "Ref": "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "InvokeAction": {
+                        "id": "InvokeAction",
+                        "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":iam::399220903411:root"
+                                                ]
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    }
+                                  }
+                                }
+                              },
+                              "DefaultPolicy": {
+                                "id": "DefaultPolicy",
+                                "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy",
+                                "children": {
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                      "aws:cdk:cloudformation:props": {
+                                        "policyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": "lambda:ListFunctions",
+                                              "Effect": "Allow",
+                                              "Resource": "*"
+                                            },
+                                            {
+                                              "Action": "lambda:InvokeFunction",
+                                              "Effect": "Allow",
+                                              "Resource": {
+                                                "Fn::GetAtt": [
+                                                  "KinesisReplayBuildPipelineNotifyLambda8B0DA1ED",
+                                                  "Arn"
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        },
+                                        "policyName": "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy8EF812D1",
+                                        "roles": [
+                                          {
+                                            "Ref": "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "TemplatedSecret": {
+            "id": "TemplatedSecret",
+            "path": "BeamWorkshop/TemplatedSecret",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BeamWorkshop/TemplatedSecret/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SecretsManager::Secret",
+                  "aws:cdk:cloudformation:props": {
+                    "generateSecretString": {
+                      "secretStringTemplate": "{\"username\":\"Administrator\"}",
+                      "generateStringKey": "password",
+                      "passwordLength": 16,
+                      "excludePunctuation": true,
+                      "includeSpace": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "InstanceEip": {
+            "id": "InstanceEip",
+            "path": "BeamWorkshop/InstanceEip",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
+              "aws:cdk:cloudformation:props": {}
+            }
+          },
+          "Vpc": {
+            "id": "Vpc",
+            "path": "BeamWorkshop/Vpc",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BeamWorkshop/Vpc/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPC",
+                  "aws:cdk:cloudformation:props": {
+                    "cidrBlock": "10.0.0.0/16",
+                    "enableDnsHostnames": true,
+                    "enableDnsSupport": true,
+                    "instanceTenancy": "default",
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "BeamWorkshop/Vpc"
+                      }
+                    ]
+                  }
+                }
+              },
+              "publicSubnet1": {
+                "id": "publicSubnet1",
+                "path": "BeamWorkshop/Vpc/publicSubnet1",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "BeamWorkshop/Vpc/publicSubnet1/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "cidrBlock": "10.0.0.0/18",
+                        "vpcId": {
+                          "Ref": "Vpc8378EB38"
+                        },
+                        "availabilityZone": "eu-west-1a",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "BeamWorkshop/Vpc/publicSubnet1"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "BeamWorkshop/Vpc/publicSubnet1/Acl"
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "BeamWorkshop/Vpc/publicSubnet1/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "Vpc8378EB38"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "BeamWorkshop/Vpc/publicSubnet1"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "BeamWorkshop/Vpc/publicSubnet1/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "VpcpublicSubnet1RouteTable15C15F8E"
+                        },
+                        "subnetId": {
+                          "Ref": "VpcpublicSubnet1Subnet2BB74ED7"
+                        }
+                      }
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "BeamWorkshop/Vpc/publicSubnet1/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "VpcpublicSubnet1RouteTable15C15F8E"
+                        },
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "VpcIGWD7BA715C"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "publicSubnet2": {
+                "id": "publicSubnet2",
+                "path": "BeamWorkshop/Vpc/publicSubnet2",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "BeamWorkshop/Vpc/publicSubnet2/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "cidrBlock": "10.0.64.0/18",
+                        "vpcId": {
+                          "Ref": "Vpc8378EB38"
+                        },
+                        "availabilityZone": "eu-west-1b",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "BeamWorkshop/Vpc/publicSubnet2"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "BeamWorkshop/Vpc/publicSubnet2/Acl"
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "BeamWorkshop/Vpc/publicSubnet2/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "Vpc8378EB38"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "BeamWorkshop/Vpc/publicSubnet2"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "BeamWorkshop/Vpc/publicSubnet2/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "VpcpublicSubnet2RouteTableC5A6DF77"
+                        },
+                        "subnetId": {
+                          "Ref": "VpcpublicSubnet2SubnetE34B022A"
+                        }
+                      }
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "BeamWorkshop/Vpc/publicSubnet2/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "VpcpublicSubnet2RouteTableC5A6DF77"
+                        },
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "VpcIGWD7BA715C"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "publicSubnet3": {
+                "id": "publicSubnet3",
+                "path": "BeamWorkshop/Vpc/publicSubnet3",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "BeamWorkshop/Vpc/publicSubnet3/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "cidrBlock": "10.0.128.0/18",
+                        "vpcId": {
+                          "Ref": "Vpc8378EB38"
+                        },
+                        "availabilityZone": "eu-west-1c",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "BeamWorkshop/Vpc/publicSubnet3"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "BeamWorkshop/Vpc/publicSubnet3/Acl"
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "BeamWorkshop/Vpc/publicSubnet3/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "Vpc8378EB38"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "BeamWorkshop/Vpc/publicSubnet3"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "BeamWorkshop/Vpc/publicSubnet3/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "VpcpublicSubnet3RouteTable80517A9C"
+                        },
+                        "subnetId": {
+                          "Ref": "VpcpublicSubnet3SubnetDFEF064A"
+                        }
+                      }
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "BeamWorkshop/Vpc/publicSubnet3/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "VpcpublicSubnet3RouteTable80517A9C"
+                        },
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "VpcIGWD7BA715C"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "IGW": {
+                "id": "IGW",
+                "path": "BeamWorkshop/Vpc/IGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::InternetGateway",
+                  "aws:cdk:cloudformation:props": {
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "BeamWorkshop/Vpc"
+                      }
+                    ]
+                  }
+                }
+              },
+              "VPCGW": {
+                "id": "VPCGW",
+                "path": "BeamWorkshop/Vpc/VPCGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPCGatewayAttachment",
+                  "aws:cdk:cloudformation:props": {
+                    "vpcId": {
+                      "Ref": "Vpc8378EB38"
+                    },
+                    "internetGatewayId": {
+                      "Ref": "VpcIGWD7BA715C"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "SecurityGroup": {
+            "id": "SecurityGroup",
+            "path": "BeamWorkshop/SecurityGroup",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BeamWorkshop/SecurityGroup/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "BeamWorkshop/SecurityGroup",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "securityGroupIngress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 3389,
+                        "toPort": 3389,
+                        "description": "from 0.0.0.0/0:3389"
+                      }
+                    ],
+                    "vpcId": {
+                      "Ref": "Vpc8378EB38"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "InstanceRole": {
+            "id": "InstanceRole",
+            "path": "BeamWorkshop/InstanceRole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BeamWorkshop/InstanceRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "ec2.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonSSMManagedInstanceCore"
+                          ]
+                        ]
+                      }
+                    ],
+                    "policies": [
+                      {
+                        "policyName": "WorkshopPermissions",
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "secretsmanager:GetSecretValue",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Ref": "TemplatedSecret3D98B577"
+                              }
+                            },
+                            {
+                              "Action": [
+                                "ec2:AssociateAddress",
+                                "cloudwatch:PutMetricData",
+                                "logs:Describe*",
+                                "logs:PutLogEvents",
+                                "kinesis:DescribeStream",
+                                "kinesis:ListShards",
+                                "kinesis:GetShardIterator",
+                                "kinesis:GetRecords",
+                                "kinesis:PutRecord",
+                                "kinesis:PutRecords",
+                                "kinesisanalytics:StartApplication"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": "cloudformation:DescribeStacks",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Ref": "AWS::StackId"
+                              }
+                            },
+                            {
+                              "Action": [
+                                "s3:GetObject*",
+                                "s3:GetBucket*",
+                                "s3:List*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "Bucket83908E77",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "Bucket83908E77",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":s3:::aws-bigdata-blog"
+                                    ]
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":s3:::aws-bigdata-blog/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "InstanceProfile": {
+            "id": "InstanceProfile",
+            "path": "BeamWorkshop/InstanceProfile",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::IAM::InstanceProfile",
+              "aws:cdk:cloudformation:props": {
+                "roles": [
+                  {
+                    "Ref": "InstanceRole3CCE2F1D"
+                  }
+                ]
+              }
+            }
+          },
+          "InstanceWaitHandle": {
+            "id": "InstanceWaitHandle",
+            "path": "BeamWorkshop/InstanceWaitHandle",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::CloudFormation::WaitConditionHandle",
+              "aws:cdk:cloudformation:props": {}
+            }
+          },
+          "InstanceBootstrapWaitCondition": {
+            "id": "InstanceBootstrapWaitCondition",
+            "path": "BeamWorkshop/InstanceBootstrapWaitCondition",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::CloudFormation::WaitCondition",
+              "aws:cdk:cloudformation:props": {
+                "count": 1,
+                "handle": {
+                  "Ref": "InstanceWaitHandle"
+                },
+                "timeout": "1200"
+              }
+            }
+          },
+          "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": {
+            "id": "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
+            "path": "BeamWorkshop/SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter"
+          },
+          "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118": {
+            "id": "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118",
+            "path": "BeamWorkshop/SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118"
+          },
+          "LaunchTemplate": {
+            "id": "LaunchTemplate",
+            "path": "BeamWorkshop/LaunchTemplate",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::LaunchTemplate",
+              "aws:cdk:cloudformation:props": {
+                "launchTemplateData": {
+                  "imageId": {
+                    "Ref": "SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter"
+                  },
+                  "iamInstanceProfile": {
+                    "arn": {
+                      "Fn::GetAtt": [
+                        "InstanceProfile",
+                        "Arn"
+                      ]
+                    }
+                  },
+                  "networkInterfaces": [
+                    {
+                      "associatePublicIpAddress": true,
+                      "deleteOnTermination": true,
+                      "deviceIndex": 0,
+                      "groups": [
+                        {
+                          "Fn::GetAtt": [
+                            "SecurityGroupDD263621",
+                            "GroupId"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "userData": {
+                    "Fn::Base64": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "<powershell>            \nImport-Module AWSPowerShell\n\n# Install choco\niex ((New-Object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))\n\n# Add gitter and retry to install commands\n$iter = 0\n$sleep = 5\n\nDo {\nStart-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))\nchoco install git --no-progress -y\n} Until ($LASTEXITCODE -eq 0)\n\nDo {\nStart-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))\nchoco install firefox --no-progress -y\n} Until ($LASTEXITCODE -eq 0)\n\nDo {\nStart-Sleep -Seconds (Get-Random -Maximum ($sleep*[Math]::Pow(2,$iter++)))\nchoco install intellijidea-community --no-progress --version 2020.1.2 -y\n} Until ($LASTEXITCODE -eq 0)\n\n# Add IntelliJ Java 11 to the path\n$PATH = [Environment]::GetEnvironmentVariable(\"PATH\", \"Machine\")\n$intellij_path = \"C:\\Program Files\\JetBrains\\IntelliJ IDEA Community Edition 2020.1.2\\jbr\\bin\"\n[Environment]::SetEnvironmentVariable(\"PATH\", \"$PATH;$intellij_path\", \"Machine\")\n\n$desktop = \"C:\\Users\\Administrator\\Desktop\"\n\n# Create desktop shortcuts\n# Remove-Item -path \"$desktop\\*.website\"\n# Copy-Item \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\JetBrains\\*.lnk\" \"$desktop\"\n\n# Change password\n$password = ((Get-SECSecretValue -SecretId '",
+                          {
+                            "Ref": "TemplatedSecret3D98B577"
+                          },
+                          "').SecretString | ConvertFrom-Json).Password\nnet.exe user Administrator \"$password\"\n\n# Associate EIP\n$instanceId = Invoke-RestMethod -uri http://169.254.169.254/latest/meta-data/instance-id\nRegister-EC2Address -InstanceId \"$instanceId\" -AllocationId \"",
+                          {
+                            "Fn::GetAtt": [
+                              "InstanceEip",
+                              "AllocationId"
+                            ]
+                          },
+                          "\"\n\n# Signal success to CFN\ncfn-signal.exe --success true --region \"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\" \"",
+                          {
+                            "Ref": "InstanceWaitHandle"
+                          },
+                          "\"\n\n\n# Download artifacts\nNew-Item -Path \"$desktop\" -Name \"workshop-resources\" -ItemType \"directory\"\n\n# $url = \"https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/.../misc/streaming-analytics-workshop-dashboard.json\"\n# $file = \"$desktop\\workshop-resources\\streaming-analytics-workshop-dashboard.json\"\n# (New-Object System.Net.WebClient).DownloadFile($url, $file)\n\n# Wait until build pipelines have successfully build all artifacts\nWait-CFNStack -StackName \"",
+                          {
+                            "Ref": "AWS::StackName"
+                          },
+                          "\" -Timeout 1800\n\nCopy-S3Object -BucketName \"",
+                          {
+                            "Ref": "Bucket83908E77"
+                          },
+                          "\" -KeyPrefix target -LocalFolder \"$desktop\\workshop-resources\"\n\n# Expand-Archive \"$desktop\\workshop-resources\\flink-connector-kinesis*.zip\" \"$desktop\\workshop-resources\"\n</powershell>"
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "AutoScalingGroup": {
+            "id": "AutoScalingGroup",
+            "path": "BeamWorkshop/AutoScalingGroup",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::AutoScaling::AutoScalingGroup",
+              "aws:cdk:cloudformation:props": {
+                "maxSize": "1",
+                "minSize": "1",
+                "desiredCapacity": "1",
+                "mixedInstancesPolicy": {
+                  "launchTemplate": {
+                    "launchTemplateSpecification": {
+                      "launchTemplateId": {
+                        "Ref": "LaunchTemplate"
+                      },
+                      "version": {
+                        "Fn::GetAtt": [
+                          "LaunchTemplate",
+                          "DefaultVersionNumber"
+                        ]
+                      }
+                    },
+                    "overrides": [
+                      {
+                        "instanceType": "m5.2xlarge"
+                      },
+                      {
+                        "instanceType": "c5.2xlarge"
+                      },
+                      {
+                        "instanceType": "m3.2xlarge"
+                      },
+                      {
+                        "instanceType": "m5.xlarge"
+                      },
+                      {
+                        "instanceType": "c5.xlarge"
+                      },
+                      {
+                        "instanceType": "m4.xlarge"
+                      },
+                      {
+                        "instanceType": "c4.xlarge"
+                      }
+                    ]
+                  },
+                  "instancesDistribution": {
+                    "onDemandBaseCapacity": 1
+                  }
+                },
+                "vpcZoneIdentifier": [
+                  {
+                    "Ref": "VpcpublicSubnet1Subnet2BB74ED7"
+                  },
+                  {
+                    "Ref": "VpcpublicSubnet2SubnetE34B022A"
+                  },
+                  {
+                    "Ref": "VpcpublicSubnet3SubnetDFEF064A"
+                  }
+                ]
+              }
+            }
+          },
+          "KdaRole": {
+            "id": "KdaRole",
+            "path": "BeamWorkshop/KdaRole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BeamWorkshop/KdaRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "kinesisanalytics.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    }
+                  }
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "BeamWorkshop/KdaRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "BeamWorkshop/KdaRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "logs:Describe*",
+                                "logs:PutLogEvents",
+                                "kinesis:List*",
+                                "kinesis:Describe*",
+                                "kinesis:Get*",
+                                "kinesis:SubscribeToShard"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "s3:GetObject*",
+                                "s3:GetBucket*",
+                                "s3:List*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "Bucket83908E77",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "Bucket83908E77",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "KdaRoleDefaultPolicy88A47211",
+                        "roles": [
+                          {
+                            "Ref": "KdaRoleB7DD543E"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "InstanceIp": {
+            "id": "InstanceIp",
+            "path": "BeamWorkshop/InstanceIp"
+          },
+          "InstanceLoginCredentials": {
+            "id": "InstanceLoginCredentials",
+            "path": "BeamWorkshop/InstanceLoginCredentials"
+          },
+          "KinesisAnalyticsServiceRole": {
+            "id": "KinesisAnalyticsServiceRole",
+            "path": "BeamWorkshop/KinesisAnalyticsServiceRole"
+          },
+          "FlinkApplicationJarBucket": {
+            "id": "FlinkApplicationJarBucket",
+            "path": "BeamWorkshop/FlinkApplicationJarBucket"
+          }
+        }
+      }
+    }
+  }
+}

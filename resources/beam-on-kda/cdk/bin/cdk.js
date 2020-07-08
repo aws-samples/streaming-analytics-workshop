@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("source-map-support/register");
+const cdk = require("@aws-cdk/core");
+const workshop_infrastructure_1 = require("../lib/workshop-infrastructure");
+const app = new cdk.App();
+const synthDate = new Date().toISOString().split('T')[0];
+new workshop_infrastructure_1.WorkshopInfrastructure(app, 'BeamWorkshop', {
+    description: `Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-${synthDate})`,
+    kinesisReplayVersion: 'release-0.1.0',
+    env: {
+        account: '399220903411',
+        region: 'eu-west-1'
+    }
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2RrLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiY2RrLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUNBLHVDQUFxQztBQUNyQyxxQ0FBc0M7QUFDdEMsNEVBQXdFO0FBRXhFLE1BQU0sR0FBRyxHQUFHLElBQUksR0FBRyxDQUFDLEdBQUcsRUFBRSxDQUFDO0FBRTFCLE1BQU0sU0FBUyxHQUFHLElBQUksSUFBSSxFQUFFLENBQUMsV0FBVyxFQUFFLENBQUMsS0FBSyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO0FBRXpELElBQUksZ0RBQXNCLENBQUMsR0FBRyxFQUFFLGNBQWMsRUFBRTtJQUM1QyxXQUFXLEVBQUUsaUlBQWlJLFNBQVMsR0FBRztJQUMxSixvQkFBb0IsRUFBRSxlQUFlO0lBQ3JDLEdBQUcsRUFBRTtRQUNELE9BQU8sRUFBRSxjQUFjO1FBQ3ZCLE1BQU0sRUFBRSxXQUFXO0tBQ3RCO0NBQ0osQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiIyEvdXNyL2Jpbi9lbnYgbm9kZVxuaW1wb3J0ICdzb3VyY2UtbWFwLXN1cHBvcnQvcmVnaXN0ZXInO1xuaW1wb3J0IGNkayA9IHJlcXVpcmUoJ0Bhd3MtY2RrL2NvcmUnKTtcbmltcG9ydCB7IFdvcmtzaG9wSW5mcmFzdHJ1Y3R1cmUgfSBmcm9tICcuLi9saWIvd29ya3Nob3AtaW5mcmFzdHJ1Y3R1cmUnO1xuXG5jb25zdCBhcHAgPSBuZXcgY2RrLkFwcCgpO1xuXG5jb25zdCBzeW50aERhdGUgPSBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCkuc3BsaXQoJ1QnKVswXTtcblxubmV3IFdvcmtzaG9wSW5mcmFzdHJ1Y3R1cmUoYXBwLCAnQmVhbVdvcmtzaG9wJywge1xuICAgIGRlc2NyaXB0aW9uOiBgQ3JlYXRlcyBhbGwgcmVzb3VyY2VzIGFuZCBjb21waWxlcyBhbGwgYXJ0aWZhY3RzIHRoYXQgYXJlIHJlcXVpcmVkIHRvIHJ1biB0aGUgYmVhbSB3b3Jrc2hvcCAoc2hhdXNtYS1iZWFtLXdvcmtzaG9wLXNlbGYtcGFjZWQtJHtzeW50aERhdGV9KWAsXG4gICAga2luZXNpc1JlcGxheVZlcnNpb246ICdyZWxlYXNlLTAuMS4wJyxcbiAgICBlbnY6IHtcbiAgICAgICAgYWNjb3VudDogJzM5OTIyMDkwMzQxMScsXG4gICAgICAgIHJlZ2lvbjogJ2V1LXdlc3QtMSdcbiAgICB9XG59KTtcbiJdfQ==

@@ -1,0 +1,1789 @@
+{
+  "version": "5.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "BeamWorkshop": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://399220903411/eu-west-1",
+      "properties": {
+        "templateFile": "BeamWorkshop.template.json"
+      },
+      "metadata": {
+        "/BeamWorkshop/Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Bucket83908E77",
+            "trace": [
+              "new Bucket (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1049:22)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:31:20)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/EmptyBucket/EmptyBucketLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmptyBucketEmptyBucketLambdaServiceRole67452BDD",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "new Function (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:500:31)",
+              "new EmptyBucketOnDelete (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/empty-bucket.ts:22:36)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:36:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/EmptyBucket/EmptyBucketLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:153:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:119:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:625:23)",
+              "Bucket.grantReadWrite (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:544:17)",
+              "new EmptyBucketOnDelete (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/empty-bucket.ts:33:22)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:36:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/EmptyBucket/EmptyBucketLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmptyBucketEmptyBucketLambdaD0E9E93D",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:525:35)",
+              "new EmptyBucketOnDelete (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/empty-bucket.ts:22:36)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:36:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/EmptyBucket/EmptyBucketResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmptyBucketEmptyBucketResource78AC492E",
+            "trace": [
+              "new EmptyBucketOnDelete (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/empty-bucket.ts:35:31)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:36:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "new Function (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:500:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:41:29)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicyBF6DD429",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:153:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:119:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:625:23)",
+              "Bucket.grantPut (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:514:17)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:53:18)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineDownloadLambda3BF1DB4C",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:525:35)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:41:29)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/DownloadLambdaResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineDownloadLambdaResource381B544B",
+            "trace": [
+              "new CustomResource (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/core/lib/custom-resource.ts:115:21)",
+              "new CustomResource (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-cloudformation/lib/custom-resource.ts:155:5)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:55:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodebuildProjectRole088416D9",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "new Project (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:694:31)",
+              "new PipelineProject (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codebuild/lib/pipeline-project.ts:15:5)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:89:21)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicy88D54FBA",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:368:17)",
+              "PipelineProject.addToRolePolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:200:17)",
+              "new Project (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:780:10)",
+              "new PipelineProject (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codebuild/lib/pipeline-project.ts:15:5)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:89:21)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodebuildProject39AB80D2",
+            "trace": [
+              "new Project (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:747:22)",
+              "new PipelineProject (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codebuild/lib/pipeline-project.ts:15:5)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:89:21)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/WaitHandle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineWaitHandle670CA7B8",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:115:24)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/WaitCondition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineWaitCondition04932765",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:117:38)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "new Function (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:500:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:124:27)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicy6B2E66BF",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:368:17)",
+              "Function.addToRolePolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-lambda/lib/function-base.ts:230:15)",
+              "LambdaInvokeAction.bound (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/lambda/invoke-action.ts:117:23)",
+              "LambdaInvokeAction.bind (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/action.ts:57:17)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:365:33)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/NotifyLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineNotifyLambda8B0DA1ED",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:525:35)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:124:27)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineRole5917B240",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:251:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy2BA178C3",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:153:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:119:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:625:23)",
+              "Bucket.grantReadWrite (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:544:17)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:267:25)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipeline6A859BDA",
+            "trace": [
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:255:26)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "Pipeline.getRoleForAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:540:20)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:359:29)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy334675EB",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:153:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:119:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:625:23)",
+              "Bucket.grantRead (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:485:17)",
+              "S3SourceAction.bound (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/s3/source-action.ts:125:23)",
+              "S3SourceAction.bind (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/action.ts:57:17)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:365:33)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "Pipeline.getRoleForAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:540:20)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:359:29)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy7DBFA69D",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:368:17)",
+              "CodeBuildAction.bound (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/codebuild/build-action.ts:131:18)",
+              "CodeBuildAction.bind (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/action.ts:57:17)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:365:33)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "Pipeline.getRoleForAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:540:20)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:359:29)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyD2AE2A89",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:153:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:119:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:625:23)",
+              "Bucket.grantWrite (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:500:17)",
+              "S3DeployAction.bound (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/s3/deploy-action.ts:112:23)",
+              "S3DeployAction.bind (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/action.ts:57:17)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:365:33)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "Pipeline.getRoleForAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:540:20)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:359:29)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy8EF812D1",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:368:17)",
+              "LambdaInvokeAction.bound (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/lambda/invoke-action.ts:95:18)",
+              "LambdaInvokeAction.bind (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/action.ts:57:17)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:365:33)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:141:27)",
+              "Stage.addAction (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:91:29)",
+              "new Stage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:38:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:302:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/github-build-pipeline.ts:141:5)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:41:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/TemplatedSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TemplatedSecret3D98B577",
+            "trace": [
+              "new Secret (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-secretsmanager/lib/secret.ts:263:22)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:48:32)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/InstanceEip": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceEip",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:59:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38",
+            "trace": [
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1149:21)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet1Subnet2BB74ED7",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1469:20)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet1RouteTable15C15F8E",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1486:19)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet1RouteTableAssociation4E83B6E4",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1492:5)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet1DefaultRouteB88F9E93",
+            "trace": [
+              "PublicSubnet.addDefaultInternetRoute (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1508:19)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1194:22",
+              "Array.forEach (<anonymous>)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1193:46)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet2SubnetE34B022A",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1469:20)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet2RouteTableC5A6DF77",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1486:19)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet2RouteTableAssociationCCE257FF",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1492:5)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet2DefaultRoute732F0BEB",
+            "trace": [
+              "PublicSubnet.addDefaultInternetRoute (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1508:19)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1194:22",
+              "Array.forEach (<anonymous>)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1193:46)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet3/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet3SubnetDFEF064A",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1469:20)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet3/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet3RouteTable80517A9C",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1486:19)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet3/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet3RouteTableAssociation61C43F88",
+            "trace": [
+              "new Subnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1492:5)",
+              "new PublicSubnet (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1684:5)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1326:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1308:28)",
+              "Vpc.createSubnets (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1303:12)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1178:10)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/publicSubnet3/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcpublicSubnet3DefaultRouteA3904BF0",
+            "trace": [
+              "PublicSubnet.addDefaultInternetRoute (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1508:19)",
+              "/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1194:22",
+              "Array.forEach (<anonymous>)",
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1193:46)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcIGWD7BA715C",
+            "trace": [
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1185:19)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/Vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcVPCGWBF912B6E",
+            "trace": [
+              "new Vpc (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1188:19)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:102:17)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecurityGroupDD263621",
+            "trace": [
+              "new SecurityGroup (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/security-group.ts:370:26)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:109:16)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceRole3CCE2F1D",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:117:26)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceProfile",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:127:29)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/InstanceWaitHandle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceWaitHandle",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:133:24)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/InstanceBootstrapWaitCondition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceBootstrapWaitCondition",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:135:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter",
+            "trace": [
+              "Function.fromStringParameterAttributes (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ssm/lib/parameter.ts:327:9)",
+              "Function.valueForTypedStringParameter (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ssm/lib/parameter.ts:397:17)",
+              "WindowsImage.getImage (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-ec2/lib/machine-image.ts:138:37)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:143:22)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/LaunchTemplate": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LaunchTemplate",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:141:28)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/AutoScalingGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AutoScalingGroup",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:223:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KdaRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KdaRoleB7DD543E",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:319:18)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:251:21)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KdaRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KdaRoleDefaultPolicy88A47211",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:127:22)",
+              "Role.addToPrincipalPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:360:28)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:368:17)",
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:256:13)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/InstanceIp": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceIp",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:267:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/InstanceLoginCredentials": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceLoginCredentials",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:268:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/KinesisAnalyticsServiceRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisAnalyticsServiceRole",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:269:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/BeamWorkshop/FlinkApplicationJarBucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FlinkApplicationJarBucket",
+            "trace": [
+              "new WorkshopInfrastructure (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/lib/workshop-infrastructure.ts:270:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Module.m._compile (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:858:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/index.ts:861:12)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "main (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:227:14)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/beam-workshop/resources/cdk/node_modules/ts-node/src/bin.ts:513:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1201:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1221:10)",
+              "Module.load (internal/modules/cjs/loader.js:1050:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:938:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)",
+              "/usr/local/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "runtime": {
+    "libraries": {
+      "@aws-cdk/core": "1.50.0",
+      "@aws-cdk/cx-api": "1.50.0",
+      "@aws-cdk/cloud-assembly-schema": "1.50.0",
+      "@aws-cdk/aws-s3": "1.50.0",
+      "@aws-cdk/aws-events": "1.50.0",
+      "@aws-cdk/aws-iam": "1.50.0",
+      "@aws-cdk/region-info": "1.50.0",
+      "@aws-cdk/aws-kms": "1.50.0",
+      "@aws-cdk/aws-ec2": "1.50.0",
+      "@aws-cdk/aws-ssm": "1.50.0",
+      "@aws-cdk/aws-logs": "1.50.0",
+      "@aws-cdk/aws-cloudwatch": "1.50.0",
+      "@aws-cdk/aws-cloudformation": "1.50.0",
+      "@aws-cdk/aws-autoscaling": "1.50.0",
+      "@aws-cdk/aws-elasticloadbalancingv2": "1.50.0",
+      "@aws-cdk/aws-autoscaling-common": "1.50.0",
+      "@aws-cdk/aws-secretsmanager": "1.50.0",
+      "@aws-cdk/aws-lambda": "1.50.0",
+      "@aws-cdk/aws-sqs": "1.50.0",
+      "@aws-cdk/aws-s3-assets": "1.50.0",
+      "@aws-cdk/assets": "1.50.0",
+      "@aws-cdk/aws-sam": "1.50.0",
+      "@aws-cdk/aws-codepipeline": "1.50.0",
+      "@aws-cdk/aws-codepipeline-actions": "1.50.0",
+      "@aws-cdk/aws-codebuild": "1.50.0",
+      "@aws-cdk/aws-ecr-assets": "1.50.0",
+      "@aws-cdk/aws-ecr": "1.50.0",
+      "@aws-cdk/custom-resources": "1.50.0",
+      "@aws-cdk/aws-events-targets": "1.50.0",
+      "@aws-cdk/aws-ecs": "1.50.0",
+      "@aws-cdk/aws-applicationautoscaling": "1.50.0",
+      "@aws-cdk/aws-servicediscovery": "1.50.0",
+      "@aws-cdk/aws-autoscaling-hooktargets": "1.50.0",
+      "@aws-cdk/aws-sns": "1.50.0",
+      "@aws-cdk/aws-sns-subscriptions": "1.50.0",
+      "jsii-runtime": "node.js/v14.5.0"
+    }
+  }
+}
