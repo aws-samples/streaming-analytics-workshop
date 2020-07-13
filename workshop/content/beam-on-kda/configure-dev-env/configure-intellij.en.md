@@ -16,7 +16,7 @@ Now that you have successfully connected to the Windows instance, the next step 
 
 	![Lauch stack](/images/intellij-1-welcome.png)
 
-1. In the clone repository dialog, insert `https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer` as **URL** and confirm with **Clone**
+1. In the clone repository dialog, insert `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git` as **URL** and confirm with **Clone**
 	
 	![Lauch stack](/images/intellij-2-clone.png)
 

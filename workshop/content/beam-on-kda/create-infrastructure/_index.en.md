@@ -6,6 +6,20 @@ chapter = true
 +++
 
 - create Kinesis stream
+  - stream name:  beam-workshop
+  - number shards: tbd (for now 8)
 - create Firehose delivery stream
-  - attach Lambda function that ingests aproximate arrival time into event payload(pre-create lambda function with cdk/cfn)
+  - delivery stream name: beam-workshop
+  - source: kinesis data stream (beam-workshop)
+  - transform source records
+    - choose precreated lambda function (see cfn output `FirehoseTranformationLambda`)
+    - there will be sevearl lambda functions, the one with EnrichEventsLambda in the name is the correct one
+  - choose `stream-raw-events/` as a prefix
+  - disable record format conversion
+  - choose S3 bucket (see cfn output `S3Bucket`)
+  - choose buffer size 60 sec
+    - explain this is for the workshop, in general a larger value is more desirable
+  - enable GZIP compression
 - start replaying data into the Kinesis stream
+  - open terminal in intellij
+  - execute `java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -streamName beam-workshop -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720`

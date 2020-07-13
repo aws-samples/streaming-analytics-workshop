@@ -12,3 +12,10 @@ chapter = true
 - compile beam pipeline to jar file and upload it to s3
   - maybe use cdk/cfn bootstrap to have a precompiled version on s3 already?
 - create kda application
+  - `flink run -p 8 target/beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://beam-summit-bucket83908e77-4bgvbcf2qt1d/kinesis-stream-data/*/*/*/*/* --awsRegion=eu-west-1 --inputStreamName=beam-summit-InputStreamCFB159EA-1DHT32EAB5M54 --source=s3 --outputBoroughs=true`
+
+  - BeamApplicationProperties
+    - InputS3Pattern
+    - s3://beam-summit-bucket83908e77-4bgvbcf2qt1d/kinesis-stream-data/*/*/*/*/*
+    - Source
+    - S3
