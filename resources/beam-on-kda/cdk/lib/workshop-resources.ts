@@ -76,7 +76,7 @@ export class WorkshopResources extends cdk.Construct {
 
         topic.addSubscription(new subs.LambdaSubscription(terminateAppLambda));
 
-//        alarm.addAlarmAction(new cloudwatch_actions.SnsAction(topic));
+        alarm.addAlarmAction(new cloudwatch_actions.SnsAction(topic));
 
     }
 }
