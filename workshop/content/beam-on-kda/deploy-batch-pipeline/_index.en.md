@@ -6,11 +6,30 @@ chapter = true
 +++
 
 - explain workaround on how a batch program can be stopped
-- only have partiticpants create the metric filter (the actual interesting part)
-  - use a fixed namespace and metric name
-  - create all other resources through cdk/cfn
-    - Alarm on the metric
-    - SNS subscription
-    - Lambda function
-    - https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/cdk/lib/kinesis-analytics-infrastructure.ts#L149-L168
+- create metric filter that shuts down application
+  - in cloudwatch go to log groups
+  - search for `/aws/kinesis-analytics/beam-workshop`
+  - select log group and choose create log filter
+  - filter pattern: Job reached globally terminal state FINISHED
+  - Metric Namespace: Beam
+  - Metric Name: BeamApplicationFinished
+- create alarm:
+  - statistics: sum
+  - period: 10 sec
+  - greater than 1
+  - treat missing data as good (not breaching)  
+  - select an existing sns topic: beam-workshop-* (see cfn output `ApplicationTerminatedTopic`)
+  - alarm name: beam-workshop
 - change the running streaming program into a batch program
+  - change properties
+    - InputS3Pattern: `s3://<<bucket name>>/stream-raw-events/*/*/*/*/*` (see cfn output `S3Bucket`)
+    - change source to: s3
+    - change output borough: true
+  - disable auto scaling
+  - change parallelism: 4
+  - ensure that snapshots are disabled
+- add metric for boroughs to dashboard
+  - namespace: beam
+  - metric: borough, stream name
+  - select all boroughs
+  - rest as before
