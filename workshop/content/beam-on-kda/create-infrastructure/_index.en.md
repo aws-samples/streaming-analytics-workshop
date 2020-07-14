@@ -14,7 +14,7 @@ chapter = true
   - transform source records
     - choose precreated lambda function (see cfn output `FirehoseTranformationLambda`)
     - there will be sevearl lambda functions, the one with EnrichEventsLambda in the name is the correct one
-  - choose `stream-raw-events/` as a prefix
+  - choose `historic-trip-events/` as a prefix
   - disable record format conversion
   - choose S3 bucket (see cfn output `S3Bucket`)
   - choose buffer size 60 sec

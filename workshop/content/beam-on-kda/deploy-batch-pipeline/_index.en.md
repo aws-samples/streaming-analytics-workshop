@@ -22,7 +22,7 @@ chapter = true
   - alarm name: beam-workshop
 - change the running streaming program into a batch program
   - change properties
-    - InputS3Pattern: `s3://<<bucket name>>/stream-raw-events/*/*/*/*/*` (see cfn output `S3Bucket`)
+    - InputS3Pattern: `s3://<<bucket name>>/historic-trip-events/*/*/*/*/*` (see cfn output `InputS3Pattern`)
     - change source to: s3
     - change output borough: true
   - disable auto scaling
