@@ -19,8 +19,9 @@ export interface WorkshopInfrastructureProps extends cdk.StackProps {
   flinkVersion: String,
   flinkScalaVersion: String
   */
-  kinesisReplayVersion: String,
-  beamApplicationVersion: String,
+  kinesisReplayVersion: string,
+  beamApplicationVersion: string,
+  beamApplicationJarFile: string,
   appName: string,
 }
 
@@ -42,17 +43,19 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
 
     new WindowsDevEnvironment(this, 'WindowsDevEnvironment', {
+      ...props,
       bucket: bucket,
-      kinesisReplayVersion: props.kinesisReplayVersion,
     });
 
 
-    
-    new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
+    new GithubBuildPipeline(this, 'BeamConsumerBuildPipeline', {
       url: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/${props.beamApplicationVersion}.zip`,
       bucket: bucket,
       extract: true
     });
+
+    new cdk.CfnOutput(this, 'BeamConsumerJarPath', { value: `target/${props.beamApplicationJarFile}` });
+
 
     
 
@@ -89,11 +92,11 @@ export class WorkshopInfrastructure extends cdk.Stack {
         })
     );
 
-    const topic = new sns.Topic(this, 'AppTerminatedTopic');
+    const topic = new sns.Topic(this, 'ApplicationTerminatedTopic');
 
     topic.addSubscription(new subs.LambdaSubscription(terminateAppLambda));
 
-    new cdk.CfnOutput(this, 'LambdaAlarmTopic', { value: topic.topicName });
+    new cdk.CfnOutput(this, 'ApplicationTerminatedTopic', { value: topic.topicName });
 
 
 

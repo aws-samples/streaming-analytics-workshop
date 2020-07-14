@@ -11,5 +11,6 @@ new WorkshopInfrastructure(app, 'beam-workshop', {
     appName: 'beam-workshop',
     description: `Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-${synthDate})`,
     kinesisReplayVersion: 'release-0.1.0',
-    beamApplicationVersion: 'master'
+    beamApplicationVersion: 'master',
+    beamApplicationJarFile: 'amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar'
 });
