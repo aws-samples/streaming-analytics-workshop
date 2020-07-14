@@ -1,10 +1,12 @@
 ---
-title: "Create a Kinesis data stream"
+title: "Create a Kinesis Firehose"
 chapter: false
 weight: 11
 ---
 
-You start with creating a Kinesis data stream.
+Next you create a Kinesis Firehose to allow for transforming and enrichment of the source data to eventually store into an S3 bucket.
+
+( TBD)
 
 In Kinesis Data Stream a **shard** is the base throughput unit. One shard provides a capacity of 1MB/sec data input and 2MB/sec data output. One shard can support up to 1000 PUT records per second. You will specify the number of shards needed when you create the data stream.
 
