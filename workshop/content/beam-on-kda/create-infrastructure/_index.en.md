@@ -7,7 +7,7 @@ chapter = true
 
 - create Kinesis stream
   - stream name:  beam-workshop
-  - number shards: tbd (for now 8)
+  - number shards: 4
 - create Firehose delivery stream
   - delivery stream name: beam-workshop
   - source: kinesis data stream (beam-workshop)

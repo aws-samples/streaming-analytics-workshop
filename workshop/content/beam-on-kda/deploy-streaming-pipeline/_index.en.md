@@ -28,6 +28,7 @@ chapter = true
   - monitoring
     - task level
     - enable cloudwatch logs
+  - parallelism: 2
   - update
 - run application
   - take a look at flink application graph
