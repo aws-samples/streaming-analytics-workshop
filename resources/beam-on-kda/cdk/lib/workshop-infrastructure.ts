@@ -39,7 +39,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, 'S3Bucket', { value: bucket.bucketName });
-
+    new cdk.CfnOutput(this, 'InputS3Pattern', { value: `s3://${bucket.bucketName}/historic-trip-events/*/*/*/*/*` });
+    
 
 
     new WindowsDevEnvironment(this, 'WindowsDevEnvironment', {
@@ -96,7 +97,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     topic.addSubscription(new subs.LambdaSubscription(terminateAppLambda));
 
-    new cdk.CfnOutput(this, 'ApplicationTerminatedTopic', { value: topic.topicName });
+    new cdk.CfnOutput(this, 'ApplicationTerminatedTopicName', { value: topic.topicName });
 
 
 
