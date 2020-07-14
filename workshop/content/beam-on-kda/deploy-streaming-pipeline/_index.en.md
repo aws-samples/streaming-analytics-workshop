@@ -5,10 +5,6 @@ weight = 50
 chapter = true
 +++
 
-- explain important aspects of the beam pipeline; focus on things that are specific to kda
-  - how are parameters passed to the pipeline
-  - kda dependency in pom file
-  - dpendency shading (check if still required)
 - compile beam pipeline to jar file
   - jar file has already been compiled and uploaded through code commit
 - create kda application
