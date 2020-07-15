@@ -2,23 +2,16 @@ import fs = require('fs');
 import cdk = require('@aws-cdk/core');
 import s3 = require('@aws-cdk/aws-s3');
 import iam = require('@aws-cdk/aws-iam');
-import lambda = require('@aws-cdk/aws-lambda');
 import sns = require('@aws-cdk/aws-sns');
 import subs = require('@aws-cdk/aws-sns-subscriptions');
-import { GithubBuildPipeline } from './github-build-pipeline';
-import { RemovalPolicy, Duration, Stack } from '@aws-cdk/core';
+import lambda = require('@aws-cdk/aws-lambda');
+import { Duration } from '@aws-cdk/core';
 import { EmptyBucketOnDelete } from './empty-bucket';
-
+import { GithubBuildPipeline } from './github-build-pipeline';
 import { WindowsDevEnvironment } from './windows-dev-environment';
 
 
 export interface WorkshopInfrastructureProps extends cdk.StackProps {
-  /*
-  consumerApplicationVersion: String,
-  consumerApplicationJarObject: String,
-  flinkVersion: String,
-  flinkScalaVersion: String
-  */
   kinesisReplayVersion: string,
   beamApplicationVersion: string,
   beamApplicationJarFile: string,

@@ -5,7 +5,6 @@ import ec2 = require('@aws-cdk/aws-ec2');
 import iam = require('@aws-cdk/aws-iam');
 import cfn = require('@aws-cdk/aws-cloudformation');
 import autoscaling = require('@aws-cdk/aws-autoscaling');
-import lambda = require('@aws-cdk/aws-lambda');
 import secretsmanager = require('@aws-cdk/aws-secretsmanager');
 import { GithubBuildPipeline } from './github-build-pipeline';
 import { Duration } from '@aws-cdk/core';
