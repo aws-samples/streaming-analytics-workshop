@@ -10,7 +10,9 @@ The Lambda function and destination S3 bucket are pre-created for you via cloud 
 
 ![](/images/kfh-cf.png)
 
+{{% notice info %}}
 The Lambda transform `beam-workshop-EnrichEventsLambda...` is adding the approximate arrival timestamp into the payload of the message when it is written to s3. This is so we can get the same result for the batch and streaming pipeline as both referring to the same data point.
+{{% /notice %}}
 
 Browse to the resources section in your beam-workshop stack and select the Lambda function to see the code in detail.
 
@@ -76,7 +78,9 @@ In this section we configure the Firehose stream.
 
 1. Set the `Buffer Interval` to **60 seconds**.
 
+{{% notice info %}}
 Amazon Kinesis Data Firehose buffers incoming streaming data to a certain size or for a certain period of time before delivering it to destinations. Buffer size is in MBs and ranges from 1MB to 128MB for Amazon S3 destination Buffer interval is in seconds and ranges from 60 seconds to 900 seconds. Increasing the buffers size allows us to gather data before delivering to ensure all data is delivered to the destination S3 bucket.
+{{% /notice %}}
 
 1. Enable `S3 compression` to **GZIP** to optimise the storage of S3 data. Buffer size is is applied before compression. As a result, if you choose to compress your data, the size of the objects within your Amazon S3 bucket can be smaller than the buffer size you specify.
 
@@ -94,10 +98,10 @@ Once you have checked all the settings select **Create delivery stream** to crea
 
 ![](/images/kfh-review.png)
 
-After a few minutes you will see a Firehose Delivery Stream called `beam-workshop-s3` created on the Kinesis Dashboard. You are now ready to move onto to start using this infrastructure to replay data into these streams.
-
-Click on the stream name to see more details and use this page to monitor activity in the later stages.
+After a few minutes you will see a Firehose Delivery Stream called `beam-workshop-s3` created on the Kinesis Dashboard. Click on the stream name to see more details and use this page to monitor activity in the later stages.
 
 ![](/images/kfh-check.png)
 
 ![](/images/kfh-check2.png)
+
+You are now ready to move to the next stage where replay data into these infrastructure components.
