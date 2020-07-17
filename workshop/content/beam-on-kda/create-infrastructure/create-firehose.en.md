@@ -6,7 +6,7 @@ weight: 11
 
 Next you create a Kinesis Firehose to allow for transforming and enrichment of the source data to eventually store into an S3 bucket. Here is where we attach to the Kinesis data stream created earlier and apply Lambda functions that are pre-created for the lab. The transformed data will be put into an S3 bucket that is also pre-created.
 
-The Lambda function and destination S3 bucket are pre-created for you via cloud formation. Browse to [Cloud Formation](https://aws.amazon.com/cloudformation/) from the services menu and select the stack labelled `beam-workshop` and browse to the `Outputs` section to see the resources that will be used in this section.
+The Lambda function and destination S3 bucket are pre-created for you via cloud formation. Navigate to [Cloud Formation Console](https://console.aws.amazon.com/cloudformation) and select the stack labelled `beam-workshop`. Select the `Outputs` tab to see the resources that will be used in this section.
 
 ![](/images/kfh-cf.png)
 
@@ -14,7 +14,7 @@ The Lambda function and destination S3 bucket are pre-created for you via cloud 
 The Lambda transform `beam-workshop-EnrichEventsLambda...` is adding the approximate arrival timestamp into the payload of the message when it is written to s3. This is so we can get the same result for the batch and streaming pipeline as both referring to the same data point.
 {{% /notice %}}
 
-Browse to the resources section in your beam-workshop stack and select the Lambda function to see the code in detail.
+Browse to the `Resources` tab of your `beam-workshop` stack and select the Lambda function prefixed `beam-workshop-EnrichEventsLambda`. This will open the function so you can see the code in detail. Notice the section where we enrich the value `record.kinesisRecordMetadata.approximateArrivalTimestamp` to the payload.
 
 ![](/images/kfh-lambda.png)
 
