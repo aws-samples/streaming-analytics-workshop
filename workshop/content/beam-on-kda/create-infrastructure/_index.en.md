@@ -28,7 +28,7 @@ NOTES:
   - delivery stream name: beam-workshop
   - source: kinesis data stream (beam-workshop)
   - transform source records
-    - choose precreated lambda function (see cfn output `FirehoseTranformationLambda`)
+    - choose precreated lambda function (see cfn output `FirehoseTransformationLambda`)
     - there will be sevearl lambda functions, the one with EnrichEventsLambda in the name is the correct one
   - choose `historic-trip-events/` as a prefix
   - disable record format conversion
