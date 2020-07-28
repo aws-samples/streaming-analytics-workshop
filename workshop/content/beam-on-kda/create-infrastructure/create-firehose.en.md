@@ -11,7 +11,7 @@ The Lambda function and destination S3 bucket are pre-created for you via cloud 
 ![](/images/kfh-cf.png)
 
 {{% notice info %}}
-The Lambda transform `beam-workshop-EnrichEventsLambda...` is adding the approximate arrival timestamp into the payload of the message when it is written to s3. This is so we can get the same result for the batch and streaming pipeline as both referring to the same data point.
+The Lambda transform `beam-workshop-EnrichEventsLambda...` is adding the **approximate arrival timestamp** into the payload of the message when it is written to s3. This is so we can get the same result for the batch and streaming pipeline as both referring to the same data point.
 {{% /notice %}}
 
 Browse to the `Resources` tab of your `beam-workshop` stack and select the Lambda function prefixed `beam-workshop-EnrichEventsLambda`. This will open the function so you can see the code in detail. Notice the section where we enrich the value `record.kinesisRecordMetadata.approximateArrivalTimestamp` to the payload.

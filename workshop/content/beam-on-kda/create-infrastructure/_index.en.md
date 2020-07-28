@@ -13,8 +13,6 @@ The Kinesis data stream (`beam-workshop`) serves as a buffer that decouples the 
 
 A [Kinesis Data Firehose](https://aws.amazon.com/kinesis/data-firehose/) (`beam-workshop-s3`) is also created to perform any enrichment and transformaton on the data prior to it being loaded into data lakes, data stores and analytical tools. These data transformations are performed by invoking [AWS Lambda](https://aws.amazon.com/lambda/), a serverless platform that runs code without provisioning or managing servers. For this architecture we will store the transformed data into AWS S3 so that it can be read by our BEAM pipeline.
 
-The Lambda transform `FirehoseTransformationLambda` is adding the approximate arrival timestamp into the payload of the message when it is written to s3. This is important to get the same result for the batch and streaming pipeline so both can then refer to the approximate arrival timestamp.
-
 This infrastructure also allows you to experiment and adopt new technologies in the future. Multiple independent applications can concurrently consume the data stored in the Kinesis data stream. You can then test how a new version of an existing application performs with a copy of the production traffic. But you can also introduce a different tool and technology stack to analyze the data, again without affecting the existing production application.
 
 ---
