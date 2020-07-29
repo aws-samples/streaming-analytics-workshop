@@ -4,8 +4,6 @@ chapter: false
 weight: 45
 ---
 
-TODO......
-
 The application is finally ready for execution through the Kinesis Data Analytics service in a fully managed Flink environment. You can now start the execution and send events into the Kinesis data stream, this time with a substantially higher throughput. The Flink application will then continuously process the data that is ingested into the data stream and send derived insights to Elasticsearch for visualization.
 
 {{% notice warning %}}
@@ -14,11 +12,17 @@ Before you proceed, make sure that you are currently not producing any events in
 
 1.  Once the update has completed, press **Run** on the resulting page and confirm that you want to run the application by choosing **Run** again. The application will now start in the background, which can take a couple of minutes. Once it is running, you can inspect the operator graph of the Flink application.
 
-    ![](/images/kda-running-app.png)
+    ![kda-running-app](/images/kda-running-beamapp.png)
+
+{{% notice tip %}}
+If you don't see the object graph after the KDA application is running please hit refrech pn the browser. if still no luck then goto configuration section and scroll the monitoring section and check for errors in the log stream console - filter for ERRORS
+![kda-nographlog](/images/kda-nographlog.png)
+![kda-nographlogerror](/images/kda-nographlogerror.png)
+{{% /notice %}}
 
 2.  You can now start producing data into the Kinesis stream again. However, this time we can substantially increase the speedup factor and hence the throughput of events. Go back to your Windows machine and enter the below:
 
-        {{< highlight plain >}}
+    {{< highlight plain >}}
 
     java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName beam-workshop -speedup 4320
     {{< /highlight >}}

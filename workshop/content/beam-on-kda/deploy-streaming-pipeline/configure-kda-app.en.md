@@ -20,7 +20,7 @@ The skeleton of the application has now been created. But you still need to adap
 
    1. `InputStreamName` with the name of the Kinesis stream you've created earlier, eg, `beam-workshop`
    1. `OutputBoroughs` set to `false` as we will not use the is information from the BEAM pipeline
-   1. `Source` set the source IO for BEAM pipeline `Kinesis`
+   1. `Source` set the source IO for BEAM pipeline to `kinesis` in **lowercase**
 
    ![Configure Property Group](/images/kda-prop-grp1.png)
 
