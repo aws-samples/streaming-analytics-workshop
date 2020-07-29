@@ -12,10 +12,18 @@ In order to connect to the Windows instance, you need to retrieve the correspond
 
    ![Lauch stack](/images/cfn-5-completed.png)
 
-1. Take a note of the public ip address of the EC2 instance containing the development environment and open the link to AWS Secrets Manager in a new browser tab
+1. Take a note of the public ip address of the EC2 instance containing the development environment and open the link to [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) in a new browser tab
+
+   {{% notice info %}}
+   [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/faqs/) lets you easily rotate, manage, and retrieve database credentials, API keys, and other secrets through their lifecycle.
+   {{% /notice %}}
 
    ![Lauch stack](/images/cfn-6-parameters.png)
 
 1. In the AWS Secrets Manager console, click on **Retrieve secret value** to obtain the Administrator password that has been set for the instance
 
-   ![Lauch stack](/images/secrets-manager-retrieve-secret.png)
+   ![WindowsSecrets](/images/secrets-manager-retrieve-secret.png)
+
+   ![WindowsPassword](/images/cfn-6-secrets.png)
+
+1. Cut and paste the password for the next section.

@@ -14,15 +14,17 @@ Before you proceed, make sure that you are currently not producing any events in
 
     ![kda-running-app](/images/kda-running-beamapp.png)
 
-{{% notice tip %}}
-If you don't see the object graph after the KDA application is running please hit refrech pn the browser. if still no luck then goto configuration section and scroll the monitoring section and check for errors in the log stream console - filter for ERRORS
-![kda-nographlog](/images/kda-nographlog.png)
-![kda-nographlogerror](/images/kda-nographlogerror.png)
-{{% /notice %}}
-
-2.  You can now start producing data into the Kinesis stream again. However, this time we can substantially increase the speedup factor and hence the throughput of events. Go back to your Windows machine and enter the below:
+1.  You can now start producing data into the Kinesis stream again. However, this time we can substantially increase the speedup factor and hence the throughput of events. Go back to your Windows machine and enter the below:
 
     {{< highlight plain >}}
 
     java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName beam-workshop -speedup 4320
     {{< /highlight >}}
+
+1.  Diagnose Errors
+
+{{% notice tip %}}
+If you don't see the object graph after the KDA application is running please hit refrech pn the browser. if still no luck then goto configuration section and scroll the monitoring section and check for errors in the log stream console - filter for ERRORS
+![kda-nographlog](/images/kda-nographlog.png)
+![kda-nographlogerror](/images/kda-nographlogerror.png)
+{{% /notice %}}

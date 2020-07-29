@@ -5,7 +5,7 @@ chapter: false
 weight: 20
 ---
 
-In this chapter, you will configure the development environment that builds the BEAM Jar pipeline whihch reads the NYC taxi data. To have a consistent experience for all attendees, you will connect to a preconfigured EC2 Instance running Windows over RDP and configure IntelliJ as the IDE.
+In this chapter, you will configure the development environment that builds the BEAM Jar pipeline which reads the NYC taxi data. To have a consistent experience for all attendees, you will connect to a preconfigured EC2 Instance running Windows over RDP and configure IntelliJ as the IDE.
 
 {{% notice info %}}
 Note: There will be a pre-built jar created earlier and deployed to S3, the windows machine is to show the BEAM pipiline and the build step.
