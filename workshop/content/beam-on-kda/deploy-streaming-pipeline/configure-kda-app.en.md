@@ -19,8 +19,13 @@ The skeleton of the application has now been created. But you still need to adap
 1. In the resulting dialog, choose `BeamApplicationProperties` as **Group ID** and add the following two key/value pairs and confirm with **Save**:
 
    1. `InputStreamName` with the name of the Kinesis stream you've created earlier, eg, `beam-workshop`
-   1. `OutputBoroughs` set to `false` as we will not use the is information from the BEAM pipeline
    1. `Source` set the source IO for BEAM pipeline to `kinesis` in **lowercase**
+   1. `OutputBoroughs` set to `false` as we will not use the is information from the BEAM pipeline
+
+   {{% notice info %}}
+   We set the `OutputBoroughs` to `false` as the idea is to use the streaming application to just count the number of trips. Then, the if requirements will change we can break this down into by boroughs.
+   If we weren’t using BEAM we would now need to build another batch appliction to backfill the new metric for historic data, but now we can just use the same application to backfill the metric for historic data in a batch mode and in streaming mode for new data. Voila, unifying data processing in `B`atch and str`EAM`.
+   {{% /notice %}}
 
    ![Configure Property Group](/images/kda-prop-grp1.png)
 
