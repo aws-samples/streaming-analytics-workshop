@@ -1,7 +1,7 @@
 ---
 title: "Inspect Flink application logs"
 chapter: false
-weight: 30
+weight: 72
 ---
 
 When you were running the Flink program locally in IntelliJ, you could obtain (debug) output directly from the IDE. However, we cannot log in to the infrastructure that runs the KDA for Java application to get access to these logs.
@@ -16,5 +16,4 @@ As you have enabled logging for your Kinesis Data Analytics for Java application
 
 1. Search for `streaming-analytics-workshop` and select the log stream of the KDA for Java application
 
-	![](/images/cw-dashboard-4-configure-log.png)
-
+   ![](/images/cw-dashboard-4-configure-log.png)

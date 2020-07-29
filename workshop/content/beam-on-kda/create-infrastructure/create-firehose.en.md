@@ -1,7 +1,7 @@
 ---
 title: "Create a Kinesis Firehose"
 chapter: false
-weight: 11
+weight: 32
 ---
 
 Next you create a Kinesis Firehose to allow for transforming and enrichment of the source data to eventually store into an S3 bucket. Here is where we attach to the Kinesis data stream created earlier and apply Lambda functions that are pre-created for the lab. The transformed data will be put into an S3 bucket that is also pre-created.

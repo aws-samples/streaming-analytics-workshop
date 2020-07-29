@@ -1,11 +1,11 @@
 ---
 title: "...at an AWS event"
-weight: 10
+weight: 11
 ---
 
 {{% notice warning %}}
 Only complete this section if you are at an AWS hosted event (such as re:Invent,
-Loft, Immersion Day, or any other event hosted by an AWS employee). If you 
+Loft, Immersion Day, or any other event hosted by an AWS employee). If you
 are running the workshop on your own, go to: [Start the workshop on your own]({{< relref "./self-paced/" >}}).
 {{% /notice %}}
 

@@ -2,7 +2,7 @@
 title: "Configure development environment"
 menuTitle: "Configure dev environment"
 chapter: false
-weight: 30
+weight: 20
 ---
 
 In this chapter, you will configure the development environment that you will use throughout the workshop. To have a consistent experience for all attendees, you will connect to a preconfigured EC2 Instance running Windows over RDP and configure IntelliJ as the IDE.

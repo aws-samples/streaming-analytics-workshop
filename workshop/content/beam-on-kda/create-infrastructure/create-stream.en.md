@@ -1,7 +1,7 @@
 ---
 title: "Create a Kinesis data stream"
 chapter: false
-weight: 11
+weight: 31
 ---
 
 You start with creating a Kinesis data stream.

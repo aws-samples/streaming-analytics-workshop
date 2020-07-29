@@ -1,7 +1,7 @@
 ---
 title: "Replay historic taxi trips"
 chapter: false
-weight: 11
+weight: 32
 ---
 
 We will use a Java application to replay a historic set of taxi trips made in NYC that are stored in objects in Amazon S3 into the Kinesis stream.

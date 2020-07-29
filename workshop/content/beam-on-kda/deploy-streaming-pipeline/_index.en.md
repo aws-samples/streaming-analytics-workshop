@@ -2,7 +2,7 @@
 title: "Deploy Streaming Pipeline"
 menuTitle: "Deploy Streaming Pipeline"
 chapter: false
-weight: 30
+weight: 40
 ---
 
 In this chapter, you will set up a managed Flink Cluster using [AWS Kinesis Data Analytics](https://aws.amazon.com/kinesis/data-analytics/faqs/?nc=sn&loc=6) service and use that as a [BEAM runner engine](https://beam.apache.org/documentation/runners/flink/). You will deploy a pre-compiled BEAM pipeline written in Java and run that as an application within KDA to read the Kinesis stream created earlier and analyse the NYC taxi data in real-time.

@@ -1,7 +1,7 @@
 ---
 title: "Create KDA application"
 chapter: false
-weight: 32
+weight: 42
 ---
 
 You can then create a Flink cluster using Kinesis Analytics for Java application. A Kinesis Analytics for Java application basically consists of a reference to the Flink application in S3 and some additional configuration data. Once the Kinesis Analytics for Java application has been created, it can be deployed and executed by the services in a fully managed environment.

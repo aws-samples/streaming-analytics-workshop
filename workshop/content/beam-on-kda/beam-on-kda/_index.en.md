@@ -1,7 +1,7 @@
 +++
 title = "Beam on KDA"
 date = 2020-07-10T10:27:19+02:00
-weight = 45
+weight = 50
 chapter = true
 +++
 

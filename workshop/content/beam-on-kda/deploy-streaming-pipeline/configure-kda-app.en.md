@@ -1,12 +1,10 @@
 ---
 title: "Configure KDA application"
 chapter: false
-weight: 33
+weight: 43
 ---
 
 The skeleton of the application has now been created. But you still need to adapt important configuration options, including the location of the Jar file on S3, the name of the Kinesis data stream to read from, setting the sclaing parallelism and configuring the BEAM job parameters.
-
-## (TODO: CHECK WITH MH no VPC selection and parallel value KPU)
 
 1. On the resulting page press the blue **Configure** button to configure the Kinesis Analytics application.
 
@@ -34,10 +32,12 @@ The skeleton of the application has now been created. But you still need to adap
 
 1. Expand the **Monitoring** section. Select **Task** as **Monitoring metrics level** and enable **CloudWatch** logging. Select **Info** as the Monitoring Log Level
 
-1. For parallelism we wil set to 2. This detemines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html) factor used for the application within KDA.
+1. For parallelism we will set to 2. This determines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html) factor used for the application within KDA. Leave the parallelism per KPU as default to 1. To learn more about how KDA does scaling see [here](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html).
 
    {{% notice info %}}
    Parallelism — This property to set the default Apache Flink application parallelism. All operators, sources, and sinks execute with this parallelism unless they are overridden in the application code. The default is 1, and the default maximum is 256.
+
+   ParallelismPerKPU — This property to set the number of parallel tasks that can be scheduled per Kinesis Processing Unit (KPU) of your application. The default is 1, and the maximum is 8. For applications that have blocking operations (for example, I/O), a higher value of ParallelismPerKPU leads to full utilization of KPU resources.
    {{% /notice %}}
 
    ![Configure Monitoring](/images/kda-monitor-novpc.png)
