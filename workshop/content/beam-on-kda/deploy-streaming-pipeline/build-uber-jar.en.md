@@ -17,3 +17,9 @@ You first need to package the Flink application and all its dependencies into a 
 {{% notice info %}}
 If you are feeling lucky, you can upload the generated jar file to an S3 bucket and subsequently deploy it to KDA for Java. However, the following steps will use a precompiled jar file that is tested and works as intended.
 {{% /notice %}}
+
+{{% notice info %}}
+This the the [BEAM pipleine code](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java) being executed.
+The count of Taxi rides is performed by this [code](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java)
+
+{{% /notice %}}
