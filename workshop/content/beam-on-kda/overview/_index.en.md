@@ -25,3 +25,7 @@ TODO THIS DIAGRAM NEEDS UPDATING ie with oir without batch
 1. To backfill these fine grained metrics for historic values, you can execute the Beam pipeline in a batch processing fashion using AWS Kinesis Data Analytics in a fully managed Flink environment. You just need to change the `Source` to `s3` in the properties section of the KDA application. Once the backfill job completes, an [AWS Lambda](https://aws.amazon.com/lambda/) function that is monitoring the appliaction output through a CloudWatch metric filter will stop the KDA application.
 
 ![Overview CloudWatch](/images/overview-cw.png)
+
+{{% notice info %}}
+The code for this workshop is located at [https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer) github repository.
+{{% /notice %}}
