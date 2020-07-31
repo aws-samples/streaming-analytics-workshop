@@ -1,7 +1,7 @@
 +++
 title = "Deploy Batch Pipeline"
 date = 2020-07-10T10:27:27+02:00
-weight = 60
+weight = 70
 chapter = true
 +++
 

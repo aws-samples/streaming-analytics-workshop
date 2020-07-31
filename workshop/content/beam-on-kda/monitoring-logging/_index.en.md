@@ -1,7 +1,7 @@
 +++
 title = "Monitoring and Logging"
 date = 2020-07-10T10:26:21+02:00
-weight = 70
+weight = 60
 chapter = true
 +++
 
