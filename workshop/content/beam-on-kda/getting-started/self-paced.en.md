@@ -10,15 +10,15 @@ Loft, Immersion Day, or any other event hosted by an AWS employee), continue wit
 
 ### Running the workshop on your own
 
-1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting these resource types: **Amazon Code Pipeline**, **Amazon Elasticsearch Service**, and **Amazon Kinesis Data Analytics for Java Applications**.
+1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting these resource types: **Amazon Code Pipeline**, **Amazon CloudWatch Service**, and **Amazon Kinesis Data Analytics for Java Applications**.
 
-   [![Launch CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=streaming-analytics-workshop&templateURL=https://shausma-public.s3.amazonaws.com/public/cfn-templates/streaming-analytics-workshop/StreamingAnalyticsWorkshop.template.json)
+   [![Launch CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=streaming-analytics-workshop&templateURL=https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/cdk/cdk.out/BeamTaxiCount-Complete.template.json)
 
 1. In the following dialog, choose **Next**
 
    ![Launch stack](/images/cfn-1-create-stack.png)
 
-1. Choose `streaming-analytics-workshop` as **Stack name** and confirm with **Next**
+1. Choose `beam-workshop` as **Stack name** and confirm with **Next**
 
 1. Accept all default values on the next dialog page by clicking **Next** at the bottom of the page
 
