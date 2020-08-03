@@ -20,3 +20,12 @@ IntelliJ will eventually display an error message that the _flink-connector-kine
 {{< highlight plain >}}
 java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -streamName beam-workshop -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720
 {{< /highlight >}}
+
+{{% notice info %}}
+You should see lines similar to the one below in the terminal if the above operation was successful:
+{{% /notice %}}
+{{< highlight plain >}}
+INFO   StreamPopulator - all events with dropoff time until 2018-01-01T04:36:21Z have been sent (3442.0 events/sec, PT-1S replay lag)
+{{< /highlight >}}
+
+For now, you can kill the operation by pressing Ctrl+C in the terminal. We will start it again soon.

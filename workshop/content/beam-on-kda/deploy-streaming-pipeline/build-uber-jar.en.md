@@ -19,7 +19,7 @@ If you are feeling lucky, you can upload the generated jar file to an S3 bucket 
 {{% /notice %}}
 
 {{% notice info %}}
-This the the [BEAM pipleine code](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java) being executed.
-The count of Taxi rides is performed by this [code](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java)
+This is the [BEAM pipeline code](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java) being executed.
+The count of Taxi rides is performed by this [code](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java).
 
 {{% /notice %}}

@@ -8,11 +8,13 @@ Now that the Kinesis data stream is scaling, we'll take a look at how we can ide
 
 1. Navigate to the [CloudWatch console](https://console.aws.amazon.com/cloudwatch), select **Dashboards** in the navigation pane on the left, and click on **Create dashboard**
 
-1. In the create dashboard dialog, enter `streaming-analytics-workshop` as **Dashboard name** and confirm with **Create dashboard**
+1. In the create dashboard dialog, enter `beam-workshop` as **Dashboard name** and confirm with **Create dashboard**
 
-1. Choose the **Line** widget and confirm with **Configure**
+1. Choose the **Line** widget
 
-1. Enter `streaming-analytics-workshop` in the search field and select **Kinesis > Stream metrics**
+1. Choose "metrics" and confirm with **Configure**
+
+1. Enter `beam-workshop` in the search field and select **Kinesis > Stream metrics**
 
    ![](/images/cw-dashboard-1-filter.png)
 
@@ -20,7 +22,7 @@ Now that the Kinesis data stream is scaling, we'll take a look at how we can ide
 
    ![](/images/cw-dashboard-2-select-metrics.png)
 
-1. Adjust the period of both metrics to **1 Minute** and change the **Statistic** to _Sum_ and _Maximum_, respectively. Switch the **Y Axis** of the GetRecords.IteratorAgeMilliseconds metric and confirm with **Update**.
+1. Adjust the period of both metrics to **1 Minute** and change the **Statistic** to _Sum_ and _Maximum_, respectively. Switch the **Y Axis** of the GetRecords.IteratorAgeMilliseconds metric and confirm with **Create**.
 
    ![](/images/cw-dashboard-3-metric-properties.png)
 

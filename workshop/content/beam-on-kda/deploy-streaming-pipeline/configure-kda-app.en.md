@@ -16,7 +16,7 @@ The skeleton of the application has now been created. But you still need to adap
 
 1. Expand the **Properties** section and select **Create group**.
 
-1. In the resulting dialog, choose `BeamApplicationProperties` as **Group ID** and add the following two key/value pairs and confirm with **Save**:
+1. In the resulting dialog, choose `BeamApplicationProperties` as **Group ID** and add the following three key/value pairs and confirm with **Save**:
 
    1. `InputStreamName` with the name of the Kinesis stream you've created earlier, eg, `beam-workshop`
    1. `Source` set the source IO for BEAM pipeline to `kinesis` in **lowercase**
