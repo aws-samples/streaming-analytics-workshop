@@ -12,7 +12,7 @@ chapter = true
 - explain temporary credentials
 - explain custom metrics
 
-While running Beam applications on top of Kinesis Data Analytics for Apache Flink (KDA) is no different from running Beam applications in any Apache Flink environment, there are a few important aspects that developers need to keep in mind:
+While running Beam applications on top of Kinesis Data Analytics for Apache Flink (KDA) is no different from running Beam applications in any Apache Flink environment, there are a few important aspects that developers need to keep in mind.
 
 ## Passing parameters into the pipeline
 
@@ -57,4 +57,14 @@ public interface TaxiCountOptions extends FlinkPipelineOptions, AwsOptions {
     try {
       Map<String, Properties> applicationProperties = KinesisAnalyticsRuntime.getApplicationProperties();
 ...
+```
+
+You'll notice the `KinesisAnalyticsRuntime` class above; in order to access this class in your code, be sure to add the following dependency in your pom.xml:
+
+```
+   <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-kinesisanalytics-runtime</artifactId>
+      <version>${kda.version}</version>
+    </dependency>
 ```
