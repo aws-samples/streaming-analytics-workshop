@@ -5,13 +5,6 @@ weight = 45
 chapter = true
 +++
 
-- explain important aspects of the beam pipeline; focus on things that are specific to kda
-  - how are parameters passed to the pipeline
-  - kda dependency in pom file
-  - dpendency shading (check if still required)
-- explain temporary credentials
-- explain custom metrics
-
 While running Beam applications on top of Kinesis Data Analytics for Apache Flink (KDA) is no different from running Beam applications in any Apache Flink environment, there are a few important aspects that developers need to keep in mind.
 
 ## Passing parameters into the pipeline
@@ -68,3 +61,15 @@ You'll notice the `KinesisAnalyticsRuntime` class above; in order to access this
       <version>${kda.version}</version>
     </dependency>
 ```
+
+## Explain Dependency Shading
+
+<<Blah blah>>
+
+## Explain Temporary Credentials
+
+<<Blah blah>>
+
+## Explain Custom Metrics
+
+<<Blah blah>>
