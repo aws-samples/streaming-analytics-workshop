@@ -11,8 +11,10 @@ import { Duration } from '@aws-cdk/core';
 
 
 export interface WindowsDevEnvironmentProps extends cdk.StackProps {
-    bucket: s3.Bucket,
-    kinesisReplayVersion: String,
+  vpc: ec2.Vpc,
+  sg: ec2.SecurityGroup,
+  bucket: s3.Bucket,
+  kinesisReplayVersion: String,
 }
 
 export class WindowsDevEnvironment extends cdk.Construct {
@@ -81,19 +83,6 @@ export class WindowsDevEnvironment extends cdk.Construct {
 
     const eip = new ec2.CfnEIP(this, 'InstanceEip');
 
-    const vpc = new ec2.Vpc(this, 'Vpc', {
-      subnetConfiguration: [{  
-        name: 'public',
-        subnetType: ec2.SubnetType.PUBLIC
-      }]
-    });
-
-    const sg = new ec2.SecurityGroup(this, 'SecurityGroup', {
-      vpc: vpc
-    });
-
-    sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3389));
-
     const ami = new ec2.WindowsImage(ec2.WindowsVersion.WINDOWS_SERVER_2019_ENGLISH_FULL_BASE);
 
     const instanceRole = new iam.Role(this, 'InstanceRole', {
@@ -130,7 +119,7 @@ export class WindowsDevEnvironment extends cdk.Construct {
           associatePublicIpAddress: true,
           deleteOnTermination: true,
           deviceIndex: 0,
-          groups: [sg.securityGroupId]
+          groups: [props.sg.securityGroupId]
         }],
         userData: cdk.Fn.base64(
           `<powershell>            
@@ -219,7 +208,8 @@ export class WindowsDevEnvironment extends cdk.Construct {
       maxSize: '1',
       minSize: '1',
       desiredCapacity: '1',
-      vpcZoneIdentifier: vpc.publicSubnets.map(subnet => subnet.subnetId)
+//      availabilityZones: props.vpc.availabilityZones,
+      vpcZoneIdentifier: props.vpc.publicSubnets.map(subnet => subnet.subnetId)
     });
 
     new cdk.CfnOutput(this, 'InstanceIp', { value: eip.ref });

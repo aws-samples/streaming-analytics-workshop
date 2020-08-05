@@ -27,6 +27,7 @@
     "@aws-cdk/aws-codepipeline-actions": "^1.56.0",
     "@aws-cdk/aws-ec2": "^1.56.0",
     "@aws-cdk/aws-elasticsearch": "^1.56.0",
+    "@aws-cdk/aws-emr": "^1.56.0",
     "@aws-cdk/aws-iam": "^1.56.0",
     "@aws-cdk/aws-lambda": "^1.56.0",
     "@aws-cdk/aws-s3": "^1.56.0",
