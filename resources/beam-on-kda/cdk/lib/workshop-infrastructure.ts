@@ -5,8 +5,10 @@ import ec2 = require('@aws-cdk/aws-ec2');
 import iam = require("@aws-cdk/aws-iam");
 import sns = require("@aws-cdk/aws-sns");
 import emr = require('@aws-cdk/aws-emr');
-import subs = require("@aws-cdk/aws-sns-subscriptions");
+import logs = require('@aws-cdk/aws-logs');
 import lambda = require("@aws-cdk/aws-lambda");
+import cr = require('@aws-cdk/custom-resources');
+import subs = require("@aws-cdk/aws-sns-subscriptions");
 import { Duration, RemovalPolicy } from "@aws-cdk/core";
 import { EmptyBucketOnDelete } from "./empty-bucket";
 import { GithubBuildPipeline } from "./github-build-pipeline";
@@ -186,7 +188,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
               sg.securityGroupName
           ],
           ec2SubnetId: vpc.publicSubnets[0].subnetId,
-//          ec2KeyName: 'shausma-eu-west-1'
       },
       serviceRole : emrClusterRole.roleName,
       releaseLabel: 'emr-5.27.0',
@@ -203,5 +204,39 @@ export class WorkshopInfrastructure extends cdk.Stack {
       ]
       */
     });
+
+    const getEmrInstanceIdSource = fs
+      .readFileSync("lambda/get-emr-master-id.py")
+      .toString();
+
+    const getEmrInstanceId = new lambda.Function(this, "GetEmrInstanceIdLambda", {
+      runtime: lambda.Runtime.PYTHON_3_7,
+      code: lambda.Code.inline(getEmrInstanceIdSource),
+      timeout: Duration.seconds(60),
+      handler: "index.on_event",
+    });
+
+    getEmrInstanceId.addToRolePolicy(new iam.PolicyStatement({
+      actions: ['elasticmapreduce:ListInstances'],
+      resources: [ `arn:${cdk.Aws.PARTITION}:elasticmapreduce:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:cluster/${cluster.ref}` ]
+    }));
+
+    const provider = new cr.Provider(this, 'GetEmrInstanceIdProvider', {
+      onEventHandler: getEmrInstanceId,
+      logRetention: logs.RetentionDays.ONE_DAY
+    });
+
+    const customResource = new cdk.CustomResource(this, 'GetEmrInstanceIdResource', { 
+      serviceToken: provider.serviceToken,
+      properties: { EmrId: cluster.ref }
+    });
+
+
+    new cdk.CfnOutput(this, "FlinkEmrCluster", { value: `${cluster.attrMasterPublicDns}:8088` });
+    new cdk.CfnOutput(this, "ConnectToFlinkEmrCluster", { value: `https://console.aws.amazon.com/systems-manager/session-manager/${customResource.getAtt('EmrMasterInstanceId')}` });
+    new cdk.CfnOutput(this, "FlinkEmrStartJobManager", { value: 'flink-yarn-session -n 2 -s 4 -tm 16GB -d' });
+    new cdk.CfnOutput(this, "DownloadJarFile", { value: `aws s3 cp --recursive --exclude '*' --include '${props.beamApplicationJarFile}' 's3://${bucket.bucketName}/target/' .'` })
+    new cdk.CfnOutput(this, 'StartFlinkApplication', { value: `flink run -p 8 ${props.beamApplicationJarFile} --runner=FlinkRunner  --source=s3 --inputS3Pattern=s3://${bucket.bucketName}/historic-trip-events/*/*/*/*/* --awsRegion=${cdk.Aws.REGION} --outputBoroughs=true` });
+
   }
 }
