@@ -7,7 +7,7 @@ import sns = require("@aws-cdk/aws-sns");
 import emr = require('@aws-cdk/aws-emr');
 import subs = require("@aws-cdk/aws-sns-subscriptions");
 import lambda = require("@aws-cdk/aws-lambda");
-import { Duration } from "@aws-cdk/core";
+import { Duration, RemovalPolicy } from "@aws-cdk/core";
 import { EmptyBucketOnDelete } from "./empty-bucket";
 import { GithubBuildPipeline } from "./github-build-pipeline";
 import { WindowsDevEnvironment } from "./windows-dev-environment";
@@ -29,6 +29,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     const bucket = new s3.Bucket(this, "Bucket", {
       versioned: true,
+      removalPolicy: RemovalPolicy.DESTROY
     });
 
     const emptyBucket = new EmptyBucketOnDelete(this, "EmptyBucket", {

@@ -208,7 +208,6 @@ export class WindowsDevEnvironment extends cdk.Construct {
       maxSize: '1',
       minSize: '1',
       desiredCapacity: '1',
-//      availabilityZones: props.vpc.availabilityZones,
       vpcZoneIdentifier: props.vpc.publicSubnets.map(subnet => subnet.subnetId)
     });
 
