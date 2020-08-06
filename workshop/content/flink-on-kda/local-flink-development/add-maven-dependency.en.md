@@ -18,10 +18,10 @@ Starting with Flink 1.10, the Flink Kinesis connector will be available from Mav
 install:install-file -Dfile=C:\Users\Administrator\Desktop\workshop-resources\flink-connector-kinesis_2.11-1.8.2.jar -DpomFile=C:\Users\Administrator\Desktop\workshop-resources\flink-connector-kinesis_2.11-1.8.2.pom.xml
 {{< /highlight >}}
 
-	![](/images/intellij-8-maven-install.png)
+	![](/images/flink-on-kda/intellij-8-maven-install.png)
 
 1. Refresh the project dependencies by right clicking on the `pom.xml` file and choosing **Maven** -> **Reimport**
 
-	![](/images/intellij-12-pom-reimport.png)
+	![](/images/flink-on-kda/intellij-12-pom-reimport.png)
 
 After the reimport operation completed successful, all dependencies of the Flink application have been resolved and we can start developing and executing it. However, the Maven pane on the right hand side of Intellij may still display warnings for *amazon-kinesis-analytics-taxi-consumer*, which you can safely ignore.

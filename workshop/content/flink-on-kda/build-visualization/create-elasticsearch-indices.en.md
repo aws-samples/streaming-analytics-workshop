@@ -10,7 +10,7 @@ Elasticsearch stores data in indices. But although Elasticsearch will automatica
 
 1. Take a note of the **Endpoint** URL and copy the link to the **Kibana** dashboard
 
-	![Elasticsearch domain details](/images/aes-domain-details.png)
+	![Elasticsearch domain details](/images/flink-on-kda/aes-domain-details.png)
 
 1. Open Firefox on the Windows instance, eg, by double clicking the Firefox icon on the Desktop, and enter the Kibana URL you have just copied
 
@@ -22,7 +22,7 @@ If you receive an error message that *User: anonymous is not authorized to perfo
 
 1. Navigate to the Kibana Dev Tools and confirm the dialog with **Get to work**
 
-	![Kibana create index](/images/kibana-1-create-index.png)
+	![Kibana create index](/images/flink-on-kda/kibana-1-create-index.png)
 
 1. Create an Elasticsearch index for *pickup_count* documents with the following command. Make sure your cursor is *marking a line* of the command to execute it.
 

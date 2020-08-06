@@ -10,7 +10,7 @@ The skeleton of the application has now been created. But you still need to adap
 
 1. Enter the bucket and prefix of the compiled jar file under **Amazon S3 bucket** and **Path to Amazon S3 object**. You can obtain the correct values from the Output section of the CloudFormation template under **FlinkApplicationJarBucket** and **FlinkApplicationJarObject**.
 
-	![Configure KDA Application](/images/kda-configure.png)
+	![Configure KDA Application](/images/flink-on-kda/kda-configure.png)
 
 1. Expand the **Properties** section and select **Create group**. 
 
@@ -18,7 +18,7 @@ The skeleton of the application has now been created. But you still need to adap
 	1. `InputStreamName` with the name of the Kinesis stream you've created earlier, eg, `streaming-analytics-workshop`
 	1. `ElasticsearchEndpoint` with the Elasticsearch https endpoint you have noted earlier
 
-	![Configure Property Group](/images/kda-property-group.png)
+	![Configure Property Group](/images/flink-on-kda/kda-property-group.png)
 
 1. Expand the **Snapshots** section and **Disable** snapshots for the application
 	{{% notice info %}}
@@ -27,6 +27,6 @@ Enabling snapshots allows the service to maintain the state of a Flink applicati
 
 1. Expand the **Monitoring** section. Select **Task** as **Monitoring metrics level** and enable **CloudWatch** logging.
 
-	![Configure Monitoring](/images/kda-monitoring.png)
+	![Configure Monitoring](/images/flink-on-kda/kda-monitoring.png)
 
 1. Keep the default settings for **Scaling** and **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application

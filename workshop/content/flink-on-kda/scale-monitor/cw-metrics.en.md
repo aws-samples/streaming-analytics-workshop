@@ -14,18 +14,18 @@ Now that the Kinesis data stream is scaling, we'll take a look at how we can ide
 
 1. Enter `streaming-analytics-workshop` in the search field and select **Kinesis > Stream metrics**
 
-	![](/images/cw-dashboard-1-filter.png)
+	![](/images/flink-on-kda/cw-dashboard-1-filter.png)
 
 1. Select the **IncomingRecords** and **GetRecords.IteratorAgeMilliseconds** metrics and navigate to **Graphed metrics**
 
-	![](/images/cw-dashboard-2-select-metrics.png)
+	![](/images/flink-on-kda/cw-dashboard-2-select-metrics.png)
 
 1. Adjust the period of both metrics to **1 Minute** and change the **Statistic** to *Sum* and *Maximum*, respectively. Switch the **Y Axis** of the GetRecords.IteratorAgeMilliseconds metric and confirm with **Update**.
 
-	![](/images/cw-dashboard-3-metric-properties.png)
+	![](/images/flink-on-kda/cw-dashboard-3-metric-properties.png)
 
 The dashboard now shows two metrics: the amount of incoming messages and the millisBehindLatest metric. The metric reports the time difference between the oldest record currently read by the Kinesis Data Analytics for Java application and the latest record in the stream according to the ingestion time in milliseconds. So it indicates how much behind the processing is from the tip of the stream.
 
 Other important metrics include, `ReadProvisionedThroughputExceeded` and `WriteProvisionedThroughputExceeded`. You can add them to the dashboard as well to see how the producer is throttled.
 
-![](/images/cw-dashboard-5-scale-kds.png)
+![](/images/flink-on-kda/cw-dashboard-5-scale-kds.png)

@@ -12,6 +12,6 @@ In addition to simply executing the Flink application, you can also set breakpoi
 
 1. Start the debugging process by clicking the green bug next in the upper right corner of the IDE
 
-	![](/images/intellij-6-debug.png)
+	![](/images/flink-on-kda/intellij-6-debug.png)
 
 1. Step through the code and inspect the content of the variables and the stack trace

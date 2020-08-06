@@ -16,5 +16,5 @@ As you have enabled logging for your Kinesis Data Analytics for Java application
 
 1. Search for `streaming-analytics-workshop` and select the log stream of the KDA for Java application
 
-	![](/images/cw-dashboard-4-configure-log.png)
+	![](/images/flink-on-kda/cw-dashboard-4-configure-log.png)
 

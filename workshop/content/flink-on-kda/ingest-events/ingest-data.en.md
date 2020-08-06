@@ -13,7 +13,7 @@ IntelliJ will eventually display an error message that the *flink-connector-kine
 
 1. Click on the **Terminal** icon in the bottom of Intellij to open a shell
 
-	![](/images/intellij-3-ingest.png)
+	![](/images/flink-on-kda/intellij-3-ingest.png)
 
 1. Enter the following command into the terminal prompt to start producing events into the Kinesis data stream
 

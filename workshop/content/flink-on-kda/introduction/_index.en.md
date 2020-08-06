@@ -10,7 +10,7 @@ In this scenario, every taxi in the fleet is capturing information about complet
 
 From there, the data is processed and analyzed to identify areas that are currently requesting a high number of taxi rides. The derived insights are finally visualized in a dashboard for operators to inspect.
 
-![Architecture](/images/workshop-architecture.png)
+![Architecture](/images/flink-on-kda/workshop-architecture.png)
 
 Throughout the course of this workshop, you will build a fully managed infrastructure that can analyze the data in near-time, ie, within seconds, while being scalable and highly available. The architecture will leverage Amazon Kinesis Data Stream as a streaming store, [Amazon Kinesis Data Analytics for Java Applications](https://aws.amazon.com/kinesis/data-analytics/) to run an [Apache Flink](https://flink.apache.org) application in a fully managed environment, and [Amazon Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/) and [Kibana](https://aws.amazon.com/elasticsearch-service/the-elk-stack/kibana/) for visualization.
 

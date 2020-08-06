@@ -12,7 +12,7 @@ Before you proceed, make sure that you are currently not producing any events in
 
 1. Once the update has completed, press **Run** on the resulting page and confirm that you want to run the application by choosing **Run** again. The application will now start in the background, which can take a couple of minutes. Once it is running, you can inspect the operator graph of the Flink application. 
 
-	![](/images/kda-running-app.png)
+	![](/images/flink-on-kda/kda-running-app.png)
 
 2. You can now start producing data into the Kinesis stream again. However, this time we can substantially increase the speedup factor and hence the throughput of events.
 
