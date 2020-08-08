@@ -13,7 +13,7 @@ Properties for your KDA application can be configured via the AWS console (or th
 
 ![Overview BEAM Architecture](/images/beam-on-kda/app-properties.png)
 
-And these properties can be access from your code by extending FlinkPipelineOptions as so:
+And these properties can be access from your code by extending [FlinkPipelineOptions](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/678096fcd8451f0d4d98871a3d3d97c63384d1fa/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCountOptions.java#L31) as so:
 
 ```
 ...
@@ -62,14 +62,36 @@ You'll notice the `KinesisAnalyticsRuntime` class above; in order to access this
     </dependency>
 ```
 
-## Explain Dependency Shading
+## Dependency Shading
 
-<<Blah blah>>
+When running your Beam applications on KDA Flink, it's important to shade your dependencies to prevent dependency conflicts. Here's a [snippet](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/pom.xml#L196-L199) involving `jackson` from the taxi consumer sample:
 
-## Explain Temporary Credentials
+```
+...
+      <relocation>
+        <pattern>com.fasterxml.jackson</pattern>
+        <shadedPattern>com.amazonaws.samples.beam.taxi.count.shaded.com.fasterxml.jackson</shadedPattern>
+      </relocation>
+...
+```
 
-<<Blah blah>>
+## Configuring Credentials
 
-## Explain Custom Metrics
+You can configure your Beam IO connectors to pull credentials from the KDA role, instead of hard coding credentials in your code. Here's a snippet illustrating how to [configure the `KinesisIO` connector](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/678096fcd8451f0d4d98871a3d3d97c63384d1fa/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java#L70):
+
+```
+...
+        input = p
+            .apply("Kinesis source", KinesisIO
+                .read()
+                .withStreamName(options.getInputStreamName())
+                .withAWSClientsProvider(new DefaultCredentialsProviderClientsProvider(Regions.fromName(options.getAwsRegion())))
+                .withInitialPositionInStream(InitialPositionInStream.LATEST)
+            )
+            .apply("Parse Kinesis events", ParDo.of(new EventParser.KinesisParser()));
+...
+```
+
+## Custom Metrics (validate)
 
 <<Blah blah>>
