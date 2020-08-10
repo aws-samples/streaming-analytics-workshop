@@ -8,7 +8,7 @@ def on_event(event, context):
     print(context)
     
     response = client.list_instances(
-        ClusterId='j-2W7BT8LKR7AOY',
+        ClusterId=event['ResourceProperties']['EmrId'],
         InstanceGroupTypes=['MASTER']
     )
 

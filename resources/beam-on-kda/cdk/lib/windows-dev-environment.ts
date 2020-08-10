@@ -18,6 +18,9 @@ export interface WindowsDevEnvironmentProps extends cdk.StackProps {
 }
 
 export class WindowsDevEnvironment extends cdk.Construct {
+
+  autoscaling: autoscaling.CfnAutoScalingGroup;
+
   constructor(scope: cdk.Construct, id: string, props: WindowsDevEnvironmentProps) {
     super(scope, id);
 
@@ -184,7 +187,7 @@ export class WindowsDevEnvironment extends cdk.Construct {
     waitCondition.addDependsOn(launchTemplate);
 
 
-    new autoscaling.CfnAutoScalingGroup(this, 'AutoScalingGroup', {
+    this.autoscaling = new autoscaling.CfnAutoScalingGroup(this, 'AutoScalingGroup', {
       mixedInstancesPolicy: {
         launchTemplate: {
           launchTemplateSpecification: {

@@ -7,6 +7,7 @@ import sns = require("@aws-cdk/aws-sns");
 import emr = require('@aws-cdk/aws-emr');
 import logs = require('@aws-cdk/aws-logs');
 import lambda = require("@aws-cdk/aws-lambda");
+import cfn = require('@aws-cdk/aws-cloudformation')
 import cr = require('@aws-cdk/custom-resources');
 import subs = require("@aws-cdk/aws-sns-subscriptions");
 import { Duration, RemovalPolicy } from "@aws-cdk/core";
@@ -58,12 +59,15 @@ export class WorkshopInfrastructure extends cdk.Stack {
     sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3389));
     sg.addIngressRule(sg, ec2.Port.allTraffic());
 
-    new WindowsDevEnvironment(this, "WindowsDevEnvironment", {
+    const devEnvironment = new WindowsDevEnvironment(this, "WindowsDevEnvironment", {
       ...props,
       vpc: vpc,
       sg: sg,
       bucket: bucket,
     });
+
+    // make sure that the bucket is emptied only after the instance sending data has been terminated
+    devEnvironment.autoscaling.addDependsOn(emptyBucket.customResource);
 
 
     new GithubBuildPipeline(this, "BeamConsumerBuildPipeline", {
@@ -174,6 +178,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
           { name: 'ZooKeeper'}
       ],
       instances: {
+          emrManagedMasterSecurityGroup: sg.securityGroupId,
+          emrManagedSlaveSecurityGroup: sg.securityGroupId,
           masterInstanceGroup: {
               instanceCount: 1,
               instanceType: 'c5n.xlarge',
@@ -184,9 +190,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
               instanceType: 'r5.xlarge',
               name: 'Core'
           },
-          additionalMasterSecurityGroups: [
-              sg.securityGroupName
-          ],
           ec2SubnetId: vpc.publicSubnets[0].subnetId,
       },
       serviceRole : emrClusterRole.roleName,
@@ -209,26 +212,37 @@ export class WorkshopInfrastructure extends cdk.Stack {
       .readFileSync("lambda/get-emr-master-id.py")
       .toString();
 
+    const lambdaRole = new iam.Role(this, 'GetEmrInstanceIdRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')
+      ],
+      inlinePolicies: {
+        'listInstances':
+          new iam.PolicyDocument({
+            statements: [
+              new iam.PolicyStatement({
+                actions: ['elasticmapreduce:ListInstances'],
+                resources: [ `arn:${cdk.Aws.PARTITION}:elasticmapreduce:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:cluster/${cluster.ref}` ]
+              })
+            ]
+          })
+      }
+    });
+
     const getEmrInstanceId = new lambda.Function(this, "GetEmrInstanceIdLambda", {
       runtime: lambda.Runtime.PYTHON_3_7,
       code: lambda.Code.inline(getEmrInstanceIdSource),
       timeout: Duration.seconds(60),
       handler: "index.on_event",
+      role: lambdaRole
     });
 
-    getEmrInstanceId.addToRolePolicy(new iam.PolicyStatement({
-      actions: ['elasticmapreduce:ListInstances'],
-      resources: [ `arn:${cdk.Aws.PARTITION}:elasticmapreduce:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:cluster/${cluster.ref}` ]
-    }));
-
-    const provider = new cr.Provider(this, 'GetEmrInstanceIdProvider', {
-      onEventHandler: getEmrInstanceId,
-      logRetention: logs.RetentionDays.ONE_DAY
-    });
-
-    const customResource = new cdk.CustomResource(this, 'GetEmrInstanceIdResource', { 
-      serviceToken: provider.serviceToken,
-      properties: { EmrId: cluster.ref }
+    const customResource = new cfn.CustomResource(this, 'Resource', {
+      provider: cfn.CustomResourceProvider.lambda(getEmrInstanceId),
+      properties: {
+        EmrId: cluster.ref
+      }
     });
 
 
