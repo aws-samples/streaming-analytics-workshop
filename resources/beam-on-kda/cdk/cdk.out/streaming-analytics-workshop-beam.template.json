@@ -3414,26 +3414,12 @@
         "Ref": "Bucket83908E77"
       }
     },
-    "InputS3Pattern": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "s3://",
-            {
-              "Ref": "Bucket83908E77"
-            },
-            "/historic-trip-events/*/*/*/*/*"
-          ]
-        ]
-      }
-    },
-    "WindowsDevEnvironmentInstanceIp9C0E1056": {
+    "DevEnvironmentIp": {
       "Value": {
         "Ref": "WindowsDevEnvironmentInstanceEip86319CE2"
       }
     },
-    "WindowsDevEnvironmentInstanceLoginCredentials9CFB9646": {
+    "DevEnvironmentCredentials": {
       "Value": {
         "Fn::Join": [
           "",
@@ -3446,36 +3432,14 @@
         ]
       }
     },
-    "BeamConsumerJarPath": {
-      "Value": "target/amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar"
-    },
     "FirehoseTransformationLambda": {
       "Value": {
         "Ref": "EnrichEventsLambda23B68032"
       }
     },
-    "ApplicationTerminatedTopicName": {
+    "KinesisAnalyticsServiceRole": {
       "Value": {
-        "Fn::GetAtt": [
-          "ApplicationTerminatedTopic94FBC4F2",
-          "TopicName"
-        ]
-      }
-    },
-    "FlinkEmrCluster": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            {
-              "Fn::GetAtt": [
-                "EmrCluster",
-                "MasterPublicDNS"
-              ]
-            },
-            ":8088"
-          ]
-        ]
+        "Ref": "KdaRoleB7DD543E"
       }
     },
     "ConnectToFlinkEmrCluster": {
@@ -3494,9 +3458,6 @@
         ]
       }
     },
-    "FlinkEmrStartJobManager": {
-      "Value": "flink-yarn-session -n 2 -s 4 -tm 16GB -d"
-    },
     "DownloadJarFile": {
       "Value": {
         "Fn::Join": [
@@ -3506,7 +3467,7 @@
             {
               "Ref": "Bucket83908E77"
             },
-            "/target/' .'"
+            "/target/' ."
           ]
         ]
       }
@@ -3516,15 +3477,15 @@
         "Fn::Join": [
           "",
           [
-            "flink run -p 8 amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar --runner=FlinkRunner  --source=s3 --inputS3Pattern=s3://",
-            {
-              "Ref": "Bucket83908E77"
-            },
-            "/historic-trip-events/*/*/*/*/* --awsRegion=",
+            "flink run -p 8 amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar --runner=FlinkRunner --awsRegion=",
             {
               "Ref": "AWS::Region"
             },
-            " --outputBoroughs=true"
+            " --source=s3 --inputS3Pattern=s3://",
+            {
+              "Ref": "Bucket83908E77"
+            },
+            "/historic-trip-events/*/*/*/*/* --outputBoroughs=true"
           ]
         ]
       }

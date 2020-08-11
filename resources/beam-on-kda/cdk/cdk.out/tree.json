@@ -194,10 +194,6 @@
             "id": "S3Bucket",
             "path": "streaming-analytics-workshop-beam/S3Bucket"
           },
-          "InputS3Pattern": {
-            "id": "InputS3Pattern",
-            "path": "streaming-analytics-workshop-beam/InputS3Pattern"
-          },
           "Vpc": {
             "id": "Vpc",
             "path": "streaming-analytics-workshop-beam/Vpc",
@@ -2071,14 +2067,6 @@
                     ]
                   }
                 }
-              },
-              "InstanceIp": {
-                "id": "InstanceIp",
-                "path": "streaming-analytics-workshop-beam/WindowsDevEnvironment/InstanceIp"
-              },
-              "InstanceLoginCredentials": {
-                "id": "InstanceLoginCredentials",
-                "path": "streaming-analytics-workshop-beam/WindowsDevEnvironment/InstanceLoginCredentials"
               }
             }
           },
@@ -2089,6 +2077,14 @@
           "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118": {
             "id": "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118",
             "path": "streaming-analytics-workshop-beam/SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118"
+          },
+          "DevEnvironmentIp": {
+            "id": "DevEnvironmentIp",
+            "path": "streaming-analytics-workshop-beam/DevEnvironmentIp"
+          },
+          "DevEnvironmentCredentials": {
+            "id": "DevEnvironmentCredentials",
+            "path": "streaming-analytics-workshop-beam/DevEnvironmentCredentials"
           },
           "BeamConsumerBuildPipeline": {
             "id": "BeamConsumerBuildPipeline",
@@ -3310,10 +3306,6 @@
               }
             }
           },
-          "BeamConsumerJarPath": {
-            "id": "BeamConsumerJarPath",
-            "path": "streaming-analytics-workshop-beam/BeamConsumerJarPath"
-          },
           "EnrichEventsLambda": {
             "id": "EnrichEventsLambda",
             "path": "streaming-analytics-workshop-beam/EnrichEventsLambda",
@@ -3569,10 +3561,6 @@
               }
             }
           },
-          "ApplicationTerminatedTopicName": {
-            "id": "ApplicationTerminatedTopicName",
-            "path": "streaming-analytics-workshop-beam/ApplicationTerminatedTopicName"
-          },
           "KdaRole": {
             "id": "KdaRole",
             "path": "streaming-analytics-workshop-beam/KdaRole",
@@ -3667,6 +3655,10 @@
                 }
               }
             }
+          },
+          "KinesisAnalyticsServiceRole": {
+            "id": "KinesisAnalyticsServiceRole",
+            "path": "streaming-analytics-workshop-beam/KinesisAnalyticsServiceRole"
           },
           "EmrClusterRole": {
             "id": "EmrClusterRole",
@@ -3976,17 +3968,9 @@
               }
             }
           },
-          "FlinkEmrCluster": {
-            "id": "FlinkEmrCluster",
-            "path": "streaming-analytics-workshop-beam/FlinkEmrCluster"
-          },
           "ConnectToFlinkEmrCluster": {
             "id": "ConnectToFlinkEmrCluster",
             "path": "streaming-analytics-workshop-beam/ConnectToFlinkEmrCluster"
-          },
-          "FlinkEmrStartJobManager": {
-            "id": "FlinkEmrStartJobManager",
-            "path": "streaming-analytics-workshop-beam/FlinkEmrStartJobManager"
           },
           "DownloadJarFile": {
             "id": "DownloadJarFile",

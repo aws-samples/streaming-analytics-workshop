@@ -38,11 +38,9 @@ export class WorkshopInfrastructure extends cdk.Stack {
     const emptyBucket = new EmptyBucketOnDelete(this, "EmptyBucket", {
       bucket: bucket,
     });
-
+    
     new cdk.CfnOutput(this, "S3Bucket", { value: bucket.bucketName });
-    new cdk.CfnOutput(this, "InputS3Pattern", {
-      value: `s3://${bucket.bucketName}/historic-trip-events/*/*/*/*/*`,
-    });
+
 
 
     const vpc = new ec2.Vpc(this, 'Vpc', {
@@ -76,9 +74,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
       extract: true,
     });
 
-    new cdk.CfnOutput(this, "BeamConsumerJarPath", {
-      value: `target/${props.beamApplicationJarFile}`,
-    });
 
     const addTimestamplambdaSource = fs
       .readFileSync("lambda/add-approximate-arrival-time.js")
@@ -123,9 +118,11 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     topic.addSubscription(new subs.LambdaSubscription(terminateAppLambda));
 
+    /*
     new cdk.CfnOutput(this, "ApplicationTerminatedTopicName", {
       value: topic.topicName,
     });
+    */
 
     const kdaRole = new iam.Role(this, "KdaRole", {
       assumedBy: new iam.ServicePrincipal("kinesisanalytics.amazonaws.com"),
@@ -146,6 +143,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
     );
 
     bucket.grantRead(kdaRole);
+
+    new cdk.CfnOutput(this, "KinesisAnalyticsServiceRole", { value: kdaRole.roleName });
 
 
     const emrClusterRole = new iam.Role(this, 'EmrClusterRole', {
@@ -195,17 +194,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
       serviceRole : emrClusterRole.roleName,
       releaseLabel: 'emr-5.27.0',
       visibleToAllUsers: true,
-      jobFlowRole: emrProfile.ref,
-      /*
-      configurations: [
-          {
-              classification: 'emrfs-site',
-              configurationProperties: {
-                  "fs.s3.maxConnections": "1000"
-              }
-          }
-      ]
-      */
+      jobFlowRole: emrProfile.ref
     });
 
     const getEmrInstanceIdSource = fs
@@ -232,11 +221,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
     });
 
 
-    new cdk.CfnOutput(this, "FlinkEmrCluster", { value: `${cluster.attrMasterPublicDns}:8088` });
-    new cdk.CfnOutput(this, "ConnectToFlinkEmrCluster", { value: `https://console.aws.amazon.com/systems-manager/session-manager/${customResource.getAtt('EmrMasterInstanceId')}` });
-    new cdk.CfnOutput(this, "FlinkEmrStartJobManager", { value: 'flink-yarn-session -n 2 -s 4 -tm 16GB -d' });
-    new cdk.CfnOutput(this, "DownloadJarFile", { value: `aws s3 cp --recursive --exclude '*' --include '${props.beamApplicationJarFile}' 's3://${bucket.bucketName}/target/' .'` })
-    new cdk.CfnOutput(this, 'StartFlinkApplication', { value: `flink run -p 8 ${props.beamApplicationJarFile} --runner=FlinkRunner  --source=s3 --inputS3Pattern=s3://${bucket.bucketName}/historic-trip-events/*/*/*/*/* --awsRegion=${cdk.Aws.REGION} --outputBoroughs=true` });
-
+    new cdk.CfnOutput(this, "ConnectToEmrCluster", { value: `https://console.aws.amazon.com/systems-manager/session-manager/${customResource.getAtt('EmrMasterInstanceId')}` });
+    new cdk.CfnOutput(this, "DownloadJarFile", { value: `aws s3 cp --recursive --exclude '*' --include '${props.beamApplicationJarFile}' 's3://${bucket.bucketName}/target/' .` })
+    new cdk.CfnOutput(this, 'StartBeamApplication', { value: `flink run -p 8 ${props.beamApplicationJarFile} --runner=FlinkRunner --awsRegion=${cdk.Aws.REGION} --source=s3 --inputS3Pattern=s3://${bucket.bucketName}/historic-trip-events/*/*/*/*/* --outputBoroughs=true` });
   }
 }

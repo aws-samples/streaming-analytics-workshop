@@ -1,5 +1,5 @@
 ---
-title: "Configure KDA application"
+title: "Configure application"
 chapter: false
 weight: 43
 ---

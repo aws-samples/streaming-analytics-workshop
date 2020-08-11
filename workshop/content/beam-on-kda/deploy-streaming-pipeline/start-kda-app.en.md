@@ -1,5 +1,5 @@
 ---
-title: "Start KDA application"
+title: "Start application"
 chapter: false
 weight: 45
 ---
