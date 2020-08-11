@@ -10,9 +10,9 @@ The skeleton of the application has now been created. But you still need to adap
 
 1. Enter the bucket and prefix of the compiled jar file under **Amazon S3 bucket** and **Path to Amazon S3 object**. You can obtain the correct values from the Output section of the CloudFormation template under **S3Bucket** `beam-workshop-bucket....` and **BeamConsumerJarPath** `target/amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar`.
 
-   ![Configure KDA Application CloudFormation](/images/kda-cf.png)
+   ![Configure KDA Application CloudFormation](/images/beam-on-kda/kda-cf.png)
 
-   ![Configure KDA Application](/images/kda-config.png)
+   ![Configure KDA Application](/images/beam-on-kda/kda-config.png)
 
 1. Expand the **Properties** section and select **Create group**.
 
@@ -27,7 +27,7 @@ The skeleton of the application has now been created. But you still need to adap
    If we weren’t using BEAM we would now need to build another batch appliction to backfill the new metric for historic data, but now we can just use the same application to backfill the metric for historic data in a batch mode and in streaming mode for new data. Voila, unifying data processing in `B`atch and str`EAM`.
    {{% /notice %}}
 
-   ![Configure Property Group](/images/kda-prop-grp1.png)
+   ![Configure Property Group](/images/beam-on-kda/kda-prop-grp1.png)
 
 1. Expand the **Snapshots** section and **Disable** snapshots for the application
 
@@ -45,8 +45,8 @@ The skeleton of the application has now been created. But you still need to adap
    ParallelismPerKPU — This property to set the number of parallel tasks that can be scheduled per Kinesis Processing Unit (KPU) of your application. The default is 1, and the maximum is 8. For applications that have blocking operations (for example, I/O), a higher value of ParallelismPerKPU leads to full utilization of KPU resources.
    {{% /notice %}}
 
-   ![Configure Monitoring](/images/kda-monitor-novpc.png)
+   ![Configure Monitoring](/images/beam-on-kda/kda-monitor-novpc.png)
 
 1. Keep the default settings for **Scaling** and **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application. After a few minutes the application will be ready to run.
 
-   ![Configure Complete](/images/kda-configure-review.png)
+   ![Configure Complete](/images/beam-on-kda/kda-configure-review.png)

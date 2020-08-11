@@ -13,7 +13,7 @@ In Kinesis Data Stream a **shard** is the base throughput unit. One shard provid
 1. If displayed, up press **Get Started** in the service welcome dialog
 
 1. Select **Create data stream** to navigate to the Amazon Kinesis Data Stream service:
-   ![](/images/kinesis-welcome-create-stream.png)
+   ![](/images/beam-on-kda/kinesis-welcome-create-stream.png)
 
 1. Choose `beam-workshop` as **Kinesis stream name**
 
@@ -24,9 +24,9 @@ In Kinesis Data Stream a **shard** is the base throughput unit. One shard provid
    {{% /notice %}}
 
 1. Select **Create Kinesis stream** at the bottom of the page
-   ![](/images/kds-create-stream.png)
+   ![](/images/beam-on-kda/kds-create-stream.png)
 
 1. After a few moments, the data stream should have been created successfully and be in an _Active_ state
-   ![](/images/kds-create-stream-active.png)
+   ![](/images/beam-on-kda/kds-create-stream-active.png)
 
 1. We are now ready to create the **Kinesis FireHose Delivery Stream**.

@@ -1,5 +1,5 @@
 +++
-title = "AWS Workshop Template"
+title = "Apache Beam on KDA"
 chapter = true
 weight = 1
 +++

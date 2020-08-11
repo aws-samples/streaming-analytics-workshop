@@ -8,7 +8,7 @@ Next you create a Kinesis Firehose to allow for transforming and enrichment of t
 
 The Lambda function and destination S3 bucket are pre-created for you via cloud formation. Navigate to [Cloud Formation Console](https://console.aws.amazon.com/cloudformation) and select the stack labelled `beam-workshop`. Select the `Outputs` tab to see the resources that will be used in this section.
 
-![](/images/kfh-cf.png)
+![](/images/beam-on-kda/kfh-cf.png)
 
 {{% notice info %}}
 The Lambda transform `beam-workshop-EnrichEventsLambda...` is adding the **approximate arrival timestamp** into the payload of the message when it is written to s3. This is so we can get the same result for the batch and streaming pipeline as both referring to the same data point.
@@ -16,7 +16,7 @@ The Lambda transform `beam-workshop-EnrichEventsLambda...` is adding the **appro
 
 Browse to the `Resources` tab of your `beam-workshop` stack and select the Lambda function prefixed `beam-workshop-EnrichEventsLambda`. This will open the function so you can see the code in detail. Notice the section where we enrich the value `record.kinesisRecordMetadata.approximateArrivalTimestamp` to the payload.
 
-![](/images/kfh-lambda.png)
+![](/images/beam-on-kda/kfh-lambda.png)
 
 Follow the below steps to create the Kinesis Firehose Delviery Stream
 
@@ -28,7 +28,7 @@ Follow the below steps to create the Kinesis Firehose Delviery Stream
 
 1. Select **Create delivery stream** to navigate to the Amazon Kinesis Firehose Stream service:
 
-   ![](/images/kfh-create.png)
+   ![](/images/beam-on-kda/kfh-create.png)
 
 #### Step 1 - Name and Source
 
@@ -40,7 +40,7 @@ Follow the below steps to create the Kinesis Firehose Delviery Stream
 
 1. Select **Next** to move onto the _Process Records_ screen.
 
-   ![](/images/kfh-selectsources3.png)
+   ![](/images/beam-on-kda/kfh-selectsources3.png)
 
 #### Step 2 - Process Records
 
@@ -54,7 +54,7 @@ In this secton we will attach the Lambda function to process the records
 
 1. Select **Next** to move onto the _Choose a destination_ screen.
 
-![](/images/kfh-process.png)
+![](/images/beam-on-kda/kfh-process.png)
 
 #### Step 3 - Choose a Destination
 
@@ -70,7 +70,7 @@ In this section we pick the destination for the transformed records.
 
 1. Select **Next** to move onto the _Configure Settings_ screen.
 
-![](/images/kfh-s3.png)
+![](/images/beam-on-kda/kfh-s3.png)
 
 #### Step 4 - Configure Settings
 
@@ -90,18 +90,18 @@ Amazon Kinesis Data Firehose buffers incoming streaming data to a certain size o
 
 1. Select **Next** to move onto the _Review_ screen.
 
-![](/images/kfh-configure.png)
+![](/images/beam-on-kda/kfh-configure.png)
 
 #### Step 5 - Review Settings
 
 Once you have checked all the settings select **Create delivery stream** to create the Firehose Delivery Stream.
 
-![](/images/kfh-review.png)
+![](/images/beam-on-kda/kfh-review.png)
 
 After a few minutes you will see a Firehose Delivery Stream called `beam-workshop-s3` created on the Kinesis Dashboard. Click on the stream name to see more details and use this page to monitor activity in the later stages.
 
-![](/images/kfh-check.png)
+![](/images/beam-on-kda/kfh-check.png)
 
-![](/images/kfh-check2.png)
+![](/images/beam-on-kda/kfh-check2.png)
 
 You are now ready to move to the next stage where replay data into these infrastructure components.

@@ -17,8 +17,8 @@ As you have enabled logging for your Kinesis Data Analytics for Java application
 1. Search for `beam-workshop` and select the log stream of the KDA for Java application named as:
  `aws/kinesis-analytics/beam-workshop`
 
-   ![](/images/cw-dashboard-4-configure-log.png)
+   ![](/images/beam-on-kda/cw-dashboard-4-configure-log.png)
 
 You will now have two widgets in your dashboard:
 
- ![](/images/cw-dashboard-6-log-result.png)
+ ![](/images/beam-on-kda/cw-dashboard-6-log-result.png)

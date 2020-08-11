@@ -16,7 +16,7 @@ Loft, Immersion Day, or any other event hosted by an AWS employee), continue wit
 
 1. In the following dialog, choose **Next**
 
-   ![Launch stack](/images/cfn-1-create-stack.png)
+   ![Launch stack](/images/beam-on-kda/cfn-1-create-stack.png)
 
 1. Choose `beam-workshop` as **Stack name** and confirm with **Next**
 
@@ -24,6 +24,6 @@ Loft, Immersion Day, or any other event hosted by an AWS employee), continue wit
 
 1. On the last page of the dialog, confirm that CloudFormation may create IAM resource by selecting **I acknowledge that AWS CloudFormation might create IAM resources**. Click on **Create stack** at the bottom of the page.
 
-   ![Lauch stack](/images/cfn-4-confirm-capabilities.png)
+   ![Lauch stack](/images/beam-on-kda/cfn-4-confirm-capabilities.png)
 
 It takes approximately 10 minutes for the stack associated with this CloudFormation template to deploy. You can continue with the next step [Configure development environment]({{< ref "/configure-dev-env" >}}) while the stack is being deployed.
