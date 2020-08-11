@@ -7,7 +7,7 @@ const app = new cdk.App();
 
 const synthDate = new Date().toISOString().split('T')[0];
 
-new WorkshopInfrastructure(app, 'beam-workshop', {
+new WorkshopInfrastructure(app, 'streaming-analytics-workshop-beam', {
     appName: 'beam-workshop',
     description: `Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-${synthDate})`,
     kinesisReplayVersion: 'release-0.1.0',

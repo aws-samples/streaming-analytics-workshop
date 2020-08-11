@@ -15,5 +15,5 @@ Unless you have already an RDP client available on your laptop, you need to inst
 
 Once you have successfully configured the RDP client, you can start the workshop by following one of the following depending on whether you are...
 
-- ...[attending an AWS hosted event (using AWS provided hashes)]({{< relref "./aws-event/" >}}) `PREFERRED`
+- ...[attending an AWS hosted event (using AWS provided hashes)]({{< relref "./aws-event/" >}})
 - ...[running the workshop on your own (in your own account)]({{< relref "./self-paced/" >}})

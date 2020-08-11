@@ -14,26 +14,3 @@ The Kinesis data stream (`beam-workshop`) serves as a buffer that decouples the 
 A [Kinesis Data Firehose](https://aws.amazon.com/kinesis/data-firehose/) (`beam-workshop-s3`) is also created to perform any enrichment and transformaton on the data prior to it being loaded into data lakes, data stores and analytical tools. These data transformations are performed by invoking [AWS Lambda](https://aws.amazon.com/lambda/), a serverless platform that runs code without provisioning or managing servers. For this architecture we will store the transformed data into AWS S3 so that it can be read by our BEAM pipeline.
 
 This infrastructure also allows you to experiment and adopt new technologies in the future. Multiple independent applications can concurrently consume the data stored in the Kinesis data stream. You can then test how a new version of an existing application performs with a copy of the production traffic. But you can also introduce a different tool and technology stack to analyze the data, again without affecting the existing production application.
-
----
-
-NOTES:
-
-- create Kinesis stream
-  - stream name: beam-workshop
-  - number shards: 4
-- create Firehose delivery stream
-  - delivery stream name: beam-workshop
-  - source: kinesis data stream (beam-workshop)
-  - transform source records
-    - choose precreated lambda function (see cfn output `FirehoseTransformationLambda`)
-    - there will be sevearl lambda functions, the one with EnrichEventsLambda in the name is the correct one
-  - choose `historic-trip-events/` as a prefix
-  - disable record format conversion
-  - choose S3 bucket (see cfn output `S3Bucket`)
-  - choose buffer size 60 sec
-    - explain this is for the workshop, in general a larger value is more desirable
-  - enable GZIP compression
-- start replaying data into the Kinesis stream
-  - open terminal in intellij
-  - execute `java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -streamName beam-workshop -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720`

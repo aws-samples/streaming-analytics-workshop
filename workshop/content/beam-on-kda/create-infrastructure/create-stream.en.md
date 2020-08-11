@@ -6,8 +6,6 @@ weight: 31
 
 You start with creating a Kinesis data stream.
 
-In Kinesis Data Stream a **shard** is the base throughput unit. One shard provides a capacity of 1MB/sec data input and 2MB/sec data output. One shard can support up to 1000 PUT records per second. You will specify the number of shards needed when you create the data stream.
-
 1. Navigate to the [Kinesis Console](https://console.aws.amazon.com/kinesis)
 
 1. If displayed, up press **Get Started** in the service welcome dialog

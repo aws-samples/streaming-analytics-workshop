@@ -3,8 +3,9 @@ title = "Apache Beam on KDA"
 chapter = true
 weight = 1
 +++
-This template is the default for creating workshop content for AWS Solutions Architecture. It runs on Hugo, is driven by Markdown, and provides an interactive experience for workshop attendees. The pages in this template provide examples for how to write your own content using the components available.
 
-{{% button href="https://issues.amazon.com/issues/create?template=f084dc94-e920-4d98-80f7-252d5cc7ce00" icon="fas fa-bug" %}}Report an issue{{% /button %}}
-{{% button href="mailto:aws-sa-customer-engagements@amazon.com" icon="fas fa-envelope" %}}Contact Event Outfitters{{% /button %}}
-{{% button href="https://w.amazon.com/bin/view/AWS/Teams/SA/Customer_Engagements/" icon="fas fa-graduation-cap" %}}Learn more{{% /button %}}
+In this workshop, we explore an end to end example that combines batch and streaming aspects in one uniform Beam pipeline. We start to analyze incoming taxi trip events in near real time with an Apache Beam pipeline. We then show how to archive the trip data to Amazon S3 for long term storage. We subsequently explain how to read the historic data from S3 and backfill new metrics by executing the same Beam pipeline in a batch fashion. Along the way, you also learn how you can deploy and execute the Beam pipeline with Amazon Kinesis Data Analytics in a fully managed environment.
+
+![Overview BEAM Architecture](/images/beam-on-kda/overview-beamarchitecture.png)
+
+So you will not only learn how you can leverage Beam’s expressive programming model to unify batch and streaming you will also learn how AWS can help you to effectively build and operate Beam based streaming architectures with low operational overhead.

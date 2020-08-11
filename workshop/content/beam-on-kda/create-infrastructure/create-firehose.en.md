@@ -6,35 +6,30 @@ weight: 32
 
 Next you create a Kinesis Firehose to allow for transforming and enrichment of the source data to eventually store into an S3 bucket. Here is where we attach to the Kinesis data stream created earlier and apply Lambda functions that are pre-created for the lab. The transformed data will be put into an S3 bucket that is also pre-created.
 
-The Lambda function and destination S3 bucket are pre-created for you via cloud formation. Navigate to [Cloud Formation Console](https://console.aws.amazon.com/cloudformation) and select the stack labelled `beam-workshop`. Select the `Outputs` tab to see the resources that will be used in this section.
+The Lambda function and destination S3 bucket are pre-created for you via cloud formation. Each event that is sent to the Kinesis stream is automatically assigned an **approximate arrival timestamp**. The Lambda function is adding this adding the **approximate arrival timestamp** into the payload of the message when it is written to s3.
 
-![](/images/beam-on-kda/kfh-cf.png)
+```js
+function enrichPayload(record) {
+    const payload = JSON.parse(Buffer.from(record.data, 'base64').toString('utf8'));
+    const timestamp = new Date(record.kinesisRecordMetadata.approximateArrivalTimestamp).toISOString();
+    
+    const enrichedPayload = Object.assign({approximate_arrival_timestamp: timestamp}, payload);
 
-{{% notice info %}}
-The Lambda transform `beam-workshop-EnrichEventsLambda...` is adding the **approximate arrival timestamp** into the payload of the message when it is written to s3. This is so we can get the same result for the batch and streaming pipeline as both referring to the same data point.
-{{% /notice %}}
+    return Buffer.from(JSON.stringify(enrichedPayload)+"\n").toString('base64');
+}
+```
 
-Browse to the `Resources` tab of your `beam-workshop` stack and select the Lambda function prefixed `beam-workshop-EnrichEventsLambda`. This will open the function so you can see the code in detail. Notice the section where we enrich the value `record.kinesisRecordMetadata.approximateArrivalTimestamp` to the payload.
-
-![](/images/beam-on-kda/kfh-lambda.png)
+In this way, the streaming and the batch pipeline can refer to the same timestamp so we can get the same result for the batch and streaming pipeline.
 
 Follow the below steps to create the Kinesis Firehose Delviery Stream
 
-1. Navigate to the [Kinesis Console](https://console.aws.amazon.com/kinesis)
-
-1. If displayed, up press **Get Started** in the service welcome dialog
-
-1. Select **Kinesis Data Firehose**
-
-1. Select **Create delivery stream** to navigate to the Amazon Kinesis Firehose Stream service:
-
-   ![](/images/beam-on-kda/kfh-create.png)
-
 #### Step 1 - Name and Source
+
+1. Navigate to the [Data Firehose Console](https://console.aws.amazon.com/firehose) and select **Create delivery stream**
 
 1. Choose `beam-workshop-s3` as **Delivery Stream name**
 
-1. Choose the source as `Kinesis Data Stream`
+1. Select *Kinesis Data Stream* as the **Source**
 
 1. In the drop down select `beam-workshop` as the Kinesis data stream source
 
@@ -44,13 +39,13 @@ Follow the below steps to create the Kinesis Firehose Delviery Stream
 
 #### Step 2 - Process Records
 
-In this secton we will attach the Lambda function to process the records
+In this section we will attach the Lambda function to process the records
 
-1. Select **Enabled** under `Data transformation`
+1. Select *Enabled* under **Data transformation**
 
 1. Select the Lambda function that begins with `beam-workshop-EnrichEventLambda...`
 
-1. Leave the `Record Format Conversion` as **Disabled**
+1. Leave the **Record Format Conversion** as **Disabled**
 
 1. Select **Next** to move onto the _Choose a destination_ screen.
 
@@ -60,11 +55,11 @@ In this secton we will attach the Lambda function to process the records
 
 In this section we pick the destination for the transformed records.
 
-1. Select `Amazon S3` as the Desitnation type
+1. Select **Amazon S3** as the Destination type
 
 1. For the S3 Bucket name select the pre-created S3 bucket shown above in your account from the drop down, `beam-workshop-bucket....`
 
-1. For Prefix enter `historic-trip-events/` so that all the trasnformed records are easily identifiable in s3
+1. For **Prefix** enter `historic-trip-events/` so that all the transformed records are easily identifiable in Amazon S3
 
 1. Leave all options as default i.e. `Disable S3 Backup`
 
@@ -76,7 +71,7 @@ In this section we pick the destination for the transformed records.
 
 In this section we configure the Firehose stream.
 
-1. Set the `Buffer Interval` to **60 seconds**.
+1. Set the **Buffer Interval** to **60 seconds**.
 
 {{% notice info %}}
 Amazon Kinesis Data Firehose buffers incoming streaming data to a certain size or for a certain period of time before delivering it to destinations. Buffer size is in MBs and ranges from 1MB to 128MB for Amazon S3 destination Buffer interval is in seconds and ranges from 60 seconds to 900 seconds. Increasing the buffers size allows us to gather data before delivering to ensure all data is delivered to the destination S3 bucket.
@@ -94,14 +89,8 @@ Amazon Kinesis Data Firehose buffers incoming streaming data to a certain size o
 
 #### Step 5 - Review Settings
 
-Once you have checked all the settings select **Create delivery stream** to create the Firehose Delivery Stream.
-
-![](/images/beam-on-kda/kfh-review.png)
-
-After a few minutes you will see a Firehose Delivery Stream called `beam-workshop-s3` created on the Kinesis Dashboard. Click on the stream name to see more details and use this page to monitor activity in the later stages.
+Once you have checked all the settings select **Create delivery stream** to create the Firehose Delivery Stream. After a few minutes you will see a Firehose Delivery Stream called `beam-workshop-s3` created on the Kinesis Dashboard. Click on the stream name to see more details and use this page to monitor activity in the later stages.
 
 ![](/images/beam-on-kda/kfh-check.png)
-
-![](/images/beam-on-kda/kfh-check2.png)
 
 You are now ready to move to the next stage where replay data into these infrastructure components.
