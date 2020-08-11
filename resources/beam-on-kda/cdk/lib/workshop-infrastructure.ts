@@ -212,34 +212,20 @@ export class WorkshopInfrastructure extends cdk.Stack {
       .readFileSync("lambda/get-emr-master-id.py")
       .toString();
 
-    const lambdaRole = new iam.Role(this, 'GetEmrInstanceIdRole', {
-      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')
-      ],
-      inlinePolicies: {
-        'listInstances':
-          new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: ['elasticmapreduce:ListInstances'],
-                resources: [ `arn:${cdk.Aws.PARTITION}:elasticmapreduce:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:cluster/${cluster.ref}` ]
-              })
-            ]
-          })
-      }
-    });
-
     const getEmrInstanceId = new lambda.Function(this, "GetEmrInstanceIdLambda", {
       runtime: lambda.Runtime.PYTHON_3_7,
       code: lambda.Code.inline(getEmrInstanceIdSource),
-      timeout: Duration.seconds(60),
-      handler: "index.on_event",
-      role: lambdaRole
+      timeout: Duration.seconds(30),
+      handler: "index.get_instance_id",
     });
 
-    const customResource = new cfn.CustomResource(this, 'Resource', {
-      provider: cfn.CustomResourceProvider.lambda(getEmrInstanceId),
+    getEmrInstanceId.addToRolePolicy(new iam.PolicyStatement({
+      actions: ['elasticmapreduce:ListInstances'],
+      resources: [ `arn:${cdk.Aws.PARTITION}:elasticmapreduce:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:cluster/${cluster.ref}` ]
+    }));
+
+    const customResource = new cfn.CustomResource(this, 'GetEmrInstanceIdResource', {
+      provider: cfn.CustomResourceProvider.fromLambda(getEmrInstanceId),
       properties: {
         EmrId: cluster.ref
       }

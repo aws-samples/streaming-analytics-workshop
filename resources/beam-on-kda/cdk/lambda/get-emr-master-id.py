@@ -1,12 +1,10 @@
 import os
 import boto3
+import cfnresponse
 
 client = boto3.client('emr')
 
-def on_event(event, context):
-    print(event)
-    print(context)
-    
+def get_instance_id(event, context):
     response = client.list_instances(
         ClusterId=event['ResourceProperties']['EmrId'],
         InstanceGroupTypes=['MASTER']
@@ -14,4 +12,6 @@ def on_event(event, context):
 
     instance_id = response['Instances'][0]['Ec2InstanceId']
 
-    return { 'Data': { 'EmrMasterInstanceId': instance_id } }
+    responseData = { 'EmrMasterInstanceId': instance_id }
+
+    cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
