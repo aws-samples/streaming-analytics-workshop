@@ -14,12 +14,6 @@ You first need to package the Flink application and all its dependencies into a 
 
 1. Maven will now build a jar file that includes all the dependencies of the Flink application. The jar file is stored in the _target_ directory and can be deployed to KDA for Java. Once built we can upload this jar file to S3. We have already done this for you in this workshop for a pre-built jar file.
 
-{{% notice info %}}
+	{{% notice info %}}
 If you are feeling lucky, you can upload the generated jar file to an S3 bucket and subsequently deploy it to KDA for Java. However, the following steps will use a precompiled jar file that is tested and works as intended.
-{{% /notice %}}
-
-{{% notice info %}}
-This is the [BEAM pipeline code](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java) being executed.
-The count of Taxi rides is performed by this [code](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java).
-
 {{% /notice %}}

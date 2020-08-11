@@ -10,17 +10,15 @@ The skeleton of the application has now been created. But you still need to adap
 
 1. Enter the bucket and prefix of the compiled jar file under **Amazon S3 bucket** and **Path to Amazon S3 object**. You can obtain the correct values from the Output section of the CloudFormation template under **S3Bucket** `beam-workshop-bucket....` and **BeamConsumerJarPath** `target/amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar`.
 
-   ![Configure KDA Application CloudFormation](/images/beam-on-kda/kda-cf.png)
-
    ![Configure KDA Application](/images/beam-on-kda/kda-config.png)
 
 1. Expand the **Properties** section and select **Create group**.
 
 1. In the resulting dialog, choose `BeamApplicationProperties` as **Group ID** and add the following three key/value pairs and confirm with **Save**:
 
-   1. `InputStreamName` with the name of the Kinesis stream you've created earlier, eg, `beam-workshop`
+   1. `InputStreamName` with the name of the Kinesis stream you've created earlier, ie, `beam-workshop`
    1. `Source` set the source IO for BEAM pipeline to `kinesis` in **lowercase**
-   1. `OutputBoroughs` set to `false` as we will not use the is information from the BEAM pipeline
+   1. `OutputBoroughs` set to `false` as we will not generate borough related information in the streaming BEAM pipeline
 
    {{% notice info %}}
    We set the `OutputBoroughs` to `false` as the idea is to use the streaming application to just count the number of trips. Then, the if requirements will change we can break this down into by boroughs.
@@ -37,15 +35,13 @@ The skeleton of the application has now been created. But you still need to adap
 
 1. Expand the **Monitoring** section. Select **Task** as **Monitoring metrics level** and enable **CloudWatch** logging. Select **Info** as the Monitoring Log Level
 
-1. For parallelism we will set to 2. This determines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html) factor used for the application within KDA. Leave the parallelism per KPU as default to 1. To learn more about how KDA does scaling see [here](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html).
+1. For parallelism we will set to 2. This determines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html) factor used for the application within Kinesis Data Analytics. Leave the parallelism per KPU as default to 1. To learn more about how Kinesis Data Analytics does scaling see [here](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html).
 
    {{% notice info %}}
-   Parallelism — This property to set the default Apache Flink application parallelism. All operators, sources, and sinks execute with this parallelism unless they are overridden in the application code. The default is 1, and the default maximum is 256.
-
-   ParallelismPerKPU — This property to set the number of parallel tasks that can be scheduled per Kinesis Processing Unit (KPU) of your application. The default is 1, and the maximum is 8. For applications that have blocking operations (for example, I/O), a higher value of ParallelismPerKPU leads to full utilization of KPU resources.
-   {{% /notice %}}
-
-   ![Configure Monitoring](/images/beam-on-kda/kda-monitor-novpc.png)
+Parallelism — This property to set the default Apache Flink application parallelism. All operators, sources, and sinks execute with this parallelism unless they are overridden in the application code. The default is 1, and the default maximum is 256.
+<br /><br />
+ParallelismPerKPU — This property to set the number of parallel tasks that can be scheduled per Kinesis Processing Unit (KPU) of your application. The default is 1, and the maximum is 8. For applications that have blocking operations (for example, I/O), a higher value of ParallelismPerKPU leads to full utilization of KPU resources.
+{{% /notice %}}
 
 1. Keep the default settings for **Scaling** and **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application. After a few minutes the application will be ready to run.
 
