@@ -12,13 +12,13 @@
         "id": "streaming-analytics-workshop-beam",
         "path": "streaming-analytics-workshop-beam",
         "children": {
-          "Bucket": {
-            "id": "Bucket",
-            "path": "streaming-analytics-workshop-beam/Bucket",
+          "HistoricTrips": {
+            "id": "HistoricTrips",
+            "path": "streaming-analytics-workshop-beam/HistoricTrips",
             "children": {
               "Resource": {
                 "id": "Resource",
-                "path": "streaming-analytics-workshop-beam/Bucket/Resource",
+                "path": "streaming-analytics-workshop-beam/HistoricTrips/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
                   "aws:cdk:cloudformation:props": {
@@ -30,7 +30,7 @@
               },
               "Notifications": {
                 "id": "Notifications",
-                "path": "streaming-analytics-workshop-beam/Bucket/Notifications"
+                "path": "streaming-analytics-workshop-beam/HistoricTrips/Notifications"
               }
             }
           },
@@ -106,7 +106,7 @@
                                       "Resource": [
                                         {
                                           "Fn::GetAtt": [
-                                            "Bucket83908E77",
+                                            "HistoricTripsEF9D049F",
                                             "Arn"
                                           ]
                                         },
@@ -116,7 +116,7 @@
                                             [
                                               {
                                                 "Fn::GetAtt": [
-                                                  "Bucket83908E77",
+                                                  "HistoricTripsEF9D049F",
                                                   "Arn"
                                                 ]
                                               },
@@ -162,7 +162,7 @@
                         "environment": {
                           "variables": {
                             "bucket_name": {
-                              "Ref": "Bucket83908E77"
+                              "Ref": "HistoricTripsEF9D049F"
                             }
                           }
                         },
@@ -189,10 +189,6 @@
                 }
               }
             }
-          },
-          "S3Bucket": {
-            "id": "S3Bucket",
-            "path": "streaming-analytics-workshop-beam/S3Bucket"
           },
           "Vpc": {
             "id": "Vpc",
@@ -572,7 +568,7 @@
                                               [
                                                 {
                                                   "Fn::GetAtt": [
-                                                    "Bucket83908E77",
+                                                    "HistoricTripsEF9D049F",
                                                     "Arn"
                                                   ]
                                                 },
@@ -618,7 +614,7 @@
                               "variables": {
                                 "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/release-0.1.0.zip",
                                 "bucket": {
-                                  "Ref": "Bucket83908E77"
+                                  "Ref": "HistoricTripsEF9D049F"
                                 },
                                 "key": "sources/amazon-kinesis-replay-release-0.1.0.zip"
                               }
@@ -783,7 +779,7 @@
                                           "Resource": [
                                             {
                                               "Fn::GetAtt": [
-                                                "Bucket83908E77",
+                                                "HistoricTripsEF9D049F",
                                                 "Arn"
                                               ]
                                             },
@@ -793,7 +789,7 @@
                                                 [
                                                   {
                                                     "Fn::GetAtt": [
-                                                      "Bucket83908E77",
+                                                      "HistoricTripsEF9D049F",
                                                       "Arn"
                                                     ]
                                                   },
@@ -1034,7 +1030,7 @@
                                           "Resource": [
                                             {
                                               "Fn::GetAtt": [
-                                                "Bucket83908E77",
+                                                "HistoricTripsEF9D049F",
                                                 "Arn"
                                               ]
                                             },
@@ -1044,7 +1040,7 @@
                                                 [
                                                   {
                                                     "Fn::GetAtt": [
-                                                      "Bucket83908E77",
+                                                      "HistoricTripsEF9D049F",
                                                       "Arn"
                                                     ]
                                                   },
@@ -1141,7 +1137,7 @@
                                     },
                                     "configuration": {
                                       "S3Bucket": {
-                                        "Ref": "Bucket83908E77"
+                                        "Ref": "HistoricTripsEF9D049F"
                                       },
                                       "S3ObjectKey": "sources/amazon-kinesis-replay-release-0.1.0.zip"
                                     },
@@ -1209,7 +1205,7 @@
                                     },
                                     "configuration": {
                                       "BucketName": {
-                                        "Ref": "Bucket83908E77"
+                                        "Ref": "HistoricTripsEF9D049F"
                                       },
                                       "Extract": "true"
                                     },
@@ -1248,7 +1244,7 @@
                             "artifactStore": {
                               "type": "S3",
                               "location": {
-                                "Ref": "Bucket83908E77"
+                                "Ref": "HistoricTripsEF9D049F"
                               }
                             }
                           }
@@ -1324,7 +1320,7 @@
                                                   "Resource": [
                                                     {
                                                       "Fn::GetAtt": [
-                                                        "Bucket83908E77",
+                                                        "HistoricTripsEF9D049F",
                                                         "Arn"
                                                       ]
                                                     },
@@ -1334,7 +1330,7 @@
                                                         [
                                                           {
                                                             "Fn::GetAtt": [
-                                                              "Bucket83908E77",
+                                                              "HistoricTripsEF9D049F",
                                                               "Arn"
                                                             ]
                                                           },
@@ -1354,7 +1350,7 @@
                                                   "Resource": [
                                                     {
                                                       "Fn::GetAtt": [
-                                                        "Bucket83908E77",
+                                                        "HistoricTripsEF9D049F",
                                                         "Arn"
                                                       ]
                                                     },
@@ -1364,7 +1360,7 @@
                                                         [
                                                           {
                                                             "Fn::GetAtt": [
-                                                              "Bucket83908E77",
+                                                              "HistoricTripsEF9D049F",
                                                               "Arn"
                                                             ]
                                                           },
@@ -1558,7 +1554,7 @@
                                                   "Resource": [
                                                     {
                                                       "Fn::GetAtt": [
-                                                        "Bucket83908E77",
+                                                        "HistoricTripsEF9D049F",
                                                         "Arn"
                                                       ]
                                                     },
@@ -1568,7 +1564,7 @@
                                                         [
                                                           {
                                                             "Fn::GetAtt": [
-                                                              "Bucket83908E77",
+                                                              "HistoricTripsEF9D049F",
                                                               "Arn"
                                                             ]
                                                           },
@@ -1588,7 +1584,7 @@
                                                   "Resource": [
                                                     {
                                                       "Fn::GetAtt": [
-                                                        "Bucket83908E77",
+                                                        "HistoricTripsEF9D049F",
                                                         "Arn"
                                                       ]
                                                     },
@@ -1598,7 +1594,7 @@
                                                         [
                                                           {
                                                             "Fn::GetAtt": [
-                                                              "Bucket83908E77",
+                                                              "HistoricTripsEF9D049F",
                                                               "Arn"
                                                             ]
                                                           },
@@ -1843,7 +1839,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "Bucket83908E77",
+                                        "HistoricTripsEF9D049F",
                                         "Arn"
                                       ]
                                     },
@@ -1853,7 +1849,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "Bucket83908E77",
+                                              "HistoricTripsEF9D049F",
                                               "Arn"
                                             ]
                                           },
@@ -1996,7 +1992,7 @@
                               },
                               "\" -Timeout 1800\n\nCopy-S3Object -BucketName \"",
                               {
-                                "Ref": "Bucket83908E77"
+                                "Ref": "HistoricTripsEF9D049F"
                               },
                               "\" -KeyPrefix target -LocalFolder \"$desktop\\workshop-resources\"\n</powershell>"
                             ]
@@ -2157,7 +2153,7 @@
                                           [
                                             {
                                               "Fn::GetAtt": [
-                                                "Bucket83908E77",
+                                                "HistoricTripsEF9D049F",
                                                 "Arn"
                                               ]
                                             },
@@ -2203,7 +2199,7 @@
                           "variables": {
                             "url": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/master.zip",
                             "bucket": {
-                              "Ref": "Bucket83908E77"
+                              "Ref": "HistoricTripsEF9D049F"
                             },
                             "key": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
                           }
@@ -2368,7 +2364,7 @@
                                       "Resource": [
                                         {
                                           "Fn::GetAtt": [
-                                            "Bucket83908E77",
+                                            "HistoricTripsEF9D049F",
                                             "Arn"
                                           ]
                                         },
@@ -2378,7 +2374,7 @@
                                             [
                                               {
                                                 "Fn::GetAtt": [
-                                                  "Bucket83908E77",
+                                                  "HistoricTripsEF9D049F",
                                                   "Arn"
                                                 ]
                                               },
@@ -2619,7 +2615,7 @@
                                       "Resource": [
                                         {
                                           "Fn::GetAtt": [
-                                            "Bucket83908E77",
+                                            "HistoricTripsEF9D049F",
                                             "Arn"
                                           ]
                                         },
@@ -2629,7 +2625,7 @@
                                             [
                                               {
                                                 "Fn::GetAtt": [
-                                                  "Bucket83908E77",
+                                                  "HistoricTripsEF9D049F",
                                                   "Arn"
                                                 ]
                                               },
@@ -2726,7 +2722,7 @@
                                 },
                                 "configuration": {
                                   "S3Bucket": {
-                                    "Ref": "Bucket83908E77"
+                                    "Ref": "HistoricTripsEF9D049F"
                                   },
                                   "S3ObjectKey": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
                                 },
@@ -2794,7 +2790,7 @@
                                 },
                                 "configuration": {
                                   "BucketName": {
-                                    "Ref": "Bucket83908E77"
+                                    "Ref": "HistoricTripsEF9D049F"
                                   },
                                   "Extract": "true"
                                 },
@@ -2833,7 +2829,7 @@
                         "artifactStore": {
                           "type": "S3",
                           "location": {
-                            "Ref": "Bucket83908E77"
+                            "Ref": "HistoricTripsEF9D049F"
                           }
                         }
                       }
@@ -2909,7 +2905,7 @@
                                               "Resource": [
                                                 {
                                                   "Fn::GetAtt": [
-                                                    "Bucket83908E77",
+                                                    "HistoricTripsEF9D049F",
                                                     "Arn"
                                                   ]
                                                 },
@@ -2919,7 +2915,7 @@
                                                     [
                                                       {
                                                         "Fn::GetAtt": [
-                                                          "Bucket83908E77",
+                                                          "HistoricTripsEF9D049F",
                                                           "Arn"
                                                         ]
                                                       },
@@ -2939,7 +2935,7 @@
                                               "Resource": [
                                                 {
                                                   "Fn::GetAtt": [
-                                                    "Bucket83908E77",
+                                                    "HistoricTripsEF9D049F",
                                                     "Arn"
                                                   ]
                                                 },
@@ -2949,7 +2945,7 @@
                                                     [
                                                       {
                                                         "Fn::GetAtt": [
-                                                          "Bucket83908E77",
+                                                          "HistoricTripsEF9D049F",
                                                           "Arn"
                                                         ]
                                                       },
@@ -3143,7 +3139,7 @@
                                               "Resource": [
                                                 {
                                                   "Fn::GetAtt": [
-                                                    "Bucket83908E77",
+                                                    "HistoricTripsEF9D049F",
                                                     "Arn"
                                                   ]
                                                 },
@@ -3153,7 +3149,7 @@
                                                     [
                                                       {
                                                         "Fn::GetAtt": [
-                                                          "Bucket83908E77",
+                                                          "HistoricTripsEF9D049F",
                                                           "Arn"
                                                         ]
                                                       },
@@ -3173,7 +3169,7 @@
                                               "Resource": [
                                                 {
                                                   "Fn::GetAtt": [
-                                                    "Bucket83908E77",
+                                                    "HistoricTripsEF9D049F",
                                                     "Arn"
                                                   ]
                                                 },
@@ -3183,7 +3179,7 @@
                                                     [
                                                       {
                                                         "Fn::GetAtt": [
-                                                          "Bucket83908E77",
+                                                          "HistoricTripsEF9D049F",
                                                           "Arn"
                                                         ]
                                                       },
@@ -3600,6 +3596,7 @@
                           "Statement": [
                             {
                               "Action": [
+                                "cloudwatch:PutMetricData",
                                 "logs:Describe*",
                                 "logs:PutLogEvents",
                                 "kinesis:List*",
@@ -3620,7 +3617,7 @@
                               "Resource": [
                                 {
                                   "Fn::GetAtt": [
-                                    "Bucket83908E77",
+                                    "HistoricTripsEF9D049F",
                                     "Arn"
                                   ]
                                 },
@@ -3630,7 +3627,7 @@
                                     [
                                       {
                                         "Fn::GetAtt": [
-                                          "Bucket83908E77",
+                                          "HistoricTripsEF9D049F",
                                           "Arn"
                                         ]
                                       },

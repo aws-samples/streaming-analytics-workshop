@@ -1,7 +1,7 @@
 {
   "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2020-08-12)",
   "Resources": {
-    "Bucket83908E77": {
+    "HistoricTripsEF9D049F": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "VersioningConfiguration": {
@@ -11,7 +11,7 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {
-        "aws:cdk:path": "streaming-analytics-workshop-beam/Bucket/Resource"
+        "aws:cdk:path": "streaming-analytics-workshop-beam/HistoricTrips/Resource"
       }
     },
     "EmptyBucketEmptyBucketLambdaServiceRole67452BDD": {
@@ -66,7 +66,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -76,7 +76,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -117,7 +117,7 @@
         "Environment": {
           "Variables": {
             "bucket_name": {
-              "Ref": "Bucket83908E77"
+              "Ref": "HistoricTripsEF9D049F"
             }
           }
         },
@@ -461,7 +461,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "Bucket83908E77",
+                        "HistoricTripsEF9D049F",
                         "Arn"
                       ]
                     },
@@ -502,7 +502,7 @@
           "Variables": {
             "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/release-0.1.0.zip",
             "bucket": {
-              "Ref": "Bucket83908E77"
+              "Ref": "HistoricTripsEF9D049F"
             },
             "key": "sources/amazon-kinesis-replay-release-0.1.0.zip"
           }
@@ -661,7 +661,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -671,7 +671,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -871,7 +871,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -881,7 +881,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -966,7 +966,7 @@
                 },
                 "Configuration": {
                   "S3Bucket": {
-                    "Ref": "Bucket83908E77"
+                    "Ref": "HistoricTripsEF9D049F"
                   },
                   "S3ObjectKey": "sources/amazon-kinesis-replay-release-0.1.0.zip"
                 },
@@ -1034,7 +1034,7 @@
                 },
                 "Configuration": {
                   "BucketName": {
-                    "Ref": "Bucket83908E77"
+                    "Ref": "HistoricTripsEF9D049F"
                   },
                   "Extract": "true"
                 },
@@ -1079,7 +1079,7 @@
         ],
         "ArtifactStore": {
           "Location": {
-            "Ref": "Bucket83908E77"
+            "Ref": "HistoricTripsEF9D049F"
           },
           "Type": "S3"
         }
@@ -1142,7 +1142,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -1152,7 +1152,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -1172,7 +1172,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -1182,7 +1182,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -1324,7 +1324,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -1334,7 +1334,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -1354,7 +1354,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -1364,7 +1364,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -1562,7 +1562,7 @@
                   "Resource": [
                     {
                       "Fn::GetAtt": [
-                        "Bucket83908E77",
+                        "HistoricTripsEF9D049F",
                         "Arn"
                       ]
                     },
@@ -1572,7 +1572,7 @@
                         [
                           {
                             "Fn::GetAtt": [
-                              "Bucket83908E77",
+                              "HistoricTripsEF9D049F",
                               "Arn"
                             ]
                           },
@@ -1712,7 +1712,7 @@
                   },
                   "\" -Timeout 1800\n\nCopy-S3Object -BucketName \"",
                   {
-                    "Ref": "Bucket83908E77"
+                    "Ref": "HistoricTripsEF9D049F"
                   },
                   "\" -KeyPrefix target -LocalFolder \"$desktop\\workshop-resources\"\n</powershell>"
                 ]
@@ -1839,7 +1839,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "Bucket83908E77",
+                        "HistoricTripsEF9D049F",
                         "Arn"
                       ]
                     },
@@ -1880,7 +1880,7 @@
           "Variables": {
             "url": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/master.zip",
             "bucket": {
-              "Ref": "Bucket83908E77"
+              "Ref": "HistoricTripsEF9D049F"
             },
             "key": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
           }
@@ -2039,7 +2039,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -2049,7 +2049,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -2249,7 +2249,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -2259,7 +2259,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -2344,7 +2344,7 @@
                 },
                 "Configuration": {
                   "S3Bucket": {
-                    "Ref": "Bucket83908E77"
+                    "Ref": "HistoricTripsEF9D049F"
                   },
                   "S3ObjectKey": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
                 },
@@ -2412,7 +2412,7 @@
                 },
                 "Configuration": {
                   "BucketName": {
-                    "Ref": "Bucket83908E77"
+                    "Ref": "HistoricTripsEF9D049F"
                   },
                   "Extract": "true"
                 },
@@ -2457,7 +2457,7 @@
         ],
         "ArtifactStore": {
           "Location": {
-            "Ref": "Bucket83908E77"
+            "Ref": "HistoricTripsEF9D049F"
           },
           "Type": "S3"
         }
@@ -2520,7 +2520,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -2530,7 +2530,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -2550,7 +2550,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -2560,7 +2560,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -2702,7 +2702,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -2712,7 +2712,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -2732,7 +2732,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -2742,7 +2742,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -3069,6 +3069,7 @@
           "Statement": [
             {
               "Action": [
+                "cloudwatch:PutMetricData",
                 "logs:Describe*",
                 "logs:PutLogEvents",
                 "kinesis:List*",
@@ -3089,7 +3090,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "Bucket83908E77",
+                    "HistoricTripsEF9D049F",
                     "Arn"
                   ]
                 },
@@ -3099,7 +3100,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "Bucket83908E77",
+                          "HistoricTripsEF9D049F",
                           "Arn"
                         ]
                       },
@@ -3449,12 +3450,13 @@
       }
     }
   },
+  "Parameters": {
+    "SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+      "Default": "/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base"
+    }
+  },
   "Outputs": {
-    "S3Bucket": {
-      "Value": {
-        "Ref": "Bucket83908E77"
-      }
-    },
     "DevEnvironmentIp": {
       "Value": {
         "Ref": "WindowsDevEnvironmentInstanceEip86319CE2"
@@ -3506,7 +3508,7 @@
           [
             "aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar' 's3://",
             {
-              "Ref": "Bucket83908E77"
+              "Ref": "HistoricTripsEF9D049F"
             },
             "/target/' ."
           ]
@@ -3524,18 +3526,12 @@
             },
             " --source=s3 --inputS3Pattern=s3://",
             {
-              "Ref": "Bucket83908E77"
+              "Ref": "HistoricTripsEF9D049F"
             },
             "/historic-trip-events/*/*/*/*/* --outputBoroughs=true"
           ]
         ]
       }
-    }
-  },
-  "Parameters": {
-    "SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter": {
-      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
-      "Default": "/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base"
     }
   }
 }
