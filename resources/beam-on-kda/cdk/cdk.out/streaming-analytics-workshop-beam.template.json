@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2020-08-11)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2020-08-12)",
   "Resources": {
     "Bucket83908E77": {
       "Type": "AWS::S3::Bucket",
@@ -3123,6 +3123,47 @@
         "aws:cdk:path": "streaming-analytics-workshop-beam/KdaRole/DefaultPolicy/Resource"
       }
     },
+    "EmrSecurityGroup95A33F8D": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "streaming-analytics-workshop-beam/EmrSecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/EmrSecurityGroup/Resource"
+      }
+    },
+    "EmrSecurityGroupfromstreaminganalyticsworkshopbeamSecurityGroup88030EF5ALLTRAFFIC10E075CF": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "-1",
+        "Description": "from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC",
+        "GroupId": {
+          "Fn::GetAtt": [
+            "EmrSecurityGroup95A33F8D",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "SecurityGroupDD263621",
+            "GroupId"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/EmrSecurityGroup/from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC"
+      }
+    },
     "EmrClusterRoleAD8E6DEE": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -3240,13 +3281,13 @@
           },
           "EmrManagedMasterSecurityGroup": {
             "Fn::GetAtt": [
-              "SecurityGroupDD263621",
+              "EmrSecurityGroup95A33F8D",
               "GroupId"
             ]
           },
           "EmrManagedSlaveSecurityGroup": {
             "Fn::GetAtt": [
-              "SecurityGroupDD263621",
+              "EmrSecurityGroup95A33F8D",
               "GroupId"
             ]
           },

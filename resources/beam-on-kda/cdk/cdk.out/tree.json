@@ -3660,6 +3660,55 @@
             "id": "KinesisAnalyticsServiceRole",
             "path": "streaming-analytics-workshop-beam/KinesisAnalyticsServiceRole"
           },
+          "EmrSecurityGroup": {
+            "id": "EmrSecurityGroup",
+            "path": "streaming-analytics-workshop-beam/EmrSecurityGroup",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "streaming-analytics-workshop-beam/EmrSecurityGroup/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "streaming-analytics-workshop-beam/EmrSecurityGroup",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "vpcId": {
+                      "Ref": "Vpc8378EB38"
+                    }
+                  }
+                }
+              },
+              "from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC": {
+                "id": "from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC",
+                "path": "streaming-analytics-workshop-beam/EmrSecurityGroup/from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                  "aws:cdk:cloudformation:props": {
+                    "ipProtocol": "-1",
+                    "description": "from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC",
+                    "groupId": {
+                      "Fn::GetAtt": [
+                        "EmrSecurityGroup95A33F8D",
+                        "GroupId"
+                      ]
+                    },
+                    "sourceSecurityGroupId": {
+                      "Fn::GetAtt": [
+                        "SecurityGroupDD263621",
+                        "GroupId"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
           "EmrClusterRole": {
             "id": "EmrClusterRole",
             "path": "streaming-analytics-workshop-beam/EmrClusterRole",
@@ -3787,13 +3836,13 @@
                 "instances": {
                   "emrManagedMasterSecurityGroup": {
                     "Fn::GetAtt": [
-                      "SecurityGroupDD263621",
+                      "EmrSecurityGroup95A33F8D",
                       "GroupId"
                     ]
                   },
                   "emrManagedSlaveSecurityGroup": {
                     "Fn::GetAtt": [
-                      "SecurityGroupDD263621",
+                      "EmrSecurityGroup95A33F8D",
                       "GroupId"
                     ]
                   },

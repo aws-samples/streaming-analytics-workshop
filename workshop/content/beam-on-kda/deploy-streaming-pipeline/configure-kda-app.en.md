@@ -8,7 +8,7 @@ The skeleton of the application has now been created. But you still need to adap
 
 1. On the resulting page press the blue **Configure** button to configure the Kinesis Analytics application.
 
-1. Enter the bucket and prefix of the compiled jar file under **Amazon S3 bucket** and **Path to Amazon S3 object**. You can obtain the correct values from the Output section of the CloudFormation template under **S3Bucket** `beam-workshop-bucket....` and **BeamConsumerJarPath** `target/amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar`.
+1. Under **Amazon S3 bucket** select the bucket name containing `historictrips` that we have been using earlier. Enter `target/amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar` as **BeamConsumerJarPath**.
 
    ![Configure KDA Application](/images/beam-on-kda/kda-config.png)
 

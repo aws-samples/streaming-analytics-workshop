@@ -30,7 +30,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
   ) {
     super(scope, id, props);
 
-    const bucket = new s3.Bucket(this, "Bucket", {
+    const bucket = new s3.Bucket(this, "HistoricTrips", {
       versioned: true,
       removalPolicy: RemovalPolicy.DESTROY
     });
@@ -39,7 +39,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
       bucket: bucket,
     });
     
-    new cdk.CfnOutput(this, "S3Bucket", { value: bucket.bucketName });
+    // new cdk.CfnOutput(this, "S3Bucket", { value: bucket.bucketName });
 
 
 
@@ -131,6 +131,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
     kdaRole.addToPolicy(
       new iam.PolicyStatement({
         actions: [
+          "cloudwatch:PutMetricData",
           "logs:Describe*",
           "logs:PutLogEvents",
           "kinesis:List*",
@@ -146,6 +147,11 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     new cdk.CfnOutput(this, "KinesisAnalyticsServiceRole", { value: kdaRole.roleName });
 
+    const emrSg = new ec2.SecurityGroup(this, 'EmrSecurityGroup', {
+      vpc: vpc
+    });
+
+    emrSg.addIngressRule(sg, ec2.Port.allTraffic());
 
     const emrClusterRole = new iam.Role(this, 'EmrClusterRole', {
       assumedBy: new iam.ServicePrincipal('elasticmapreduce.amazonaws.com'),
@@ -177,8 +183,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
           { name: 'ZooKeeper'}
       ],
       instances: {
-          emrManagedMasterSecurityGroup: sg.securityGroupId,
-          emrManagedSlaveSecurityGroup: sg.securityGroupId,
+          emrManagedMasterSecurityGroup: emrSg.securityGroupId,
+          emrManagedSlaveSecurityGroup: emrSg.securityGroupId,
           masterInstanceGroup: {
               instanceCount: 1,
               instanceType: 'c5n.xlarge',
@@ -189,12 +195,12 @@ export class WorkshopInfrastructure extends cdk.Stack {
               instanceType: 'r5.xlarge',
               name: 'Core'
           },
-          ec2SubnetId: vpc.publicSubnets[0].subnetId,
+          ec2SubnetId: vpc.publicSubnets[0].subnetId
       },
       serviceRole : emrClusterRole.roleName,
       releaseLabel: 'emr-5.27.0',
       visibleToAllUsers: true,
-      jobFlowRole: emrProfile.ref
+      jobFlowRole: emrProfile.ref,
     });
 
     const getEmrInstanceIdSource = fs

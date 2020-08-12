@@ -20,7 +20,7 @@ flink run -p 8 amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar --ru
 
 1. When the pipeline is running, you can track the progress in the Flink dashboard
 
-	TODO: insert image of ui
+	![](/images/beam-on-kda/emr-flink-dashboard.png)
 
 1. Once the pipeline has completed, you can inspect the metrics for the boroughs that have been generated in Amazon CloudWatch
 

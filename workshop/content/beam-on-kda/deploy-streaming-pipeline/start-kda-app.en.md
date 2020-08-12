@@ -13,7 +13,7 @@ The application is finally ready for execution through the Kinesis Data Analytic
 1. Make sure that you are still producing trip events into the Kinesis data stream. In case the application is no longer running, you can restart it by executing the following command in the console window of IntelliJ.
 
     {{< highlight plain >}}
-java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName beam-workshop -speedup 4320
+java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName beam-workshop -speedup 720
     {{< /highlight >}}
 
 

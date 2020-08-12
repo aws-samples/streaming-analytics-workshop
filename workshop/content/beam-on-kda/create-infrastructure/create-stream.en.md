@@ -27,4 +27,4 @@ You start with creating a Kinesis data stream.
 1. After a few moments, the data stream should have been created successfully and be in an _Active_ state
    ![](/images/beam-on-kda/kds-create-stream-active.png)
 
-1. We are now ready to create the **Kinesis FireHose Delivery Stream**.
+1. We are now ready to create the Firehose delivery stream.

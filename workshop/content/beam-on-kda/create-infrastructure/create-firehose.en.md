@@ -23,7 +23,7 @@ In this way, the streaming and the batch pipeline can refer to the same timestam
 
 #### Step 1 - Name and Source
 
-1. Navigate to the [Data Firehose Console](https://console.aws.amazon.com/firehose) and select **Create delivery stream**
+1. Navigate to the [Amazon Kinesis Data Firehose console](https://console.aws.amazon.com/firehose) and select **Create delivery stream**
 
 1. Choose `beam-workshop-s3` as **Delivery Stream name**
 
@@ -41,7 +41,7 @@ In this section we will attach the Lambda function to process the records
 
 1. Select *Enabled* under **Data transformation**
 
-1. Select the Lambda function that begins with `beam-workshop-EnrichEventLambda...`
+1. Select the Lambda function that contains `EnrichEventLambda`
 
 1. Leave the **Record Format Conversion** as **Disabled**
 
@@ -55,11 +55,11 @@ In this section we pick the destination for the transformed records.
 
 1. Select **Amazon S3** as the Destination type
 
-1. For the S3 Bucket name select the pre-created S3 bucket shown above in your account from the drop down, `beam-workshop-bucket....`
+1. For the S3 Bucket name select the pre-created S3 bucket whose name contains `historictrips`
 
 1. For **Prefix** enter `historic-trip-events/` so that all the transformed records are easily identifiable in Amazon S3
 
-1. Leave all options as default i.e. `Disable S3 Backup`
+1. Leave all other options as default
 
 1. Select **Next** to move onto the _Configure Settings_ screen.
 
@@ -71,15 +71,15 @@ In this section we configure the Firehose stream.
 
 1. Set the **Buffer Interval** to **60 seconds**.
 
-{{% notice info %}}
+	{{% notice info %}}
 Amazon Kinesis Data Firehose buffers incoming streaming data to a certain size or for a certain period of time before delivering it to destinations. Buffer size is in MBs and ranges from 1MB to 128MB for Amazon S3 destination Buffer interval is in seconds and ranges from 60 seconds to 900 seconds. Increasing the buffers size allows us to gather data before delivering to ensure all data is delivered to the destination S3 bucket.
 {{% /notice %}}
 
-1. Enable `S3 compression` to **GZIP** to optimise the storage of S3 data. Buffer size is is applied before compression. As a result, if you choose to compress your data, the size of the objects within your Amazon S3 bucket can be smaller than the buffer size you specify.
+1. Enable **S3 compression** by selecting *GZIP* to optimise the storage of data in Amazon S3. Buffer size is is applied before compression. As a result, if you choose to compress your data, the size of the objects within your S3 bucket can be smaller than the buffer size you specify.
 
-1. Ensure that created `IAM Role` is selected i.e. **KinesisFirehoseServiceRole-beam-workshop-eu-west-1-...**, so that Kinesis Data Firehose uses the correct permissions for operations.
+1. Ensure that **Created or update IAM Role** is selected, so that Kinesis Data Firehose uses the correct permissions for operations.
 
-1. Leave all other valeues as default.
+1. Leave all other values as default.
 
 1. Select **Next** to move onto the _Review_ screen.
 
