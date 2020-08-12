@@ -3968,17 +3968,17 @@
               }
             }
           },
-          "ConnectToFlinkEmrCluster": {
-            "id": "ConnectToFlinkEmrCluster",
-            "path": "streaming-analytics-workshop-beam/ConnectToFlinkEmrCluster"
+          "ConnectToEmrCluster": {
+            "id": "ConnectToEmrCluster",
+            "path": "streaming-analytics-workshop-beam/ConnectToEmrCluster"
           },
           "DownloadJarFile": {
             "id": "DownloadJarFile",
             "path": "streaming-analytics-workshop-beam/DownloadJarFile"
           },
-          "StartFlinkApplication": {
-            "id": "StartFlinkApplication",
-            "path": "streaming-analytics-workshop-beam/StartFlinkApplication"
+          "StartBeamApplication": {
+            "id": "StartBeamApplication",
+            "path": "streaming-analytics-workshop-beam/StartBeamApplication"
           }
         }
       }

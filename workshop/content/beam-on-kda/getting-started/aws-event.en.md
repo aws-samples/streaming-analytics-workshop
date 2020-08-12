@@ -15,4 +15,4 @@ This workshop creates an AWS acccount and the development environment that is us
 
 Connect to the portal by clicking the button or browsing to [https://dashboard.eventengine.run/](https://dashboard.eventengine.run/).
 
-Once you have completed the step above, you can head straight to [**Configure development environment**]({{< ref "/configure-dev-env" >}})
+Once you have completed the step above, you can head straight to [**Configure development environment**]({{< ref "../configure-dev-env/" >}})

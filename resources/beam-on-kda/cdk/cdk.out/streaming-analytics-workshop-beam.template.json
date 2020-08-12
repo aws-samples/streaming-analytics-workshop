@@ -3442,7 +3442,7 @@
         "Ref": "KdaRoleB7DD543E"
       }
     },
-    "ConnectToFlinkEmrCluster": {
+    "ConnectToEmrCluster": {
       "Value": {
         "Fn::Join": [
           "",
@@ -3472,7 +3472,7 @@
         ]
       }
     },
-    "StartFlinkApplication": {
+    "StartBeamApplication": {
       "Value": {
         "Fn::Join": [
           "",

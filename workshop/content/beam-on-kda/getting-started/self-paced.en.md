@@ -5,7 +5,7 @@ weight: 12
 
 {{% notice warning %}}
 Only complete this section if you are running the workshop on your own. If you are at an AWS hosted event (such as re:Invent,
-Loft, Immersion Day, or any other event hosted by an AWS employee), continue with [**Configure development environment**]({{< ref "/configure-dev-env" >}}).
+Loft, Immersion Day, or any other event hosted by an AWS employee), continue with [**Configure development environment**]({{< ref "../configure-dev-env/" >}}).
 {{% /notice %}}
 
 ### Running the workshop on your own
@@ -26,4 +26,4 @@ Loft, Immersion Day, or any other event hosted by an AWS employee), continue wit
 
    ![Lauch stack](/images/beam-on-kda/cfn-4-confirm-capabilities.png)
 
-It takes approximately 10 minutes for the stack associated with this CloudFormation template to deploy. You can continue with the next step [Configure development environment]({{< ref "/configure-dev-env" >}}) while the stack is being deployed.
+It takes approximately 10 minutes for the stack associated with this CloudFormation template to deploy. You can continue with the next step [Configure development environment]({{< ref "../configure-dev-env/" >}}) while the stack is being deployed.
