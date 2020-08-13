@@ -2,34 +2,9 @@
 title = "Deploy Batch Pipeline"
 date = 2020-07-10T10:27:27+02:00
 weight = 70
-chapter = true
+chapter = false
 +++
 
-- explain workaround on how a batch program can be stopped
-- create metric filter that shuts down application
-  - in cloudwatch go to log groups
-  - search for `/aws/kinesis-analytics/beam-workshop`
-  - select log group and choose create log filter
-  - filter pattern: Job reached globally terminal state FINISHED
-  - Metric Namespace: Beam
-  - Metric Name: BeamApplicationFinished
-- create alarm:
-  - statistics: sum
-  - period: 10 sec
-  - greater than 1
-  - treat missing data as good (not breaching)  
-  - select an existing sns topic: beam-workshop-* (see cfn output `ApplicationTerminatedTopic`)
-  - alarm name: beam-workshop
-- change the running streaming program into a batch program
-  - change properties
-    - InputS3Pattern: `s3://<<bucket name>>/historic-trip-events/*/*/*/*/*` (see cfn output `InputS3Pattern`)
-    - change source to: s3
-    - change output borough: true
-  - disable auto scaling
-  - change parallelism: 4
-  - ensure that snapshots are disabled
-- add metric for boroughs to dashboard
-  - namespace: beam
-  - metric: borough, stream name
-  - select all boroughs
-  - rest as before
+In the previous section, you have deployed a Beam application that is generating statistics on the number of incoming trips. At first the application only generated metrics for the entire city. This got then adapted to so that the application in now generating more fine grained metrics that are broken down per borough. 
+
+However, the new metrics are only generated for newly arriving events. In this section, we will execute the Beam pipeline in a batch fashion on [Amazon Elastic Map Reduce (Amazon EMR)](https://aws.amazon.com/emr/) to backfill the metric with the historic data that has been persisted to Amazon S3.

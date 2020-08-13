@@ -3456,7 +3456,7 @@
           "Fn::Join": [
             "",
             [
-              "{\"widgets\":[{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":0,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (total)\",\"region\":\"",
+              "{\"start\":\"-PT30M\",\"widgets\":[{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":0,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (total)\",\"region\":\"",
               {
                 "Ref": "AWS::Region"
               },

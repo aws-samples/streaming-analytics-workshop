@@ -4,6 +4,8 @@ chapter: false
 weight: 10
 ---
 
+To start creating a Firehose delivery stream, you need to choose a name
+
 1. Navigate to the [Amazon Kinesis Data Firehose console](https://console.aws.amazon.com/firehose) and select **Create delivery stream**
 
 1. Choose `beam-workshop-s3` as **Delivery Stream name**

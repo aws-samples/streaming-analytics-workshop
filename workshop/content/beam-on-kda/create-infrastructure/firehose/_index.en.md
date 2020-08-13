@@ -19,4 +19,4 @@ function enrichPayload(record) {
 }
 ```
 
-In this way, the streaming and the batch pipeline can refer to the same timestamp so we can get the same result for the batch and streaming pipeline. Follow the below steps to create the delivery stream.
+In this way, the streaming and the batch pipeline can refer to the same timestamp so we can get the same result for the batch and streaming pipeline. Follow the steps in this chapter to create the delivery stream.

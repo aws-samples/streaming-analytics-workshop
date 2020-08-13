@@ -4,6 +4,8 @@ chapter: false
 weight: 32
 ---
 
+You then set the buffering hints that determine how often Firehose flushes data to the destination
+
 1. Set the **Buffer Interval** to `60` seconds.
 
 	{{% notice info %}}

@@ -225,7 +225,9 @@ export class WorkshopInfrastructure extends cdk.Stack {
       period: Duration.seconds(1)
     });
 
-    const dashboard = new cloudwatch.Dashboard(this, 'BeamWorkshopDashboard');
+    const dashboard = new cloudwatch.Dashboard(this, 'BeamWorkshopDashboard', {
+      start: '-PT30M'
+    });
 
     dashboard.addWidgets(new cloudwatch.GraphWidget({
       title: 'Number of trips (total)',

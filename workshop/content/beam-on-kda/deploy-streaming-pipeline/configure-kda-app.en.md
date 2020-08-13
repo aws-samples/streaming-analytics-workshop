@@ -35,7 +35,7 @@ The skeleton of the application has now been created. But you still need to adap
 
 1. Expand the **Monitoring** section. Select **Task** as **Monitoring metrics level** and enable **CloudWatch** logging. Select **Info** as the Monitoring Log Level
 
-1. For parallelism we will set to 2. This determines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html) factor used for the application within Kinesis Data Analytics. Leave the parallelism per KPU as default to 1. To learn more about how Kinesis Data Analytics does scaling see [here](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html).
+1. Set the parallelism of the application to `4`. This determines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html) factor used for the application within Kinesis Data Analytics. Leave the parallelism per KPU as default to 1. To learn more about how Kinesis Data Analytics does scaling see [here](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html).
 
    {{% notice info %}}
 Parallelism — This property to set the default Apache Flink application parallelism. All operators, sources, and sinks execute with this parallelism unless they are overridden in the application code. The default is 1, and the default maximum is 256.

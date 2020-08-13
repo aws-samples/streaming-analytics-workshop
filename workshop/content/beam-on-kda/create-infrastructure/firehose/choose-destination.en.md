@@ -4,7 +4,7 @@ chapter: false
 weight: 30
 ---
 
-In this section we pick the destination for the transformed records.
+In this step you pick the destination for the transformed records.
 
 1. Select **Amazon S3** as the Destination type
 

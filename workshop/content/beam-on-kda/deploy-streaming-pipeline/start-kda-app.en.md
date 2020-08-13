@@ -10,16 +10,18 @@ The application is finally ready for execution through the Kinesis Data Analytic
 
     ![kda-running-app](/images/beam-on-kda/kda-running-beamapp.png)
 
-1. Make sure that you are still producing trip events into the Kinesis data stream. In case the application is no longer running, you can restart it by executing the following command in the console window of IntelliJ.
+{{% notice tip %}}
+If you don't see the object graph after the Kinesis data analytics application is running please hit refresh in the browser. You can further debug the application by inspecting the application logs that are exposed through Amazon CloudWatch.
+{{% /notice %}}
+
+2. Make sure that you are still producing trip events into the Kinesis data stream. In case the application is no longer running, you can restart it by executing the following command in the console window of IntelliJ.
 
     {{< highlight plain >}}
 java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName beam-workshop -speedup 720
     {{< /highlight >}}
 
+1. Navigate to the [Amazon CloudWatch Console](https://console.aws.amazon.com/cloudwatch) and select **Dashboards**
 
-{{% notice tip %}}
-If you don't see the object graph after the Kinesis data analytics application is running please hit refresh in the browser. You can further debug the application by inspecting the application logs that are exposed through Amazon CloudWatch.
-![kda-nographlog](/images/beam-on-kda/kda-nographlog.png)
-Follow the link to the respective log stream and filter for **ERROR**
-![kda-nographlogerror](/images/beam-on-kda/kda-nographlogerror.png)
-{{% /notice %}}
+1. Click on the dashboard whose name contains `BeamWorkshopDashboard`. The dashboard has already been pre-created for you and it contains two widgets, one displaying the total number of taxi trips and one for the number of taxi trips by borough. For now, the Beam application only generates the total amount, but we are going to change that in the next section.
+
+TODO: add screenshot of CW dashboard with only the total number of trips
