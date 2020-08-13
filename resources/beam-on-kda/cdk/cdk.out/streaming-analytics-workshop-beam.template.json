@@ -3449,28 +3449,28 @@
         "aws:cdk:path": "streaming-analytics-workshop-beam/GetEmrInstanceIdResource/Default"
       }
     },
-    "Dashboard9E4231ED": {
+    "BeamWorkshopDashboardC716CE9B": {
       "Type": "AWS::CloudWatch::Dashboard",
       "Properties": {
         "DashboardBody": {
           "Fn::Join": [
             "",
             [
-              "{\"widgets\":[{\"type\":\"metric\",\"width\":6,\"height\":6,\"x\":0,\"y\":0,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Overall number of trips (New York City)\",\"region\":\"",
+              "{\"widgets\":[{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":0,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (total)\",\"region\":\"",
               {
                 "Ref": "AWS::Region"
               },
-              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":6,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (per borough)\",\"region\":\"",
+              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (per borough)\",\"region\":\"",
               {
                 "Ref": "AWS::Region"
               },
-              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"Borough\",\"Bronx\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Brooklyn\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"EWR\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Queens\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Staten Island\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Manhattan\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\",\"yAxis\":\"right\"}]],\"yAxis\":{}}}]}"
+              "\",\"stacked\":true,\"metrics\":[[\"Beam\",\"Number of Trips\",\"Borough\",\"Bronx\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Brooklyn\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"EWR\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Queens\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Staten Island\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Manhattan\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{}}}]}"
             ]
           ]
         }
       },
       "Metadata": {
-        "aws:cdk:path": "streaming-analytics-workshop-beam/Dashboard/Resource"
+        "aws:cdk:path": "streaming-analytics-workshop-beam/BeamWorkshopDashboard/Resource"
       }
     }
   },
@@ -3542,7 +3542,7 @@
             {
               "Ref": "HistoricTripsEF9D049F"
             },
-            "/historic-trip-events/*/*/*/*/* --outputBoroughs=true"
+            "/historic-trip-events/*/*/*/*/* --inputStreamName=beam-workshop --outputBoroughs=true"
           ]
         ]
       }

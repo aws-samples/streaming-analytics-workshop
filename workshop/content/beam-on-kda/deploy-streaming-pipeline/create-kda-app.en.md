@@ -6,7 +6,7 @@ weight: 42
 
 You can then execute the Beam pipeline with Amazon Kinesis Data Analytics in a fully managed Apache Flink environment. A Kinesis Analytics application basically consists of a reference to the Flink application in S3 and some additional configuration data. Once the Kinesis Analytics application has been created, it can be deployed and executed by the services in a fully managed environment.
 
-1. Navigate to the [Kinesis Data Analytics](https://console.aws.amazon.com/kinesisanalytics) and press **Create application**
+1. Navigate to the [Kinesis Data Analytics Console](https://console.aws.amazon.com/kinesisanalytics) and press **Create application**
 
 1. Enter `beam-workshop` as the **Application name**
 

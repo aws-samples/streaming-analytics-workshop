@@ -41,7 +41,7 @@ In this section we will attach the Lambda function to process the records
 
 1. Select *Enabled* under **Data transformation**
 
-1. Select the Lambda function that contains `EnrichEventLambda`
+1. In the dropdown for **Lambda function**, select the Lambda function whose name contains `EnrichEventsLambda`
 
 1. Leave the **Record Format Conversion** as **Disabled**
 
@@ -69,7 +69,7 @@ In this section we pick the destination for the transformed records.
 
 In this section we configure the Firehose stream.
 
-1. Set the **Buffer Interval** to **60 seconds**.
+1. Set the **Buffer Interval** to `60` seconds.
 
 	{{% notice info %}}
 Amazon Kinesis Data Firehose buffers incoming streaming data to a certain size or for a certain period of time before delivering it to destinations. Buffer size is in MBs and ranges from 1MB to 128MB for Amazon S3 destination Buffer interval is in seconds and ranges from 60 seconds to 900 seconds. Increasing the buffers size allows us to gather data before delivering to ensure all data is delivered to the destination S3 bucket.

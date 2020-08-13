@@ -218,17 +218,19 @@ export class WorkshopInfrastructure extends cdk.Stack {
       metricName: 'Number of Trips',
       namespace: 'Beam',
       dimensions: {
+        ...dimensions,
         StreamName: 'beam-workshop',
-        ...dimensions
       },
       statistic: 'max',
+      period: Duration.seconds(1)
     });
 
-    const dashboard = new cloudwatch.Dashboard(this, 'Dashboard');
+    const dashboard = new cloudwatch.Dashboard(this, 'BeamWorkshopDashboard');
 
     dashboard.addWidgets(new cloudwatch.GraphWidget({
-      title: 'Number of trips (New York City)',
-      left: [metric()]
+      title: 'Number of trips (total)',
+      left: [metric()],
+      width: 24
     }));
 
     dashboard.addWidgets(new cloudwatch.GraphWidget({
@@ -239,14 +241,14 @@ export class WorkshopInfrastructure extends cdk.Stack {
         metric({ Borough: 'EWR' }),
         metric({ Borough: 'Queens' }),
         metric({ Borough: 'Staten Island' }),
-      ],
-      right: [
         metric({ Borough: 'Manhattan' }),
-      ]
+      ],
+      width: 24,
+      stacked: true
     }));
 
     new cdk.CfnOutput(this, "ConnectToEmrCluster", { value: `https://console.aws.amazon.com/systems-manager/session-manager/${customResource.getAtt('EmrMasterInstanceId')}` });
     new cdk.CfnOutput(this, "DownloadJarFile", { value: `aws s3 cp --recursive --exclude '*' --include '${props.beamApplicationJarFile}' 's3://${bucket.bucketName}/target/' .` })
-    new cdk.CfnOutput(this, 'StartBeamApplication', { value: `flink run -p 8 ${props.beamApplicationJarFile} --runner=FlinkRunner --awsRegion=${cdk.Aws.REGION} --source=s3 --inputS3Pattern=s3://${bucket.bucketName}/historic-trip-events/*/*/*/*/* --outputBoroughs=true` });
+    new cdk.CfnOutput(this, 'StartBeamApplication', { value: `flink run -p 8 ${props.beamApplicationJarFile} --runner=FlinkRunner --awsRegion=${cdk.Aws.REGION} --source=s3 --inputS3Pattern=s3://${bucket.bucketName}/historic-trip-events/*/*/*/*/* --inputStreamName=beam-workshop --outputBoroughs=true` });
   }
 }
