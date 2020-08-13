@@ -3370,10 +3370,6 @@
               }
             }
           },
-          "FirehoseTransformationLambda": {
-            "id": "FirehoseTransformationLambda",
-            "path": "streaming-analytics-workshop-beam/FirehoseTransformationLambda"
-          },
           "TerminateAppLambda": {
             "id": "TerminateAppLambda",
             "path": "streaming-analytics-workshop-beam/TerminateAppLambda",
@@ -3652,10 +3648,6 @@
                 }
               }
             }
-          },
-          "KinesisAnalyticsServiceRole": {
-            "id": "KinesisAnalyticsServiceRole",
-            "path": "streaming-analytics-workshop-beam/KinesisAnalyticsServiceRole"
           },
           "EmrSecurityGroup": {
             "id": "EmrSecurityGroup",
@@ -4011,6 +4003,37 @@
               "Default": {
                 "id": "Default",
                 "path": "streaming-analytics-workshop-beam/GetEmrInstanceIdResource/Default"
+              }
+            }
+          },
+          "Dashboard": {
+            "id": "Dashboard",
+            "path": "streaming-analytics-workshop-beam/Dashboard",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "streaming-analytics-workshop-beam/Dashboard/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudWatch::Dashboard",
+                  "aws:cdk:cloudformation:props": {
+                    "dashboardBody": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "{\"widgets\":[{\"type\":\"metric\",\"width\":6,\"height\":6,\"x\":0,\"y\":0,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Overall number of trips (New York City)\",\"region\":\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":6,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (per borough)\",\"region\":\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"Borough\",\"Bronx\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Brooklyn\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"EWR\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Queens\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Staten Island\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Manhattan\",\"StreamName\",\"beam-workshop\",{\"stat\":\"Maximum\",\"yAxis\":\"right\"}]],\"yAxis\":{}}}]}"
+                        ]
+                      ]
+                    }
+                  }
+                }
               }
             }
           },

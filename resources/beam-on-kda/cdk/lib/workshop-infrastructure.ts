@@ -5,11 +5,10 @@ import ec2 = require('@aws-cdk/aws-ec2');
 import iam = require("@aws-cdk/aws-iam");
 import sns = require("@aws-cdk/aws-sns");
 import emr = require('@aws-cdk/aws-emr');
-import logs = require('@aws-cdk/aws-logs');
 import lambda = require("@aws-cdk/aws-lambda");
 import cfn = require('@aws-cdk/aws-cloudformation')
-import cr = require('@aws-cdk/custom-resources');
 import subs = require("@aws-cdk/aws-sns-subscriptions");
+import cloudwatch = require('@aws-cdk/aws-cloudwatch');
 import { Duration, RemovalPolicy } from "@aws-cdk/core";
 import { EmptyBucketOnDelete } from "./empty-bucket";
 import { GithubBuildPipeline } from "./github-build-pipeline";
@@ -38,9 +37,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
     const emptyBucket = new EmptyBucketOnDelete(this, "EmptyBucket", {
       bucket: bucket,
     });
-    
-    // new cdk.CfnOutput(this, "S3Bucket", { value: bucket.bucketName });
-
 
 
     const vpc = new ec2.Vpc(this, 'Vpc', {
@@ -86,9 +82,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
       handler: "index.handler",
     });
 
-    new cdk.CfnOutput(this, "FirehoseTransformationLambda", {
-      value: enrichEvents.functionName,
-    });
 
     const stopApplicationlambdaSource = fs
       .readFileSync("lambda/stop-kda-app.py")
@@ -118,11 +111,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     topic.addSubscription(new subs.LambdaSubscription(terminateAppLambda));
 
-    /*
-    new cdk.CfnOutput(this, "ApplicationTerminatedTopicName", {
-      value: topic.topicName,
-    });
-    */
 
     const kdaRole = new iam.Role(this, "KdaRole", {
       assumedBy: new iam.ServicePrincipal("kinesisanalytics.amazonaws.com"),
@@ -145,7 +133,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     bucket.grantRead(kdaRole);
 
-    new cdk.CfnOutput(this, "KinesisAnalyticsServiceRole", { value: kdaRole.roleName });
 
     const emrSg = new ec2.SecurityGroup(this, 'EmrSecurityGroup', {
       vpc: vpc
@@ -226,6 +213,37 @@ export class WorkshopInfrastructure extends cdk.Stack {
       }
     });
 
+
+    const metric = (dimensions?: cloudwatch.DimensionHash) => new cloudwatch.Metric({
+      metricName: 'Number of Trips',
+      namespace: 'Beam',
+      dimensions: {
+        StreamName: 'beam-workshop',
+        ...dimensions
+      },
+      statistic: 'max',
+    });
+
+    const dashboard = new cloudwatch.Dashboard(this, 'Dashboard');
+
+    dashboard.addWidgets(new cloudwatch.GraphWidget({
+      title: 'Number of trips (New York City)',
+      left: [metric()]
+    }));
+
+    dashboard.addWidgets(new cloudwatch.GraphWidget({
+      title: 'Number of trips (per borough)',
+      left: [
+        metric({ Borough: 'Bronx' }),
+        metric({ Borough: 'Brooklyn' }),
+        metric({ Borough: 'EWR' }),
+        metric({ Borough: 'Queens' }),
+        metric({ Borough: 'Staten Island' }),
+      ],
+      right: [
+        metric({ Borough: 'Manhattan' }),
+      ]
+    }));
 
     new cdk.CfnOutput(this, "ConnectToEmrCluster", { value: `https://console.aws.amazon.com/systems-manager/session-manager/${customResource.getAtt('EmrMasterInstanceId')}` });
     new cdk.CfnOutput(this, "DownloadJarFile", { value: `aws s3 cp --recursive --exclude '*' --include '${props.beamApplicationJarFile}' 's3://${bucket.bucketName}/target/' .` })
