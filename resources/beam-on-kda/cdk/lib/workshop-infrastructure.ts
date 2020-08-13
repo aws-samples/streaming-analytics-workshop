@@ -133,6 +133,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     bucket.grantRead(kdaRole);
 
+    s3.Bucket.fromBucketName(this, 'PublicDatasetBucket', 'nyc-tlc').grantRead(kdaRole);
+
 
     const emrSg = new ec2.SecurityGroup(this, 'EmrSecurityGroup', {
       vpc: vpc
