@@ -9,13 +9,13 @@ Now that the Flink cluster has been provisioned and we are connected to the Flin
 1. We first need to download the Jar file of the pipeline to the EMR cluster. Execute the command **DownloadJarFile** that you can find in the output section of the CloudFormation template. The command looks something like this:
 
 	{{< highlight plain >}}
-aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar' 's3://«Bucket name»/target/' .
+aws s3 cp ...
 {{< /highlight >}}
 
-1. You can then submit the pipeline job with the command **StartBeamApplication** from the output section of the CloudFormation template
+1. You can then submit the Beam pipeline for execution on the Flink cluster. Copy the **StartBeamApplication** command from the output section of the CloudFormation template and execute it on the EMR cluster.
 
 	{{< highlight plain >}}
-flink run -p 8 amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar --runner=FlinkRunner --awsRegion=«Region name» --source=s3 --inputS3Pattern=s3://«Bucket name»/historic-trip-events/*/*/*/*/* --outputBoroughs=true
+flink run -p 8 amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar ...
 {{< /highlight >}}
 
 1. When the pipeline is running, you can track the progress in the Flink dashboard
