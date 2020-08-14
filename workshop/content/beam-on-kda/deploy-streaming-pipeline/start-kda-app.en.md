@@ -23,5 +23,5 @@ java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-repla
 1. Navigate to the [Amazon CloudWatch Console](https://console.aws.amazon.com/cloudwatch) and select **Dashboards**
 
 1. Click on the dashboard whose name contains `BeamWorkshopDashboard`. The dashboard has already been pre-created for you and it contains two widgets, one displaying the total number of taxi trips and one for the number of taxi trips by borough. For now, the Beam application only generates the total amount, but we are going to change that in the next section.
-
-TODO: add screenshot of CW dashboard with only the total number of trips
+    
+	![](/images/beam-on-kda/cw-dashboard-total-number-trips.png)

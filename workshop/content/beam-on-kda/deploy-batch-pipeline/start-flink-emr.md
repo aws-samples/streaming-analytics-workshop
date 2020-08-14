@@ -38,3 +38,7 @@ You can only access the ResourceManager from the Windows instance, it is not ava
 1. Follow the link labeled **ApplicationMaster** to access the Flink Dashboard
 
 	![](/images/beam-on-kda/emr-resource-manager-application.png)
+
+1. You are now presented with the Apache Flink dashboard that allows you to interact with the different components of the runtime
+
+	![](/images/beam-on-kda/emr-flink-dashboard-overview.png)
