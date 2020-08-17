@@ -91,7 +91,3 @@ You can configure your Beam IO connectors to pull credentials from the KDA role,
             .apply("Parse Kinesis events", ParDo.of(new EventParser.KinesisParser()));
 ...
 ```
-
-## Custom Metrics (validate)
-
-<<Blah blah>>
