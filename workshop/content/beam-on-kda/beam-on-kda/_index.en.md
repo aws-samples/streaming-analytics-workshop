@@ -11,7 +11,7 @@ While running Beam applications on top of Kinesis Data Analytics for Apache Flin
 
 Properties for your KDA application can be configured via the AWS console (or the CLI, CFN, Terraform, etc...):
 
-![Overview BEAM Architecture](/images/beam-on-kda/beam-on-kda/app-properties.png)
+![Overview BEAM Architecture](/images/beam-on-kda/beam-on-kda/beam-app-properties.png)
 
 And these properties can be accessed from your code by extending [FlinkPipelineOptions](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/678096fcd8451f0d4d98871a3d3d97c63384d1fa/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCountOptions.java#L31) as so:
 
