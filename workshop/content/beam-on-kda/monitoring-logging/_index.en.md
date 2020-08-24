@@ -5,9 +5,4 @@ weight = 80
 chapter = true
 +++
 
-- explain how to inspect important flink metrics
-  - add metrics for cpu, millis behind latest to existing dashboard
-- maybe talk about custom metrics from beam?
-  - now sure how and if that is possible
-- explain how to inspect pipeline logs
-  - add log insights query to dashboard
+In this chapter, you will set up observability dashboards in Amazon CloudWatch to inspect an track important Beam and Kinesis metrics. This can used to track cpu, milliseconds behind latest. You will also set-up inspection of logs from Kinesis Data Analytics so you can identify any operatonal issues.

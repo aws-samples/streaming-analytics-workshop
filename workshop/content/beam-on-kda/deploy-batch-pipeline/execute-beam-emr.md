@@ -22,6 +22,6 @@ flink run -p 8 amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar ...
 
 	![](/images/beam-on-kda/emr-flink-dashboard-job.png)
 
-1. Once the pipeline has completed, you can inspect the metrics for the boroughs that have been generated in Amazon CloudWatch
+1. Once the pipeline has completed, you can inspect the metrics for the boroughs that have been generated in [Amazon CloudWatch](https://console.aws.amazon.com/cloudwatch/home?dashboards:).  The graph shows count of taxi trips that are backfilled.
 
 	![](/images/beam-on-kda/cw-dashboard-trips-backfilled.png)
