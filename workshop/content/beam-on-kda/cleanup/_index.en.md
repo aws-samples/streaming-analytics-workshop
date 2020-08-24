@@ -1,11 +1,11 @@
----
-title: "Cleanup"
-menuTitle: "Cleanup"
-chapter: false
-weight: 90
----
++++
+title = "Cleanup"
+date = 2020-07-10T11:00:27+02:00
+weight = 90
+chapter = true
++++
 
-This chapter is information to delete the resources after completing the workshop.
+This chapter is to delete the resources after completing the workshop.
 
 1. If running a hosted AWS workshop the resources and account will be available for the rest of the day to allow you to continue the worksop in your own time.
 
