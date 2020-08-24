@@ -11,6 +11,9 @@ weight = 20
 We are using [Amazon Session Manager Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) to connect to the cluster through the browser and without exposing the cluster directly over the public internet. Amazon EMR is already preconfigured with this capability. To enable the functionality, we just need to [app permissions to use the capability](https://docs.aws.amazon.com/systems-manager/latest/userguide/getting-started-add-permissions-to-existing-profile.html) to the cluster.
 {{% /notice %}}
 
+	![cf-emr-connect](/images/beam-on-kda/cf-emr-connect.png)
+
+
 2. Change to the correct user by issuing the following command:
 
 	{{< highlight plain >}}
