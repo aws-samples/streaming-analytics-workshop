@@ -5,7 +5,7 @@ weight = 90
 chapter = true
 +++
 
-Thi chapter is to delete the resources after completing the workshop
+This chapter is to delete the resources after completing the workshop.
 
 1. If running a hosted AWS workshop the resources and account will be available for the rest of the day to allow you to continue the worksop in your own time.
 
