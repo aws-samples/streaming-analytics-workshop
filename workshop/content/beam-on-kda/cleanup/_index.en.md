@@ -13,4 +13,6 @@ This chapter is to delete the resources after completing the workshop.
 
 ![clean-cf.png](/images/beam-on-kda/clean-cf.png)
 
-1. Don't forget to complete any survey post workshop, we value your feedback!
+{{% notice info %}}
+Don't forget to complete any survey post workshop, we value your feedback!
+{{% /notice %}}
