@@ -22,7 +22,7 @@ The skeleton of the application has now been created. But you still need to adap
 
    {{% notice info %}}
    We set the `OutputBoroughs` to `false` as the idea is to use the streaming application to just count the number of trips. Then, the if requirements will change we can break this down into by boroughs.
-   If we weren’t using BEAM we would now need to build another batch appliction to backfill the new metric for historic data, but now we can just use the same application to backfill the metric for historic data in a batch mode and in streaming mode for new data. Voila, unifying data processing in `B`atch and str`EAM`.
+   If we weren’t using BEAM we would now need to build another batch application to backfill the new metric for historic data, but now we can just use the same application to backfill the metric for historic data in a batch mode and in streaming mode for new data. Voila, unifying data processing in `B`atch and str`EAM`.
    {{% /notice %}}
 
    ![Configure Property Group](/images/beam-on-kda/kda-prop-grp1.png)
