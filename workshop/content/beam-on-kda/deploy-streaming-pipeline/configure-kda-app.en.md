@@ -4,9 +4,9 @@ chapter: false
 weight: 43
 ---
 
-The skeleton of the application has now been created. But you still need to adapt important configuration options, including the location of the Jar file on S3, the name of the Kinesis data stream to read from, setting the sclaing parallelism and configuring the BEAM job parameters.
+The skeleton of the application has now been created. But you still need to adapt important configuration options, including the location of the Jar file on Amazon S3, the name of the Kinesis data stream to read from, setting the parallelism and configuring the Beam job parameters.
 
-1. On the resulting page press the blue **Configure** button to configure the Kinesis Analytics application.
+1. On the resulting page press the blue **Configure** button to configure the Kinesis Data Analytics application.
 
 1. Under **Amazon S3 bucket** select the bucket name containing `historictrips` that we have been using earlier. Enter `target/amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar` as **BeamConsumerJarPath**.
 
@@ -22,7 +22,7 @@ The skeleton of the application has now been created. But you still need to adap
 
    {{% notice info %}}
    We set the `OutputBoroughs` to `false` as the idea is to use the streaming application to just count the number of trips. Then, the if requirements will change we can break this down into by boroughs.
-   If we weren’t using BEAM we would now need to build another batch application to backfill the new metric for historic data, but now we can just use the same application to backfill the metric for historic data in a batch mode and in streaming mode for new data. Voila, unifying data processing in `B`atch and str`EAM`.
+   If we weren’t using Beam we would now need to build another batch application to backfill the new metric for historic data, but now we can just use the same application to backfill the metric for historic data in a batch mode and in streaming mode for new data. Voila, unifying data processing in **B**atch and str**eam**.
    {{% /notice %}}
 
    ![Configure Property Group](/images/beam-on-kda/kda-prop-grp1.png)

@@ -18,7 +18,7 @@ You start with creating a Kinesis data stream.
 1. Enter `4` as the **Number of shards**.
 
    {{% notice info %}}
-   A Shard is the base throughput unit of an Amazon Kinesis data stream. One shard provides a capacity of 1MB/sec data input and 2MB/sec data output. One shard can support up to 1000 PUT records per second. You will specify the number of shards needed when you create a data stream. For example, we create a data stream with `four shards`. This data stream has a throughput of `4MB/sec` data input and `8MB/sec` data output, and allows up to `4000 PUT` records per second. You can monitor shard-level metrics in Amazon Kinesis Data Streams and add or remove shards from your data stream dynamically as your data throughput changes by resharding the data stream.
+   A Shard is the base throughput unit of an Amazon Kinesis data stream. One shard provides a capacity of 1MB/sec data input and 2MB/sec data output. One shard can support up to 1000 PUT records per second. You will specify the number of shards needed when you create a data stream. For example, we create a data stream with four shards. This data stream has a throughput of 4MB/sec data input and 8MB/sec data output, and allows up to 4000 put records per second. You can monitor shard-level metrics in Amazon Kinesis Data Streams and add or remove shards from your data stream dynamically as your data throughput changes by resharding the data stream.
    {{% /notice %}}
 
 1. Select **Create Kinesis stream** at the bottom of the page

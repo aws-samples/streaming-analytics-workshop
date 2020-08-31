@@ -5,14 +5,6 @@ weight = 90
 chapter = true
 +++
 
-This chapter is to delete the resources after completing the workshop.
+This chapter is to delete the resources after completing the workshop. If running a hosted AWS workshop, the resources and account will be available for the rest of the day to allow you to continue the workshop in your own time.
 
-1. If running a hosted AWS workshop the resources and account will be available for the rest of the day to allow you to continue the workshop in your own time.
-
-1. If you are running in your own account please goto to the Amazon CloudFormation dashboard and delete the **beam-workshop stack** that you created. This will remove the resources to prevent incurring any costs.
-
-![clean-cf.png](/images/beam-on-kda/clean-cf.png)
-
-{{% notice info %}}
-Don't forget to complete any survey post workshop, we value your feedback!
-{{% /notice %}}
+If you are running in your own account please remove all resources that you have created. Start with deleting the Kinesis Data Analytics application **beam-workshop**, then delete the Kinesis Firehose delivery stream **beam-workshop-s3**, and then the Kinesis data stream **beam-workshop**. Last delete the CloudFormation template *beam-workshop** and any other resources that you have created throughout the workshop, to prevent incurring any costs.

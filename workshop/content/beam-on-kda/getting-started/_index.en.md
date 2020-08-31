@@ -5,7 +5,7 @@ disableToc: false
 weight: 10
 ---
 
-Unless you have already an RDP client available on your laptop, you need to install one now so that you can connect to a Windows instance that will have the JAVA BEAM pipeline code used during the workshop. Follow the specific instructions for your operating system to install an RDP client, preferably Microsoft Remote Desktop 10.
+Unless you have already a Remote Desktop Protocol (RDP) client available on your computer, you need to install one now so that you can connect to a Windows instance that will have the Java Beam pipeline code used during the workshop. Follow the specific instructions for your operating system to install an RDP client, preferably Microsoft Remote Desktop.
 
 - **Windows Setup:** Microsoft Remote Desktop is likely already included in your Windows operating system. To verify, type `mstsc` at a Command Prompt window. If it's not already included, you can obtain it through the [Microsoft Store](https://www.microsoft.com/p/microsoft-remotedesktop/9wzdncrfj3ps).
 

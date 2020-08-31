@@ -2,14 +2,14 @@
 title = "Beam on KDA"
 date = 2020-07-10T10:27:19+02:00
 weight = 45
-chapter = true
+chapter = false
 +++
 
-While running Beam applications on top of Kinesis Data Analytics for Apache Flink (KDA) is no different from running Beam applications in any Apache Flink environment, there are a few important aspects that developers need to keep in mind.
+While running Apache Beam applications on top of Kinesis Data Analytics is no different from running Beam applications in any Apache Flink environment, there are a few important aspects that developers need to keep in mind.
 
 ## Passing parameters into the pipeline
 
-Properties for your KDA application can be configured via the AWS console (or the CLI, CFN, Terraform, etc...):
+Properties for your Kinesis Data Analytics application can be configured via the AWS console (or the CLI, CFN, Terraform, etc...):
 
 ![Overview BEAM Architecture](/images/beam-on-kda/beam-on-kda/beam-app-properties.png)
 
@@ -64,7 +64,7 @@ You'll notice the `KinesisAnalyticsRuntime` class above; in order to access this
 
 ## Dependency Shading
 
-When running your Beam applications on KDA Flink, it's important to shade your dependencies to prevent dependency conflicts. Here's a [snippet](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/pom.xml#L196-L199) involving `jackson` from the taxi consumer sample:
+When running your Beam applications on Kinesis Data Analytics, it's important to shade your dependencies to prevent dependency conflicts. Here's a [snippet](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/pom.xml#L196-L199) involving `jackson` from the taxi consumer sample:
 
 ```
 ...
@@ -77,7 +77,7 @@ When running your Beam applications on KDA Flink, it's important to shade your d
 
 ## Configuring Credentials
 
-You can configure your Beam IO connectors to pull credentials from the KDA role, instead of hard coding credentials in your code. Here's a snippet illustrating how to [configure the `KinesisIO` connector](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/678096fcd8451f0d4d98871a3d3d97c63384d1fa/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java#L70):
+You can configure your Beam IO connectors to pull credentials from the role that has been configured for the Kinesis Data Analytics application, instead of hard coding credentials in your code. Here's a snippet illustrating how to [configure the `KinesisIO` connector](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/678096fcd8451f0d4d98871a3d3d97c63384d1fa/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java#L70):
 
 ```
 ...
