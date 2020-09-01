@@ -2,13 +2,14 @@ RelativeURLs=true
 CanonifyURLs=true
 languageCode = "en-US"
 defaultContentLanguage = "en"
-defaultContentLanguageInSubdir = true
+defaultContentLanguageInSubdir = false
+disableLanguages = ["de"]
 
 title = "Streaming Analytics Workshop"
 theme = "learn"
 metaDataFormat = "yaml"
 
-uglyurls = true
+uglyurls = false
 sectionPagesMenu = "main"
 pygmentsCodeFences = true
 pygmentsStyle = "monokai"
@@ -61,7 +62,7 @@ pygmentsStyle = "monokai"
   weight = 40
 
 
-#[Languages.de]
-#  title = "Streaming Analytics Workshop"
-#  weight = 1
-#  languageName = "Deutsch"
+[Languages.de]
+  title = "Streaming Analytics Workshop"
+  weight = 1
+  languageName = "Deutsch"
