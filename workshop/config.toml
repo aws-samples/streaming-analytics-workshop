@@ -2,7 +2,7 @@ RelativeURLs=true
 CanonifyURLs=true
 languageCode = "en-US"
 defaultContentLanguage = "en"
-defaultContentLanguageInSubdir = false
+defaultContentLanguageInSubdir = true
 
 title = "Streaming Analytics Workshop"
 theme = "learn"
