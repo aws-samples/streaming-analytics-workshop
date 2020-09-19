@@ -11,10 +11,18 @@ import elasticsearch = require('@aws-cdk/aws-elasticsearch');
 import { GithubBuildPipeline } from './github-build-pipeline';
 import { RemovalPolicy, Duration, Stack } from '@aws-cdk/core';
 import { BuildSpec } from '@aws-cdk/aws-codebuild';
+import { EmptyBucketOnDelete } from './empty-bucket';
 
+export interface WorkshopInfrastructureProps extends cdk.StackProps {
+  kinesisReplayVersion: String,
+  consumerApplicationVersion: String,
+  consumerApplicationJarObject: String,
+  flinkVersion: String,
+  flinkScalaVersion: String
+}
 
 export class WorkshopInfrastructure extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props: WorkshopInfrastructureProps) {
     super(scope, id, props);
 
 
@@ -23,20 +31,22 @@ export class WorkshopInfrastructure extends cdk.Stack {
       removalPolicy: RemovalPolicy.DESTROY
     });
 
+    new EmptyBucketOnDelete(this, 'EmptyBucket', {
+      bucket: bucket
+    });
+
 
     new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
-      url: 'https://github.com/aws-samples/amazon-kinesis-replay/archive/master.zip',
+      url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.kinesisReplayVersion}.zip`,
       bucket: bucket,
       extract: true
     });
 
 
-    const flinkVersion = '1.6.2'
-    const scalaVersion = '2.11'
-    const connectorKey = `target/flink-connector-kinesis_${scalaVersion}-${flinkVersion}.zip`
+    const connectorKey = `target/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.zip`
 
     new GithubBuildPipeline(this, 'FlinkConnectorKinesisPipeline', {
-      url: `https://github.com/apache/flink/archive/release-${flinkVersion}.zip`,
+      url: `https://github.com/apache/flink/archive/release-${props.flinkVersion}.zip`,
       bucket: bucket,
       extract: false,
       objectKey: `${connectorKey}`,
@@ -45,23 +55,23 @@ export class WorkshopInfrastructure extends cdk.Stack {
         phases: {
           build: {
             commands: [
-              `cd flink-release-${flinkVersion}`,
+              `cd flink-release-${props.flinkVersion}`,
               'mvn clean package -B -DskipTests -Dfast -Pinclude-kinesis -pl flink-connectors/flink-connector-kinesis'
             ]
           },
           post_build: {
             commands: [
               'cd flink-connectors/flink-connector-kinesis/target',
-              `mv dependency-reduced-pom.xml flink-connector-kinesis_${scalaVersion}-${flinkVersion}.pom.xml`
+              `mv dependency-reduced-pom.xml flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.pom.xml`
             ]
           }
         },
         artifacts: {
           files: [
-            `target/flink-connector-kinesis_${scalaVersion}-${flinkVersion}.jar`,
-            `target/flink-connector-kinesis_${scalaVersion}-${flinkVersion}.pom.xml`
+            `target/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.jar`,
+            `target/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.pom.xml`
           ],
-          'base-directory': `flink-release-${flinkVersion}/flink-connectors/flink-connector-kinesis`,
+          'base-directory': `flink-release-${props.flinkVersion}/flink-connectors/flink-connector-kinesis`,
           'discard-paths': true
         }
       })
@@ -70,8 +80,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     const connectorArtifactName = 'FlinkKinesisConnector';
 
-    new GithubBuildPipeline(this, 'FlinkApplicationPipeline', {
-      url: 'https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/master.zip',
+    new GithubBuildPipeline(this, 'ConsumerApplicationPipeline', {
+      url: `https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/${props.consumerApplicationVersion}.zip`,
       bucket: bucket,
       extract: true,
       sourceAction: new codepipeline_actions.S3SourceAction({
@@ -85,13 +95,13 @@ export class WorkshopInfrastructure extends cdk.Stack {
         phases: {
           pre_build: {
             commands: [
-              `mvn install:install-file -B -Dfile=$CODEBUILD_SRC_DIR_${connectorArtifactName}/flink-connector-kinesis_${scalaVersion}-${flinkVersion}.jar -DpomFile=$CODEBUILD_SRC_DIR_${connectorArtifactName}/flink-connector-kinesis_${scalaVersion}-${flinkVersion}.pom.xml`
+              `mvn install:install-file -B -Dfile=$CODEBUILD_SRC_DIR_${connectorArtifactName}/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.jar -DpomFile=$CODEBUILD_SRC_DIR_${connectorArtifactName}/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.pom.xml`
             ]
           },
           build: {
             commands: [
               'cd amazon-kinesis-analytics-taxi-consumer-*',
-              `mvn clean package -B -Dflink.version=${flinkVersion}`
+              `mvn clean package -B -Dflink.version=${props.flinkVersion}`
             ]
           }
         },
@@ -145,7 +155,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
             "Condition": {
               "IpAddress": {
                 "aws:SourceIp": [
-                  `${eip.ref}`
+                  eip.ref
                 ]
               }
             }
@@ -153,6 +163,46 @@ export class WorkshopInfrastructure extends cdk.Stack {
         ]
       }
     });
+
+
+    const policy = new iam.PolicyDocument();
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        'secretsmanager:GetSecretValue',
+      ],
+      resources: [ localAdminPassword.secretArn ]
+    }));
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        'ec2:AssociateAddress',
+        'cloudwatch:PutMetricData',
+        'logs:Describe*', 'logs:PutLogEvents',
+        'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
+        'kinesisanalytics:StartApplication'
+      ],
+      resources: [ '*' ]
+    }));
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        'cloudformation:DescribeStacks'
+      ],
+      resources: [ cdk.Aws.STACK_ID ]
+    }));
+
+    policy.addStatements(new iam.PolicyStatement({
+      actions: [
+        's3:GetObject*', 's3:GetBucket*', 's3:List*'
+      ],
+      resources: [
+        bucket.bucketArn,
+        `${bucket.bucketArn}/*`,
+        `arn:${cdk.Aws.PARTITION}:s3:::aws-bigdata-blog`,
+        `arn:${cdk.Aws.PARTITION}:s3:::aws-bigdata-blog/*`,
+      ]
+    }));
 
 
     const vpc = new ec2.Vpc(this, 'Vpc', {
@@ -168,29 +218,17 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3389));
 
-
     const ami = new ec2.WindowsImage(ec2.WindowsVersion.WINDOWS_SERVER_2019_ENGLISH_FULL_BASE);
 
     const instanceRole = new iam.Role(this, 'InstanceRole', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
-      ]
-    });
-
-    instanceRole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'secretsmanager:GetSecretValue',
-        'cloudformation:DescribeStacks',
-        'ec2:AssociateAddress',
-        'cloudwatch:PutMetricData',
-        'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
-        'kinesisanalytics:CreateApplication', 'kinesisanalytics:StartApplication', 'kinesisanalytics:UpdateApplication',
-        's3:GetObject', 's3:ListBucket',
-        'es:ESHttpPut', 'es:ESHttpPost', 'es:ESHttpHead',
       ],
-      resources: ['*']
-    }));
+      inlinePolicies: {
+        WorkshopPermissions: policy
+      }
+    });
 
     const instanceProfile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
       roles: [
@@ -200,7 +238,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     const waitHandle = new cfn.CfnWaitConditionHandle(this, 'InstanceWaitHandle');
 
-    new cfn.CfnWaitCondition(this, 'InstanceBootstrapWaitCondition', {
+    const waitCondition = new cfn.CfnWaitCondition(this, 'InstanceBootstrapWaitCondition', {
       count: 1,
       handle: waitHandle.ref,
       timeout: Duration.minutes(20).toSeconds().toString()
@@ -270,7 +308,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
             # Download artifacts
             New-Item -Path "$desktop" -Name "workshop-resources" -ItemType "directory"
 
-            $url = "https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/master/misc/streaming-analytics-workshop-dashboard.json"
+            $url = "https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/${props.consumerApplicationVersion}/misc/streaming-analytics-workshop-dashboard.json"
             $file = "$desktop\\workshop-resources\\streaming-analytics-workshop-dashboard.json"
             (New-Object System.Net.WebClient).DownloadFile($url, $file)
 
@@ -285,8 +323,10 @@ export class WorkshopInfrastructure extends cdk.Stack {
       }
     });
 
+    waitCondition.addDependsOn(launchTemplate);
 
-    const asg = new autoscaling.CfnAutoScalingGroup(this, 'AutoScalingGroup', {
+
+    new autoscaling.CfnAutoScalingGroup(this, 'AutoScalingGroup', {
       mixedInstancesPolicy: {
         launchTemplate: {
           launchTemplateSpecification: {
@@ -315,18 +355,24 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
 
     const kdaRole = new iam.Role(this, 'KdaRole', {
-      assumedBy: new iam.ServicePrincipal('kinesisanalytics.amazonaws.com')
+      assumedBy: new iam.ServicePrincipal('kinesisanalytics.amazonaws.com'),
+
     });
 
     kdaRole.addToPolicy(new iam.PolicyStatement({
       actions: [
-        's3:GetObject', 's3:ListBucket',
         'logs:Describe*', 'logs:PutLogEvents',
         'kinesis:List*', 'kinesis:Describe*', 'kinesis:Get*', 'kinesis:SubscribeToShard',
-        'es:ESHttp*'
       ],
-      resources: ['*']
+      resources: [ '*' ]
     }));
+
+    kdaRole.addToPolicy(new iam.PolicyStatement({
+      actions: [ 'es:ESHttp*' ],
+      resources: [ `${es.attrArn}/*` ]
+    }));
+
+    bucket.grantRead(kdaRole);
 
 
     new cdk.CfnOutput(this, 'InstanceIp', { value: eip.ref });
@@ -334,6 +380,6 @@ export class WorkshopInfrastructure extends cdk.Stack {
     new cdk.CfnOutput(this, 'ElasticsearchDomainName', { value: es.attrDomainEndpoint });
     new cdk.CfnOutput(this, 'KinesisAnalyticsServiceRole', { value: kdaRole.roleName });
     new cdk.CfnOutput(this, 'FlinkApplicationJarBucket', { value: bucket.bucketName });
-    new cdk.CfnOutput(this, 'FlinkApplicationJarObject', { value: 'target/amazon-kinesis-analytics-taxi-consumer-1.0-SNAPSHOT.jar' });
+    new cdk.CfnOutput(this, 'FlinkApplicationJarObject', { value: `target/${props.consumerApplicationJarObject}` });
   }
 }

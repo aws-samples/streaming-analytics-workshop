@@ -18,5 +18,5 @@ IntelliJ will eventually display an error message that the *flink-connector-kine
 1. Enter the following command into the terminal prompt to start producing events into the Kinesis data stream
 
 	```
-java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-1.0-SNAPSHOT.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName streaming-analytics-workshop -speedup 600
+java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName streaming-analytics-workshop -speedup 600
 	```
