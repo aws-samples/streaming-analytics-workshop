@@ -5,7 +5,7 @@ chapter: false
 weight: 5
 ---
 
-Eventually, we'd like to deploy the program to KDA for Java Applications. However, instead of logging in to a cluster and directly submitting a job to the Flink runtime, you upload the respective fat JAR to Amazon S3 and start the execution by calling an API. So we don't get access to the Flink cluster and we hence need to adapt the way we pass parameters to the Flink application.
+Eventually, we'd like to deploy the program to KDA. However, instead of logging in to a cluster and directly submitting a job to the Flink runtime, you upload the respective fat JAR to Amazon S3 and start the execution by calling an API. So we don't get access to the Flink cluster and we hence need to adapt the way we pass parameters to the Flink application.
 
 If the Flink application is executed with Kinesis Data Analytics, we can obtain parameters from the Kinesis Analytics runtime. To this end, we can call the `KinesisAnalyticsRuntime.getApplicationProperties()` function to retrieve the parameters that are passed to the service through an API.
 

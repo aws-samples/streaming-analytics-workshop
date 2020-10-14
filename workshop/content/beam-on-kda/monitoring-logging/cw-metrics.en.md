@@ -26,7 +26,7 @@ Now that the Kinesis data stream is scaling, we'll take a look at how we can ide
 
    ![](/images/beam-on-kda/cw-dashboard-3-metric-properties.png)
 
-The dashboard now shows two metrics: the amount of incoming messages and the millisBehindLatest metric. The metric reports the time difference between the oldest record currently read by the Kinesis Data Analytics for Java application and the latest record in the stream according to the ingestion time in milliseconds. So it indicates how much behind the processing is from the tip of the stream.
+The dashboard now shows two metrics: the amount of incoming messages and the millisBehindLatest metric. The metric reports the time difference between the oldest record currently read by the Kinesis Data Analytics application and the latest record in the stream according to the ingestion time in milliseconds. So it indicates how much behind the processing is from the tip of the stream.
 
 Other important metrics include, `ReadProvisionedThroughputExceeded` and `WriteProvisionedThroughputExceeded`. You can add them to the dashboard as well to see how the producer is throttled.
 

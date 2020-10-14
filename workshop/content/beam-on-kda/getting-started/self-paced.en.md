@@ -10,7 +10,7 @@ Loft, Immersion Day, or any other event hosted by an AWS employee), continue wit
 
 ### Running the workshop on your own
 
-1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting these resource types: **Amazon Code Pipeline**, **Amazon CloudWatch Service**, and **Amazon Kinesis Data Analytics for Java Applications**.
+1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting these resource types: **Amazon Code Pipeline**, **Amazon CloudWatch Service**, and **Amazon Kinesis Data Analytics**.
 
    [![Launch CloudFormation Stack](/images/beam-on-kda/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=beam-workshop&templateURL=https://shausma-public.s3-eu-west-1.amazonaws.com/public/cfn-templates/streaming-analytics-workshop/streaming-analytics-workshop-beam.template.json)
 

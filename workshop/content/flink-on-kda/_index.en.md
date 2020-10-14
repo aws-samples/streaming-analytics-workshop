@@ -9,7 +9,7 @@ In this workshop, you will build an end-to-end streaming architecture to ingest,
 
 ![Kibana dashboard](/images/flink-on-kda/kibana-visualization.png)
 
-You will not only learn how to deploy, operate, and scale an [Apache Flink][1] application with [Kinesis Data Analytics for Java Applications][2], but also explore the basic concepts of Apache Flink and running Flink applications in a fully managed environment on AWS.
+You will not only learn how to deploy, operate, and scale an [Apache Flink][1] application with [Kinesis Data Analytics for Apache Flink][2], but also explore the basic concepts of Apache Flink and running Flink applications in a fully managed environment on AWS.
 
 [1]: https://flink.apache.org/
 
