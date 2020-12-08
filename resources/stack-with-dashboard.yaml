@@ -1,0 +1,2862 @@
+Description: >-
+  Creates all resources and compiles all artifacts that are required to run the
+  streaming analytics workshop
+  (shausma-streaming-analytics-workshop-self-paced-2020-09-02)
+Resources:
+  Bucket83908E77:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Bucket/Resource
+  EmptyBucketEmptyBucketLambdaServiceRole67452BDD:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join 
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/EmptyBucket/EmptyBucketLambda/ServiceRole/Resource
+  EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF
+      Roles:
+        - !Ref EmptyBucketEmptyBucketLambdaServiceRole67452BDD
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/EmptyBucket/EmptyBucketLambda/ServiceRole/DefaultPolicy/Resource
+  EmptyBucketEmptyBucketLambdaD0E9E93D:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        ZipFile: |-
+          import os
+          import json
+          import boto3
+          import traceback
+          import cfnresponse
+
+          def empty_bucket(event, context):
+              bucket_name = os.environ['bucket_name']
+
+              try:
+                  if event['RequestType'] == 'Delete':
+                      print("empty bucket: " + bucket_name)
+                      
+                      bucket = boto3.resource('s3').Bucket(bucket_name)
+                      bucket.object_versions.delete()
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              except Exception:
+                  traceback.print_exc()
+
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {})
+      Handler: index.empty_bucket
+      Role: !GetAtt 
+        - EmptyBucketEmptyBucketLambdaServiceRole67452BDD
+        - Arn
+      Runtime: python3.7
+      Environment:
+        Variables:
+          bucket_name: !Ref Bucket83908E77
+      MemorySize: 512
+      Timeout: 900
+    DependsOn:
+      - EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF
+      - EmptyBucketEmptyBucketLambdaServiceRole67452BDD
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/EmptyBucket/EmptyBucketLambda/Resource
+  EmptyBucketEmptyBucketResource78AC492E:
+    Type: 'AWS::CloudFormation::CustomResource'
+    Properties:
+      ServiceToken: !GetAtt 
+        - EmptyBucketEmptyBucketLambdaD0E9E93D
+        - Arn
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/EmptyBucket/EmptyBucketResource
+  KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join 
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/Resource
+  KinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicyBF6DD429:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource: !Join 
+              - ''
+              - - !GetAtt 
+                  - Bucket83908E77
+                  - Arn
+                - /*
+        Version: 2012-10-17
+      PolicyName: KinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicyBF6DD429
+      Roles:
+        - !Ref KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource
+  KinesisReplayBuildPipelineDownloadLambda3BF1DB4C:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        ZipFile: |
+          import os
+          import json
+          import boto3
+          import traceback
+          import cfnresponse
+          import urllib.request
+
+          s3client = boto3.client('s3')
+          code_pipeline = boto3.client('codepipeline')
+
+
+          def download_sources(event, context):
+              url = os.environ['url']
+              bucket = os.environ['bucket']
+              key = os.environ['key']
+
+              try:
+                  if event['RequestType'] != 'Delete':
+                      req = urllib.request.Request(url)
+                      response = urllib.request.urlopen(req)
+
+                      s3client.put_object(Bucket=bucket, Key=key, Body=response.read())
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              except Exception:
+                  traceback.print_exc()
+
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {})
+
+
+          def notify_build_success(event, context):
+              job_id = event['CodePipeline.job']['id']
+
+              url = os.environ['waitHandleUrl']
+              headers = { "Content-Type": "" }
+              data = { "Status": "SUCCESS", "Reason": "Compilation Succeeded", "UniqueId": job_id, "Data": "Compilation Succeeded" }
+
+              try:
+                  req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding="utf-8"), method='PUT')
+                  response = urllib.request.urlopen(req)
+
+                  code_pipeline.put_job_success_result(jobId=job_id)
+              except Exception:
+                  traceback.print_exc()
+
+                  code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})
+      Handler: index.download_sources
+      Role: !GetAtt 
+        - KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6
+        - Arn
+      Runtime: python3.7
+      Environment:
+        Variables:
+          url: >-
+            https://github.com/aws-samples/amazon-kinesis-replay/archive/release-0.1.0.zip
+          bucket: !Ref Bucket83908E77
+          key: sources/amazon-kinesis-replay-release-0.1.0.zip
+      Timeout: 30
+    DependsOn:
+      - KinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicyBF6DD429
+      - KinesisReplayBuildPipelineDownloadLambdaServiceRoleB714F0C6
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/DownloadLambda/Resource
+  KinesisReplayBuildPipelineDownloadLambdaResource381B544B:
+    Type: 'AWS::CloudFormation::CustomResource'
+    Properties:
+      ServiceToken: !GetAtt 
+        - KinesisReplayBuildPipelineDownloadLambda3BF1DB4C
+        - Arn
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/DownloadLambdaResource/Default
+  KinesisReplayBuildPipelineCodebuildProjectRole088416D9:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/Resource
+  KinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicy88D54FBA:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Effect: Allow
+            Resource:
+              - !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':logs:'
+                  - !Ref 'AWS::Region'
+                  - ':'
+                  - !Ref 'AWS::AccountId'
+                  - ':log-group:/aws/codebuild/'
+                  - !Ref KinesisReplayBuildPipelineCodebuildProject39AB80D2
+              - !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':logs:'
+                  - !Ref 'AWS::Region'
+                  - ':'
+                  - !Ref 'AWS::AccountId'
+                  - ':log-group:/aws/codebuild/'
+                  - !Ref KinesisReplayBuildPipelineCodebuildProject39AB80D2
+                  - ':*'
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: KinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicy88D54FBA
+      Roles:
+        - !Ref KinesisReplayBuildPipelineCodebuildProjectRole088416D9
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Role/DefaultPolicy/Resource
+  KinesisReplayBuildPipelineCodebuildProject39AB80D2:
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: 'aws/codebuild/java:openjdk-11'
+        PrivilegedMode: false
+        Type: LINUX_CONTAINER
+      ServiceRole: !GetAtt 
+        - KinesisReplayBuildPipelineCodebuildProjectRole088416D9
+        - Arn
+      Source:
+        BuildSpec: |-
+          {
+            "version": "0.2",
+            "phases": {
+              "build": {
+                "commands": [
+                  "cd amazon-kinesis-replay-release-0.1.0",
+                  "mvn clean package -B"
+                ]
+              }
+            },
+            "artifacts": {
+              "files": [
+                "target/amazon-kinesis-replay-*.jar"
+              ],
+              "discard-paths": false,
+              "base-directory": "amazon-kinesis-replay-release-0.1.0"
+            }
+          }
+        Type: CODEPIPELINE
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodebuildProject/Resource
+  KinesisReplayBuildPipelineWaitHandle670CA7B8:
+    Type: 'AWS::CloudFormation::WaitConditionHandle'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/WaitHandle
+  KinesisReplayBuildPipelineWaitCondition04932765:
+    Type: 'AWS::CloudFormation::WaitCondition'
+    Properties:
+      Count: 1
+      Handle: !Ref KinesisReplayBuildPipelineWaitHandle670CA7B8
+      Timeout: '1200'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/WaitCondition
+  KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join 
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/Resource
+  KinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicy6B2E66BF:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'codepipeline:PutJobSuccessResult'
+              - 'codepipeline:PutJobFailureResult'
+            Effect: Allow
+            Resource: '*'
+        Version: 2012-10-17
+      PolicyName: KinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicy6B2E66BF
+      Roles:
+        - !Ref KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource
+  KinesisReplayBuildPipelineNotifyLambda8B0DA1ED:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        ZipFile: |
+          import os
+          import json
+          import boto3
+          import traceback
+          import cfnresponse
+          import urllib.request
+
+          s3client = boto3.client('s3')
+          code_pipeline = boto3.client('codepipeline')
+
+
+          def download_sources(event, context):
+              url = os.environ['url']
+              bucket = os.environ['bucket']
+              key = os.environ['key']
+
+              try:
+                  if event['RequestType'] != 'Delete':
+                      req = urllib.request.Request(url)
+                      response = urllib.request.urlopen(req)
+
+                      s3client.put_object(Bucket=bucket, Key=key, Body=response.read())
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              except Exception:
+                  traceback.print_exc()
+
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {})
+
+
+          def notify_build_success(event, context):
+              job_id = event['CodePipeline.job']['id']
+
+              url = os.environ['waitHandleUrl']
+              headers = { "Content-Type": "" }
+              data = { "Status": "SUCCESS", "Reason": "Compilation Succeeded", "UniqueId": job_id, "Data": "Compilation Succeeded" }
+
+              try:
+                  req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding="utf-8"), method='PUT')
+                  response = urllib.request.urlopen(req)
+
+                  code_pipeline.put_job_success_result(jobId=job_id)
+              except Exception:
+                  traceback.print_exc()
+
+                  code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})
+      Handler: index.notify_build_success
+      Role: !GetAtt 
+        - KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8
+        - Arn
+      Runtime: python3.7
+      Environment:
+        Variables:
+          waitHandleUrl: !Ref KinesisReplayBuildPipelineWaitHandle670CA7B8
+      Timeout: 10
+    DependsOn:
+      - KinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicy6B2E66BF
+      - KinesisReplayBuildPipelineNotifyLambdaServiceRoleA6F8FBD8
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/NotifyLambda/Resource
+  KinesisReplayBuildPipelineCodePipelineRole5917B240:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/Resource
+  KinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy2BA178C3:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF
+              - Arn
+        Version: 2012-10-17
+      PolicyName: KinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy2BA178C3
+      Roles:
+        - !Ref KinesisReplayBuildPipelineCodePipelineRole5917B240
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Role/DefaultPolicy/Resource
+  KinesisReplayBuildPipelineCodePipeline6A859BDA:
+    Type: 'AWS::CodePipeline::Pipeline'
+    Properties:
+      RoleArn: !GetAtt 
+        - KinesisReplayBuildPipelineCodePipelineRole5917B240
+        - Arn
+      Stages:
+        - Actions:
+            - ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+              Configuration:
+                S3Bucket: !Ref Bucket83908E77
+                S3ObjectKey: sources/amazon-kinesis-replay-release-0.1.0.zip
+              Name: SourceAction
+              OutputArtifacts:
+                - Name: Artifact_Source_SourceAction
+              RoleArn: !GetAtt 
+                - >-
+                  KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05
+                - Arn
+              RunOrder: 1
+          Name: Source
+        - Actions:
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              Configuration:
+                ProjectName: !Ref KinesisReplayBuildPipelineCodebuildProject39AB80D2
+              InputArtifacts:
+                - Name: Artifact_Source_SourceAction
+              Name: BuildAction
+              OutputArtifacts:
+                - Name: Artifact_Build_BuildAction
+              RoleArn: !GetAtt 
+                - >-
+                  KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A
+                - Arn
+              RunOrder: 1
+          Name: Build
+        - Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+              Configuration:
+                BucketName: !Ref Bucket83908E77
+                Extract: 'true'
+              InputArtifacts:
+                - Name: Artifact_Build_BuildAction
+              Name: CopyAction
+              RoleArn: !GetAtt 
+                - >-
+                  KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07
+                - Arn
+              RunOrder: 1
+            - ActionTypeId:
+                Category: Invoke
+                Owner: AWS
+                Provider: Lambda
+                Version: '1'
+              Configuration:
+                FunctionName: !Ref KinesisReplayBuildPipelineNotifyLambda8B0DA1ED
+              Name: InvokeAction
+              RoleArn: !GetAtt 
+                - >-
+                  KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF
+                - Arn
+              RunOrder: 2
+          Name: Copy
+      ArtifactStore:
+        Location: !Ref Bucket83908E77
+        Type: S3
+    DependsOn:
+      - KinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy2BA178C3
+      - KinesisReplayBuildPipelineCodePipelineRole5917B240
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Resource
+  KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource
+  KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy334675EB:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action:
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy334675EB
+      Roles:
+        - !Ref >-
+          KinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleA94E5F05
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource
+  KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource
+  KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy7DBFA69D:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'codebuild:BatchGetBuilds'
+              - 'codebuild:StartBuild'
+              - 'codebuild:StopBuild'
+            Effect: Allow
+            Resource: !GetAtt 
+              - KinesisReplayBuildPipelineCodebuildProject39AB80D2
+              - Arn
+        Version: 2012-10-17
+      PolicyName: >-
+        KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy7DBFA69D
+      Roles:
+        - !Ref >-
+          KinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole203FC21A
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource
+  KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource
+  KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyD2AE2A89:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyD2AE2A89
+      Roles:
+        - !Ref >-
+          KinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole6B9DFD07
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource
+  KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource
+  KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy8EF812D1:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: 'lambda:ListFunctions'
+            Effect: Allow
+            Resource: '*'
+          - Action: 'lambda:InvokeFunction'
+            Effect: Allow
+            Resource: !GetAtt 
+              - KinesisReplayBuildPipelineNotifyLambda8B0DA1ED
+              - Arn
+        Version: 2012-10-17
+      PolicyName: >-
+        KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy8EF812D1
+      Roles:
+        - !Ref >-
+          KinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleEDB049EF
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource
+  FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleAC8991F2:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join 
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/DownloadLambda/ServiceRole/Resource
+  FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleDefaultPolicyD5F18B5E:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource: !Join 
+              - ''
+              - - !GetAtt 
+                  - Bucket83908E77
+                  - Arn
+                - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleDefaultPolicyD5F18B5E
+      Roles:
+        - !Ref FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleAC8991F2
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource
+  FlinkConnectorKinesisPipelineDownloadLambda24002D5A:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        ZipFile: |
+          import os
+          import json
+          import boto3
+          import traceback
+          import cfnresponse
+          import urllib.request
+
+          s3client = boto3.client('s3')
+          code_pipeline = boto3.client('codepipeline')
+
+
+          def download_sources(event, context):
+              url = os.environ['url']
+              bucket = os.environ['bucket']
+              key = os.environ['key']
+
+              try:
+                  if event['RequestType'] != 'Delete':
+                      req = urllib.request.Request(url)
+                      response = urllib.request.urlopen(req)
+
+                      s3client.put_object(Bucket=bucket, Key=key, Body=response.read())
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              except Exception:
+                  traceback.print_exc()
+
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {})
+
+
+          def notify_build_success(event, context):
+              job_id = event['CodePipeline.job']['id']
+
+              url = os.environ['waitHandleUrl']
+              headers = { "Content-Type": "" }
+              data = { "Status": "SUCCESS", "Reason": "Compilation Succeeded", "UniqueId": job_id, "Data": "Compilation Succeeded" }
+
+              try:
+                  req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding="utf-8"), method='PUT')
+                  response = urllib.request.urlopen(req)
+
+                  code_pipeline.put_job_success_result(jobId=job_id)
+              except Exception:
+                  traceback.print_exc()
+
+                  code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})
+      Handler: index.download_sources
+      Role: !GetAtt 
+        - FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleAC8991F2
+        - Arn
+      Runtime: python3.7
+      Environment:
+        Variables:
+          url: 'https://github.com/apache/flink/archive/release-1.8.2.zip'
+          bucket: !Ref Bucket83908E77
+          key: sources/flink-release-1.8.2.zip
+      Timeout: 30
+    DependsOn:
+      - >-
+        FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleDefaultPolicyD5F18B5E
+      - FlinkConnectorKinesisPipelineDownloadLambdaServiceRoleAC8991F2
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/DownloadLambda/Resource
+  FlinkConnectorKinesisPipelineDownloadLambdaResource2F1EBC5A:
+    Type: 'AWS::CloudFormation::CustomResource'
+    Properties:
+      ServiceToken: !GetAtt 
+        - FlinkConnectorKinesisPipelineDownloadLambda24002D5A
+        - Arn
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/DownloadLambdaResource/Default
+  FlinkConnectorKinesisPipelineCodebuildProjectRole81A322E9:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodebuildProject/Role/Resource
+  FlinkConnectorKinesisPipelineCodebuildProjectRoleDefaultPolicyBCF5C37E:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Effect: Allow
+            Resource:
+              - !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':logs:'
+                  - !Ref 'AWS::Region'
+                  - ':'
+                  - !Ref 'AWS::AccountId'
+                  - ':log-group:/aws/codebuild/'
+                  - !Ref FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F
+              - !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':logs:'
+                  - !Ref 'AWS::Region'
+                  - ':'
+                  - !Ref 'AWS::AccountId'
+                  - ':log-group:/aws/codebuild/'
+                  - !Ref FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F
+                  - ':*'
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: FlinkConnectorKinesisPipelineCodebuildProjectRoleDefaultPolicyBCF5C37E
+      Roles:
+        - !Ref FlinkConnectorKinesisPipelineCodebuildProjectRole81A322E9
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodebuildProject/Role/DefaultPolicy/Resource
+  FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F:
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: 'aws/codebuild/java:openjdk-11'
+        PrivilegedMode: false
+        Type: LINUX_CONTAINER
+      ServiceRole: !GetAtt 
+        - FlinkConnectorKinesisPipelineCodebuildProjectRole81A322E9
+        - Arn
+      Source:
+        BuildSpec: |-
+          {
+            "version": "0.2",
+            "phases": {
+              "build": {
+                "commands": [
+                  "cd flink-release-1.8.2",
+                  "mvn clean package -B -DskipTests -Dfast -Pinclude-kinesis -pl flink-connectors/flink-connector-kinesis"
+                ]
+              },
+              "post_build": {
+                "commands": [
+                  "cd flink-connectors/flink-connector-kinesis/target",
+                  "mv dependency-reduced-pom.xml flink-connector-kinesis_2.11-1.8.2.pom.xml"
+                ]
+              }
+            },
+            "artifacts": {
+              "files": [
+                "target/flink-connector-kinesis_2.11-1.8.2.jar",
+                "target/flink-connector-kinesis_2.11-1.8.2.pom.xml"
+              ],
+              "base-directory": "flink-release-1.8.2/flink-connectors/flink-connector-kinesis",
+              "discard-paths": true
+            }
+          }
+        Type: CODEPIPELINE
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodebuildProject/Resource
+  FlinkConnectorKinesisPipelineWaitHandle2092DDAA:
+    Type: 'AWS::CloudFormation::WaitConditionHandle'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/WaitHandle
+  FlinkConnectorKinesisPipelineWaitConditionB522DB60:
+    Type: 'AWS::CloudFormation::WaitCondition'
+    Properties:
+      Count: 1
+      Handle: !Ref FlinkConnectorKinesisPipelineWaitHandle2092DDAA
+      Timeout: '1200'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/WaitCondition
+  FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleE56E3F0F:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join 
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/NotifyLambda/ServiceRole/Resource
+  FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleDefaultPolicy8FCACA58:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'codepipeline:PutJobSuccessResult'
+              - 'codepipeline:PutJobFailureResult'
+            Effect: Allow
+            Resource: '*'
+        Version: 2012-10-17
+      PolicyName: >-
+        FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleDefaultPolicy8FCACA58
+      Roles:
+        - !Ref FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleE56E3F0F
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource
+  FlinkConnectorKinesisPipelineNotifyLambda036C4408:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        ZipFile: |
+          import os
+          import json
+          import boto3
+          import traceback
+          import cfnresponse
+          import urllib.request
+
+          s3client = boto3.client('s3')
+          code_pipeline = boto3.client('codepipeline')
+
+
+          def download_sources(event, context):
+              url = os.environ['url']
+              bucket = os.environ['bucket']
+              key = os.environ['key']
+
+              try:
+                  if event['RequestType'] != 'Delete':
+                      req = urllib.request.Request(url)
+                      response = urllib.request.urlopen(req)
+
+                      s3client.put_object(Bucket=bucket, Key=key, Body=response.read())
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              except Exception:
+                  traceback.print_exc()
+
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {})
+
+
+          def notify_build_success(event, context):
+              job_id = event['CodePipeline.job']['id']
+
+              url = os.environ['waitHandleUrl']
+              headers = { "Content-Type": "" }
+              data = { "Status": "SUCCESS", "Reason": "Compilation Succeeded", "UniqueId": job_id, "Data": "Compilation Succeeded" }
+
+              try:
+                  req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding="utf-8"), method='PUT')
+                  response = urllib.request.urlopen(req)
+
+                  code_pipeline.put_job_success_result(jobId=job_id)
+              except Exception:
+                  traceback.print_exc()
+
+                  code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})
+      Handler: index.notify_build_success
+      Role: !GetAtt 
+        - FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleE56E3F0F
+        - Arn
+      Runtime: python3.7
+      Environment:
+        Variables:
+          waitHandleUrl: !Ref FlinkConnectorKinesisPipelineWaitHandle2092DDAA
+      Timeout: 10
+    DependsOn:
+      - >-
+        FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleDefaultPolicy8FCACA58
+      - FlinkConnectorKinesisPipelineNotifyLambdaServiceRoleE56E3F0F
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/NotifyLambda/Resource
+  FlinkConnectorKinesisPipelineCodePipelineRole5A3951BA:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Role/Resource
+  FlinkConnectorKinesisPipelineCodePipelineRoleDefaultPolicyFE36D398:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB168F8C8
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRole66986CFD
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA5E8A52E
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRole36CA492B
+              - Arn
+        Version: 2012-10-17
+      PolicyName: FlinkConnectorKinesisPipelineCodePipelineRoleDefaultPolicyFE36D398
+      Roles:
+        - !Ref FlinkConnectorKinesisPipelineCodePipelineRole5A3951BA
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Role/DefaultPolicy/Resource
+  FlinkConnectorKinesisPipelineCodePipeline700323FB:
+    Type: 'AWS::CodePipeline::Pipeline'
+    Properties:
+      RoleArn: !GetAtt 
+        - FlinkConnectorKinesisPipelineCodePipelineRole5A3951BA
+        - Arn
+      Stages:
+        - Actions:
+            - ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+              Configuration:
+                S3Bucket: !Ref Bucket83908E77
+                S3ObjectKey: sources/flink-release-1.8.2.zip
+              Name: SourceAction
+              OutputArtifacts:
+                - Name: Artifact_Source_SourceAction
+              RoleArn: !GetAtt 
+                - >-
+                  FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB168F8C8
+                - Arn
+              RunOrder: 1
+          Name: Source
+        - Actions:
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              Configuration:
+                ProjectName: !Ref FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F
+              InputArtifacts:
+                - Name: Artifact_Source_SourceAction
+              Name: BuildAction
+              OutputArtifacts:
+                - Name: Artifact_Build_BuildAction
+              RoleArn: !GetAtt 
+                - >-
+                  FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRole66986CFD
+                - Arn
+              RunOrder: 1
+          Name: Build
+        - Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+              Configuration:
+                BucketName: !Ref Bucket83908E77
+                Extract: 'false'
+                ObjectKey: target/flink-connector-kinesis_2.11-1.8.2.zip
+              InputArtifacts:
+                - Name: Artifact_Build_BuildAction
+              Name: CopyAction
+              RoleArn: !GetAtt 
+                - >-
+                  FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA5E8A52E
+                - Arn
+              RunOrder: 1
+            - ActionTypeId:
+                Category: Invoke
+                Owner: AWS
+                Provider: Lambda
+                Version: '1'
+              Configuration:
+                FunctionName: !Ref FlinkConnectorKinesisPipelineNotifyLambda036C4408
+              Name: InvokeAction
+              RoleArn: !GetAtt 
+                - >-
+                  FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRole36CA492B
+                - Arn
+              RunOrder: 2
+          Name: Copy
+      ArtifactStore:
+        Location: !Ref Bucket83908E77
+        Type: S3
+    DependsOn:
+      - FlinkConnectorKinesisPipelineCodePipelineRoleDefaultPolicyFE36D398
+      - FlinkConnectorKinesisPipelineCodePipelineRole5A3951BA
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Resource
+  FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB168F8C8:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource
+  FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicyCD0DD965:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action:
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicyCD0DD965
+      Roles:
+        - !Ref >-
+          FlinkConnectorKinesisPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB168F8C8
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource
+  FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRole66986CFD:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource
+  FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicyB9D108B0:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'codebuild:BatchGetBuilds'
+              - 'codebuild:StartBuild'
+              - 'codebuild:StopBuild'
+            Effect: Allow
+            Resource: !GetAtt 
+              - FlinkConnectorKinesisPipelineCodebuildProjectCE8B968F
+              - Arn
+        Version: 2012-10-17
+      PolicyName: >-
+        FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicyB9D108B0
+      Roles:
+        - !Ref >-
+          FlinkConnectorKinesisPipelineCodePipelineBuildBuildActionCodePipelineActionRole66986CFD
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource
+  FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA5E8A52E:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource
+  FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy83E990D0:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy83E990D0
+      Roles:
+        - !Ref >-
+          FlinkConnectorKinesisPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA5E8A52E
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource
+  FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRole36CA492B:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource
+  FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy1ECFBF94:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: 'lambda:ListFunctions'
+            Effect: Allow
+            Resource: '*'
+          - Action: 'lambda:InvokeFunction'
+            Effect: Allow
+            Resource: !GetAtt 
+              - FlinkConnectorKinesisPipelineNotifyLambda036C4408
+              - Arn
+        Version: 2012-10-17
+      PolicyName: >-
+        FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy1ECFBF94
+      Roles:
+        - !Ref >-
+          FlinkConnectorKinesisPipelineCodePipelineCopyInvokeActionCodePipelineActionRole36CA492B
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/FlinkConnectorKinesisPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource
+  ConsumerApplicationPipelineDownloadLambdaServiceRoleCF85C1F5:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join 
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/DownloadLambda/ServiceRole/Resource
+  ConsumerApplicationPipelineDownloadLambdaServiceRoleDefaultPolicy2B821D71:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource: !Join 
+              - ''
+              - - !GetAtt 
+                  - Bucket83908E77
+                  - Arn
+                - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        ConsumerApplicationPipelineDownloadLambdaServiceRoleDefaultPolicy2B821D71
+      Roles:
+        - !Ref ConsumerApplicationPipelineDownloadLambdaServiceRoleCF85C1F5
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource
+  ConsumerApplicationPipelineDownloadLambdaE0D2D2AC:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        ZipFile: |
+          import os
+          import json
+          import boto3
+          import traceback
+          import cfnresponse
+          import urllib.request
+
+          s3client = boto3.client('s3')
+          code_pipeline = boto3.client('codepipeline')
+
+
+          def download_sources(event, context):
+              url = os.environ['url']
+              bucket = os.environ['bucket']
+              key = os.environ['key']
+
+              try:
+                  if event['RequestType'] != 'Delete':
+                      req = urllib.request.Request(url)
+                      response = urllib.request.urlopen(req)
+
+                      s3client.put_object(Bucket=bucket, Key=key, Body=response.read())
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              except Exception:
+                  traceback.print_exc()
+
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {})
+
+
+          def notify_build_success(event, context):
+              job_id = event['CodePipeline.job']['id']
+
+              url = os.environ['waitHandleUrl']
+              headers = { "Content-Type": "" }
+              data = { "Status": "SUCCESS", "Reason": "Compilation Succeeded", "UniqueId": job_id, "Data": "Compilation Succeeded" }
+
+              try:
+                  req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding="utf-8"), method='PUT')
+                  response = urllib.request.urlopen(req)
+
+                  code_pipeline.put_job_success_result(jobId=job_id)
+              except Exception:
+                  traceback.print_exc()
+
+                  code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})
+      Handler: index.download_sources
+      Role: !GetAtt 
+        - ConsumerApplicationPipelineDownloadLambdaServiceRoleCF85C1F5
+        - Arn
+      Runtime: python3.7
+      Environment:
+        Variables:
+          url: >-
+            https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/release-0.2.0.zip
+          bucket: !Ref Bucket83908E77
+          key: sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.0.zip
+      Timeout: 30
+    DependsOn:
+      - >-
+        ConsumerApplicationPipelineDownloadLambdaServiceRoleDefaultPolicy2B821D71
+      - ConsumerApplicationPipelineDownloadLambdaServiceRoleCF85C1F5
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/DownloadLambda/Resource
+  ConsumerApplicationPipelineDownloadLambdaResourceDE55613D:
+    Type: 'AWS::CloudFormation::CustomResource'
+    Properties:
+      ServiceToken: !GetAtt 
+        - ConsumerApplicationPipelineDownloadLambdaE0D2D2AC
+        - Arn
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/DownloadLambdaResource/Default
+  ConsumerApplicationPipelineCodebuildProjectRoleD71446C1:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodebuildProject/Role/Resource
+  ConsumerApplicationPipelineCodebuildProjectRoleDefaultPolicyE225B992:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Effect: Allow
+            Resource:
+              - !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':logs:'
+                  - !Ref 'AWS::Region'
+                  - ':'
+                  - !Ref 'AWS::AccountId'
+                  - ':log-group:/aws/codebuild/'
+                  - !Ref ConsumerApplicationPipelineCodebuildProjectBFBEE1EC
+              - !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':logs:'
+                  - !Ref 'AWS::Region'
+                  - ':'
+                  - !Ref 'AWS::AccountId'
+                  - ':log-group:/aws/codebuild/'
+                  - !Ref ConsumerApplicationPipelineCodebuildProjectBFBEE1EC
+                  - ':*'
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: ConsumerApplicationPipelineCodebuildProjectRoleDefaultPolicyE225B992
+      Roles:
+        - !Ref ConsumerApplicationPipelineCodebuildProjectRoleD71446C1
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodebuildProject/Role/DefaultPolicy/Resource
+  ConsumerApplicationPipelineCodebuildProjectBFBEE1EC:
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: 'aws/codebuild/java:openjdk-11'
+        PrivilegedMode: false
+        Type: LINUX_CONTAINER
+      ServiceRole: !GetAtt 
+        - ConsumerApplicationPipelineCodebuildProjectRoleD71446C1
+        - Arn
+      Source:
+        BuildSpec: |-
+          {
+            "version": "0.2",
+            "phases": {
+              "pre_build": {
+                "commands": [
+                  "mvn install:install-file -B -Dfile=$CODEBUILD_SRC_DIR_FlinkKinesisConnector/flink-connector-kinesis_2.11-1.8.2.jar -DpomFile=$CODEBUILD_SRC_DIR_FlinkKinesisConnector/flink-connector-kinesis_2.11-1.8.2.pom.xml"
+                ]
+              },
+              "build": {
+                "commands": [
+                  "cd amazon-kinesis-analytics-taxi-consumer-*",
+                  "mvn clean package -B -Dflink.version=1.8.2"
+                ]
+              }
+            },
+            "artifacts": {
+              "files": [
+                "target/amazon-kinesis-analytics-taxi-consumer-*.jar"
+              ],
+              "base-directory": "amazon-kinesis-analytics-taxi-consumer-*",
+              "discard-paths": false
+            }
+          }
+        Type: CODEPIPELINE
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodebuildProject/Resource
+  ConsumerApplicationPipelineWaitHandleB495E8FF:
+    Type: 'AWS::CloudFormation::WaitConditionHandle'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/WaitHandle
+  ConsumerApplicationPipelineWaitCondition66F43E13:
+    Type: 'AWS::CloudFormation::WaitCondition'
+    Properties:
+      Count: 1
+      Handle: !Ref ConsumerApplicationPipelineWaitHandleB495E8FF
+      Timeout: '1200'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/WaitCondition
+  ConsumerApplicationPipelineNotifyLambdaServiceRole02371936:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join 
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/NotifyLambda/ServiceRole/Resource
+  ConsumerApplicationPipelineNotifyLambdaServiceRoleDefaultPolicy468B95A9:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'codepipeline:PutJobSuccessResult'
+              - 'codepipeline:PutJobFailureResult'
+            Effect: Allow
+            Resource: '*'
+        Version: 2012-10-17
+      PolicyName: ConsumerApplicationPipelineNotifyLambdaServiceRoleDefaultPolicy468B95A9
+      Roles:
+        - !Ref ConsumerApplicationPipelineNotifyLambdaServiceRole02371936
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource
+  ConsumerApplicationPipelineNotifyLambda189B7A41:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        ZipFile: |
+          import os
+          import json
+          import boto3
+          import traceback
+          import cfnresponse
+          import urllib.request
+
+          s3client = boto3.client('s3')
+          code_pipeline = boto3.client('codepipeline')
+
+
+          def download_sources(event, context):
+              url = os.environ['url']
+              bucket = os.environ['bucket']
+              key = os.environ['key']
+
+              try:
+                  if event['RequestType'] != 'Delete':
+                      req = urllib.request.Request(url)
+                      response = urllib.request.urlopen(req)
+
+                      s3client.put_object(Bucket=bucket, Key=key, Body=response.read())
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              except Exception:
+                  traceback.print_exc()
+
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {})
+
+
+          def notify_build_success(event, context):
+              job_id = event['CodePipeline.job']['id']
+
+              url = os.environ['waitHandleUrl']
+              headers = { "Content-Type": "" }
+              data = { "Status": "SUCCESS", "Reason": "Compilation Succeeded", "UniqueId": job_id, "Data": "Compilation Succeeded" }
+
+              try:
+                  req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding="utf-8"), method='PUT')
+                  response = urllib.request.urlopen(req)
+
+                  code_pipeline.put_job_success_result(jobId=job_id)
+              except Exception:
+                  traceback.print_exc()
+
+                  code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})
+      Handler: index.notify_build_success
+      Role: !GetAtt 
+        - ConsumerApplicationPipelineNotifyLambdaServiceRole02371936
+        - Arn
+      Runtime: python3.7
+      Environment:
+        Variables:
+          waitHandleUrl: !Ref ConsumerApplicationPipelineWaitHandleB495E8FF
+      Timeout: 10
+    DependsOn:
+      - ConsumerApplicationPipelineNotifyLambdaServiceRoleDefaultPolicy468B95A9
+      - ConsumerApplicationPipelineNotifyLambdaServiceRole02371936
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/NotifyLambda/Resource
+  ConsumerApplicationPipelineCodePipelineRole8FE92343:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Role/Resource
+  ConsumerApplicationPipelineCodePipelineRoleDefaultPolicy07DA78D0:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                ConsumerApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB68B5AEF
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                ConsumerApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRoleE6A434FA
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                ConsumerApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRole527E3F30
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                ConsumerApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA9D867BB
+              - Arn
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Resource: !GetAtt 
+              - >-
+                ConsumerApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRole0FA0FBDE
+              - Arn
+        Version: 2012-10-17
+      PolicyName: ConsumerApplicationPipelineCodePipelineRoleDefaultPolicy07DA78D0
+      Roles:
+        - !Ref ConsumerApplicationPipelineCodePipelineRole8FE92343
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Role/DefaultPolicy/Resource
+  ConsumerApplicationPipelineCodePipeline9278A914:
+    Type: 'AWS::CodePipeline::Pipeline'
+    Properties:
+      RoleArn: !GetAtt 
+        - ConsumerApplicationPipelineCodePipelineRole8FE92343
+        - Arn
+      Stages:
+        - Actions:
+            - ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+              Configuration:
+                S3Bucket: !Ref Bucket83908E77
+                S3ObjectKey: >-
+                  sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.0.zip
+              Name: SourceAction
+              OutputArtifacts:
+                - Name: Artifact_Source_SourceAction
+              RoleArn: !GetAtt 
+                - >-
+                  ConsumerApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB68B5AEF
+                - Arn
+              RunOrder: 1
+            - ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+              Configuration:
+                S3Bucket: !Ref Bucket83908E77
+                S3ObjectKey: target/flink-connector-kinesis_2.11-1.8.2.zip
+              Name: FlinkKinesisConnectorSourceAction
+              OutputArtifacts:
+                - Name: FlinkKinesisConnector
+              RoleArn: !GetAtt 
+                - >-
+                  ConsumerApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRoleE6A434FA
+                - Arn
+              RunOrder: 1
+          Name: Source
+        - Actions:
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              Configuration:
+                ProjectName: !Ref ConsumerApplicationPipelineCodebuildProjectBFBEE1EC
+                PrimarySource: Artifact_Source_SourceAction
+              InputArtifacts:
+                - Name: Artifact_Source_SourceAction
+                - Name: FlinkKinesisConnector
+              Name: BuildAction
+              OutputArtifacts:
+                - Name: Artifact_Build_BuildAction
+              RoleArn: !GetAtt 
+                - >-
+                  ConsumerApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRole527E3F30
+                - Arn
+              RunOrder: 1
+          Name: Build
+        - Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+              Configuration:
+                BucketName: !Ref Bucket83908E77
+                Extract: 'true'
+              InputArtifacts:
+                - Name: Artifact_Build_BuildAction
+              Name: CopyAction
+              RoleArn: !GetAtt 
+                - >-
+                  ConsumerApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA9D867BB
+                - Arn
+              RunOrder: 1
+            - ActionTypeId:
+                Category: Invoke
+                Owner: AWS
+                Provider: Lambda
+                Version: '1'
+              Configuration:
+                FunctionName: !Ref ConsumerApplicationPipelineNotifyLambda189B7A41
+              Name: InvokeAction
+              RoleArn: !GetAtt 
+                - >-
+                  ConsumerApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRole0FA0FBDE
+                - Arn
+              RunOrder: 2
+          Name: Copy
+      ArtifactStore:
+        Location: !Ref Bucket83908E77
+        Type: S3
+    DependsOn:
+      - ConsumerApplicationPipelineCodePipelineRoleDefaultPolicy07DA78D0
+      - ConsumerApplicationPipelineCodePipelineRole8FE92343
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Resource
+  ConsumerApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB68B5AEF:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource
+  ConsumerApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy5C220259:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action:
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        ConsumerApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy5C220259
+      Roles:
+        - !Ref >-
+          ConsumerApplicationPipelineCodePipelineSourceSourceActionCodePipelineActionRoleB68B5AEF
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource
+  ConsumerApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRoleE6A434FA:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Source/FlinkKinesisConnectorSourceAction/CodePipelineActionRole/Resource
+  ConsumerApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRoleDefaultPolicy28FFA9FB:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action:
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        ConsumerApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRoleDefaultPolicy28FFA9FB
+      Roles:
+        - !Ref >-
+          ConsumerApplicationPipelineCodePipelineSourceFlinkKinesisConnectorSourceActionCodePipelineActionRoleE6A434FA
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Source/FlinkKinesisConnectorSourceAction/CodePipelineActionRole/DefaultPolicy/Resource
+  ConsumerApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRole527E3F30:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource
+  ConsumerApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy287A0896:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'codebuild:BatchGetBuilds'
+              - 'codebuild:StartBuild'
+              - 'codebuild:StopBuild'
+            Effect: Allow
+            Resource: !GetAtt 
+              - ConsumerApplicationPipelineCodebuildProjectBFBEE1EC
+              - Arn
+        Version: 2012-10-17
+      PolicyName: >-
+        ConsumerApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy287A0896
+      Roles:
+        - !Ref >-
+          ConsumerApplicationPipelineCodePipelineBuildBuildActionCodePipelineActionRole527E3F30
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource
+  ConsumerApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA9D867BB:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource
+  ConsumerApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy22761BF4:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:DeleteObject*'
+              - 's3:PutObject*'
+              - 's3:Abort*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: >-
+        ConsumerApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy22761BF4
+      Roles:
+        - !Ref >-
+          ConsumerApplicationPipelineCodePipelineCopyCopyActionCodePipelineActionRoleA9D867BB
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource
+  ConsumerApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRole0FA0FBDE:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: !Join 
+                - ''
+                - - 'arn:'
+                  - !Ref 'AWS::Partition'
+                  - ':iam::'
+                  - !Ref 'AWS::AccountId'
+                  - ':root'
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource
+  ConsumerApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy62225116:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: 'lambda:ListFunctions'
+            Effect: Allow
+            Resource: '*'
+          - Action: 'lambda:InvokeFunction'
+            Effect: Allow
+            Resource: !GetAtt 
+              - ConsumerApplicationPipelineNotifyLambda189B7A41
+              - Arn
+        Version: 2012-10-17
+      PolicyName: >-
+        ConsumerApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy62225116
+      Roles:
+        - !Ref >-
+          ConsumerApplicationPipelineCodePipelineCopyInvokeActionCodePipelineActionRole0FA0FBDE
+    Metadata:
+      'aws:cdk:path': >-
+        StreamingAnalyticsWorkshop/ConsumerApplicationPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource
+  TemplatedSecret3D98B577:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      GenerateSecretString:
+        ExcludePunctuation: true
+        GenerateStringKey: password
+        IncludeSpace: false
+        PasswordLength: 16
+        SecretStringTemplate: '{"username":"Administrator"}'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/TemplatedSecret/Resource
+  InstanceEip:
+    Type: 'AWS::EC2::EIP'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/InstanceEip
+  ElasticsearchDomain:
+    Type: 'AWS::Elasticsearch::Domain'
+    Properties:
+      AccessPolicies:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: '*'
+            Action:
+              - 'es:ESHttp*'
+            Resource: '*'
+            Condition:
+              IpAddress:
+                'aws:SourceIp':
+                  - !Ref InstanceEip
+      EBSOptions:
+        EBSEnabled: true
+        VolumeSize: 10
+        VolumeType: gp2
+      ElasticsearchClusterConfig:
+        InstanceCount: 1
+        InstanceType: t2.medium.elasticsearch
+      ElasticsearchVersion: '7.1'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/ElasticsearchDomain
+  Vpc8378EB38:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: StreamingAnalyticsWorkshop/Vpc
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/Resource
+  VpcpublicSubnet1Subnet2BB74ED7:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 10.0.0.0/17
+      VpcId: !Ref Vpc8378EB38
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs ''
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: StreamingAnalyticsWorkshop/Vpc/publicSubnet1
+        - Key: 'aws-cdk:subnet-name'
+          Value: public
+        - Key: 'aws-cdk:subnet-type'
+          Value: Public
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/publicSubnet1/Subnet
+  VpcpublicSubnet1RouteTable15C15F8E:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref Vpc8378EB38
+      Tags:
+        - Key: Name
+          Value: StreamingAnalyticsWorkshop/Vpc/publicSubnet1
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/publicSubnet1/RouteTable
+  VpcpublicSubnet1RouteTableAssociation4E83B6E4:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref VpcpublicSubnet1RouteTable15C15F8E
+      SubnetId: !Ref VpcpublicSubnet1Subnet2BB74ED7
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/publicSubnet1/RouteTableAssociation
+  VpcpublicSubnet1DefaultRouteB88F9E93:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref VpcpublicSubnet1RouteTable15C15F8E
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VpcIGWD7BA715C
+    DependsOn:
+      - VpcVPCGWBF912B6E
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/publicSubnet1/DefaultRoute
+  VpcpublicSubnet2SubnetE34B022A:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 10.0.128.0/17
+      VpcId: !Ref Vpc8378EB38
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs ''
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: StreamingAnalyticsWorkshop/Vpc/publicSubnet2
+        - Key: 'aws-cdk:subnet-name'
+          Value: public
+        - Key: 'aws-cdk:subnet-type'
+          Value: Public
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/publicSubnet2/Subnet
+  VpcpublicSubnet2RouteTableC5A6DF77:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref Vpc8378EB38
+      Tags:
+        - Key: Name
+          Value: StreamingAnalyticsWorkshop/Vpc/publicSubnet2
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/publicSubnet2/RouteTable
+  VpcpublicSubnet2RouteTableAssociationCCE257FF:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref VpcpublicSubnet2RouteTableC5A6DF77
+      SubnetId: !Ref VpcpublicSubnet2SubnetE34B022A
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/publicSubnet2/RouteTableAssociation
+  VpcpublicSubnet2DefaultRoute732F0BEB:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref VpcpublicSubnet2RouteTableC5A6DF77
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VpcIGWD7BA715C
+    DependsOn:
+      - VpcVPCGWBF912B6E
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/publicSubnet2/DefaultRoute
+  VpcIGWD7BA715C:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: StreamingAnalyticsWorkshop/Vpc
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/IGW
+  VpcVPCGWBF912B6E:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref Vpc8378EB38
+      InternetGatewayId: !Ref VpcIGWD7BA715C
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/Vpc/VPCGW
+  SecurityGroupDD263621:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: StreamingAnalyticsWorkshop/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: '-1'
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: 'from 0.0.0.0/0:3389'
+          FromPort: 3389
+          IpProtocol: tcp
+          ToPort: 3389
+      VpcId: !Ref Vpc8378EB38
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/SecurityGroup/Resource
+  InstanceRole3CCE2F1D:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: !Join 
+                - ''
+                - - ec2.
+                  - !Ref 'AWS::URLSuffix'
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join 
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/AmazonSSMManagedInstanceCore'
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Action: 'secretsmanager:GetSecretValue'
+                Effect: Allow
+                Resource: !Ref TemplatedSecret3D98B577
+              - Action:
+                  - 'ec2:AssociateAddress'
+                  - 'cloudwatch:PutMetricData'
+                  - 'logs:Describe*'
+                  - 'logs:PutLogEvents'
+                  - 'kinesis:DescribeStream'
+                  - 'kinesis:ListShards'
+                  - 'kinesis:GetShardIterator'
+                  - 'kinesis:GetRecords'
+                  - 'kinesis:PutRecord'
+                  - 'kinesis:PutRecords'
+                  - 'kinesisanalytics:StartApplication'
+                Effect: Allow
+                Resource: '*'
+              - Action: 'cloudformation:DescribeStacks'
+                Effect: Allow
+                Resource: !Ref 'AWS::StackId'
+              - Action:
+                  - 's3:GetObject*'
+                  - 's3:GetBucket*'
+                  - 's3:List*'
+                Effect: Allow
+                Resource:
+                  - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - !Join 
+                    - ''
+                    - - !GetAtt 
+                        - Bucket83908E77
+                        - Arn
+                      - /*
+                  - !Join 
+                    - ''
+                    - - 'arn:'
+                      - !Ref 'AWS::Partition'
+                      - ':s3:::aws-bigdata-blog'
+                  - !Join 
+                    - ''
+                    - - 'arn:'
+                      - !Ref 'AWS::Partition'
+                      - ':s3:::aws-bigdata-blog/*'
+            Version: 2012-10-17
+          PolicyName: WorkshopPermissions
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/InstanceRole/Resource
+  InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Roles:
+        - !Ref InstanceRole3CCE2F1D
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/InstanceProfile
+  InstanceWaitHandle:
+    Type: 'AWS::CloudFormation::WaitConditionHandle'
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/InstanceWaitHandle
+  InstanceBootstrapWaitCondition:
+    Type: 'AWS::CloudFormation::WaitCondition'
+    Properties:
+      Count: 1
+      Handle: !Ref InstanceWaitHandle
+      Timeout: '1200'
+    DependsOn:
+      - LaunchTemplate
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/InstanceBootstrapWaitCondition
+  LaunchTemplate:
+    Type: 'AWS::EC2::LaunchTemplate'
+    Properties:
+      LaunchTemplateData:
+        IamInstanceProfile:
+          Arn: !GetAtt 
+            - InstanceProfile
+            - Arn
+        ImageId: !Ref >-
+          SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter
+        NetworkInterfaces:
+          - AssociatePublicIpAddress: true
+            DeleteOnTermination: true
+            DeviceIndex: 0
+            Groups:
+              - !GetAtt 
+                - SecurityGroupDD263621
+                - GroupId
+        UserData: !Base64 
+          'Fn::Join':
+            - ''
+            - - >-
+                <powershell>            
+
+                Import-Module AWSPowerShell
+
+
+                # Install choco
+
+                iex ((New-Object
+                net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
+
+
+                # Add gitter and retry to install commands
+
+                $iter = 0
+
+                $sleep = 5
+
+
+                Do {
+
+                Start-Sleep -Seconds (Get-Random -Maximum
+                ($sleep*[Math]::Pow(2,$iter++)))
+
+                choco install git --no-progress -y
+
+                } Until ($LASTEXITCODE -eq 0)
+
+
+                Do {
+
+                Start-Sleep -Seconds (Get-Random -Maximum
+                ($sleep*[Math]::Pow(2,$iter++)))
+
+                choco install firefox --no-progress -y
+
+                } Until ($LASTEXITCODE -eq 0)
+
+
+                Do {
+
+                Start-Sleep -Seconds (Get-Random -Maximum
+                ($sleep*[Math]::Pow(2,$iter++)))
+
+                choco install intellijidea-community --no-progress --version
+                2019.2.4 -y
+
+                } Until ($LASTEXITCODE -eq 0)
+
+
+                # Add IntelliJ Java 11 to the path
+
+                $PATH = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+
+                $intellij_path = "C:\Program Files\JetBrains\IntelliJ IDEA
+                Community Edition 2019.2.4\jbr\bin"
+
+                [Environment]::SetEnvironmentVariable("PATH",
+                "$PATH;$intellij_path", "Machine")
+
+
+                $desktop = "C:\Users\Administrator\Desktop"
+
+
+                # Create desktop shortcuts
+
+                Remove-Item -path "$desktop\*.website"
+
+                Copy-Item "C:\ProgramData\Microsoft\Windows\Start
+                Menu\Programs\JetBrains\*.lnk" "$desktop"
+
+
+                # Change password
+
+                $password = ((Get-SECSecretValue -SecretId '
+              - !Ref TemplatedSecret3D98B577
+              - >-
+                ').SecretString | ConvertFrom-Json).Password
+
+                net.exe user Administrator "$password"
+
+
+                # Associate EIP
+
+                $instanceId = Invoke-RestMethod -uri
+                http://169.254.169.254/latest/meta-data/instance-id
+
+                Register-EC2Address -InstanceId "$instanceId" -AllocationId "
+              - !GetAtt 
+                - InstanceEip
+                - AllocationId
+              - |-
+                "
+
+                # Signal success to CFN
+                cfn-signal.exe --success true --region "
+              - !Ref 'AWS::Region'
+              - '" "'
+              - !Ref InstanceWaitHandle
+              - >-
+                "
+
+
+
+                # Download artifacts
+
+                New-Item -Path "$desktop" -Name "workshop-resources" -ItemType
+                "directory"
+
+
+                $url =
+                "https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/release-0.2.0/misc/streaming-analytics-workshop-dashboard.json"
+
+                $file =
+                "$desktop\workshop-resources\streaming-analytics-workshop-dashboard.json"
+
+                (New-Object System.Net.WebClient).DownloadFile($url, $file)
+
+
+                # Wait until build pipelines have successfully build all
+                artifacts
+
+                Wait-CFNStack -StackName "
+              - !Ref 'AWS::StackName'
+              - |-
+                " -Timeout 600
+
+                Copy-S3Object -BucketName "
+              - !Ref Bucket83908E77
+              - >-
+                " -KeyPrefix target -LocalFolder "$desktop\workshop-resources"
+
+
+                Expand-Archive
+                "$desktop\workshop-resources\flink-connector-kinesis*.zip"
+                "$desktop\workshop-resources"
+
+                </powershell>
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/LaunchTemplate
+  AutoScalingGroup:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      MaxSize: '1'
+      MinSize: '1'
+      DesiredCapacity: '1'
+      MixedInstancesPolicy:
+        InstancesDistribution:
+          OnDemandBaseCapacity: 1
+        LaunchTemplate:
+          LaunchTemplateSpecification:
+            LaunchTemplateId: !Ref LaunchTemplate
+            Version: !GetAtt 
+              - LaunchTemplate
+              - DefaultVersionNumber
+          Overrides:
+            - InstanceType: m5.2xlarge
+            - InstanceType: c5.2xlarge
+            - InstanceType: m3.2xlarge
+            - InstanceType: m5.xlarge
+            - InstanceType: c5.xlarge
+            - InstanceType: m4.xlarge
+            - InstanceType: c4.xlarge
+      VPCZoneIdentifier:
+        - !Ref VpcpublicSubnet1Subnet2BB74ED7
+        - !Ref VpcpublicSubnet2SubnetE34B022A
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/AutoScalingGroup
+  KdaRoleB7DD543E:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: kinesisanalytics.amazonaws.com
+        Version: 2012-10-17
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/KdaRole/Resource
+  KdaRoleDefaultPolicy88A47211:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'logs:Describe*'
+              - 'logs:PutLogEvents'
+              - 'kinesis:List*'
+              - 'kinesis:Describe*'
+              - 'kinesis:Get*'
+              - 'kinesis:SubscribeToShard'
+            Effect: Allow
+            Resource: '*'
+          - Action: 'es:ESHttp*'
+            Effect: Allow
+            Resource: !Join 
+              - ''
+              - - !GetAtt 
+                  - ElasticsearchDomain
+                  - Arn
+                - /*
+          - Action:
+              - 's3:GetObject*'
+              - 's3:GetBucket*'
+              - 's3:List*'
+            Effect: Allow
+            Resource:
+              - !GetAtt 
+                - Bucket83908E77
+                - Arn
+              - !Join 
+                - ''
+                - - !GetAtt 
+                    - Bucket83908E77
+                    - Arn
+                  - /*
+        Version: 2012-10-17
+      PolicyName: KdaRoleDefaultPolicy88A47211
+      Roles:
+        - !Ref KdaRoleB7DD543E
+    Metadata:
+      'aws:cdk:path': StreamingAnalyticsWorkshop/KdaRole/DefaultPolicy/Resource
+  CloudwatchDashboardStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+        TemplateURL: https://aws-data-analytics-workshops.s3.amazonaws.com/kinesis/templates/sample-dashboard.yaml
+        Parameters:
+            ApplicationName: "streaming-analytics-workshop"
+            KDARegion: !Ref 'AWS::Region'
+            KinesisStreamName: "streaming-analytics-workshop"
+            KafkaTopicName: "None"
+            DashboardName: "streaming-analytics-workshop-cw-dashboard"
+Parameters:
+  SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: /aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base
+Outputs:
+  InstanceIp:
+    Value: !Ref InstanceEip
+  InstanceLoginCredentials:
+    Value: !Join 
+      - ''
+      - - 'https://console.aws.amazon.com/secretsmanager/#/secret?name='
+        - !Ref TemplatedSecret3D98B577
+  ElasticsearchDomainName:
+    Value: !GetAtt 
+      - ElasticsearchDomain
+      - DomainEndpoint
+  KinesisAnalyticsServiceRole:
+    Value: !Ref KdaRoleB7DD543E
+  FlinkApplicationJarBucket:
+    Value: !Ref Bucket83908E77
+  FlinkApplicationJarObject:
+    Value: target/amazon-kinesis-analytics-taxi-consumer-0.2.0.jar
