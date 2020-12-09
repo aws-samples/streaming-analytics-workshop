@@ -4,7 +4,7 @@ chapter: false
 weight: 80
 ---
 
- There are many important operational metrics to measure when assessing the performance of a running Apache Flink Application. In this section, we will add on to the existing CloudWatch Dashboard to showcase many of these metrics. 
+ There are many important operational metrics to measure when assessing the performance of a running Apache Flink Application. In this section, we will look at the important CloudWatch metrics for Kinesis Data Analytics for Apache Flink applications, what they mean and what appropriate alarms might be for each.
 
 ![put the picture of finalized CW Dashboard here](img/src)
 
