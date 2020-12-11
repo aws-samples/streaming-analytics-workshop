@@ -56,19 +56,3 @@ For ease of use and reference, the following metrics will be used for monitoring
 
 .{{% /expand%}}
 
-
-----------------------------------------------------------------
-
-
-There are quite a few metrics to keep track of and create widgets for. To simplify things, you can launch a CloudFormation Template for the running application which highlights each of these metrics. Let's do that now. 
-
-[![Launch CloudFormation Stack](/images/flink-on-kda/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=kda-advanced-monitoring-dashboard&templateURL=https://aws-data-analytics-workshops.s3.amazonaws.com/kinesis/templates/sample-dashboard.yaml)
-
-
-
-
-TODO: Instructions for...
-- Launch Stack
-- Go into details about alarms to set, things to look for in each column
-- Add KPL Metrics
-- Increase throughput and look at metrics
