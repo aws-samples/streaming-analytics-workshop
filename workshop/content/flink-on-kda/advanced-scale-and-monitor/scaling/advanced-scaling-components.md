@@ -73,15 +73,16 @@ From here, navigate back to your Kinesis Data Analytics application see if the p
 
 ![Parallelism Updated](/images/flink-on-kda/parallelism-updated-cw-alarm-scale-out.png)
 
+
+
+
+
+
+.{{% /expand%}}
+
+
 {{% notice warning %}} 
 Once you've validated that it has scaled out, please stop the producer on your remote desktop, otherwise your application will continue to scale.
 {{% /notice %}} 
 
-#### Turning off the producer show show an inverse effect, causing the application to trigger the `KDAScaleInAlarm`, and the application parallelism will scale back down to 1 within 2 minutes!
-.{{% /expand%}}
-
-
-
-### TODO: 
-1. Adjust CFN Template for Alarm to treat missing data as bad for scale in and good for scale out -- so if no data is coming it will force a scale in.
-1. Post a link again to the GH for further tweaking for your own workloads.
+ Turning off the producer should show an inverse effect, causing the application to trigger the `KDAScaleInAlarm`, and the application parallelism will scale back down to 1 within 2 minutes!

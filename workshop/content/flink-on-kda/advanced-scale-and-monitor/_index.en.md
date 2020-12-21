@@ -12,7 +12,7 @@ weight: 80
 
  Next, we will utilize these metrics to influence the scaling behavior of the Apache Flink application. Using autoscaling groups, we will see how to utilize the `numRecordsInPerSecond` metric to scale up or down Flink Applications automatically.
 
- ![put the picture of autoscaling KPUs here](img/src)
+ ![CW Alarm](/images/flink-on-kda/cw-in-alarm.png)
 
 ----------------------------------
 
