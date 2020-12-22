@@ -1,0 +1,320 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+
+Parameters:
+  CloudWatchAlarmNameOut:
+    Type: String
+    Description: Alarm name for CloudWatch Alarm scale out
+    Default: KDAScaleOutAlarm
+  CloudWatchAlarmNameIn:
+    Type: String
+    Description: Alarm name for CloudWatch Alarm scale in
+    Default: KDAScaleInAlarm
+  KDAAppName:
+    Type: String
+    Description: KDA App Name
+    Default: streaming-analytics-workshop
+  KinesisStreamName:
+    Type: String
+    Description: Kinesis Stream Name
+    Default: streaming-analytics-workshop
+  ThroughputPerKPU:
+    Type: String
+    Description: Max throughput per KPU
+    Default: 4400
+  MaxKPUs:
+    Type: String
+    Description: Max KPUs
+    Default: 32
+  KDAParallelism:
+    Type: String
+    Description: Initial parallelism
+    Default: 1
+
+
+Resources:
+
+  CustomApplicationAutoScalingServiceRole:
+    DependsOn: ScalerApi
+    Type: 'AWS::IAM::Role'
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: '2012-10-17'
+        Statement: 
+          - 
+            Effect: 'Allow'
+            Principal: 
+              Service: 
+                - 'custom-resource.application-autoscaling.amazonaws.com'
+            Action: 
+              - 'sts:AssumeRole'
+      Path: "/"
+      Policies: 
+        - 
+          PolicyName: 'root'
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: 'Allow'
+                Action:
+                  - 'execute-api:Invoke*'
+                  - 'cloudwatch:PutMetricAlarm'
+                  - 'cloudwatch:DescribeAlarms'
+                  - 'cloudwatch:DeleteAlarms'
+                Resource: '*'
+
+  LambdaScaler:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.lambda_handler
+      Runtime: python3.6
+      Timeout: 10
+      CodeUri: 
+        Bucket: aws-data-analytics-workshops
+        Key: kinesis/templates/streaming-analytics-workshop/kdascalinglambda/index.zip        
+      Policies:
+        - AWSCloudFormationReadOnlyAccess
+        - Statement:
+          - Sid: MySSMPolicy
+            Effect: Allow
+            Action:
+            - 'ssm:PutParameter'
+            - 'ssm:GetParameters'
+            - 'ssm:GetParameter'
+            Resource: '*'
+        - Statement:
+          - Sid: MyCWMetricPolicy
+            Effect: Allow
+            Action:
+            - 'cloudwatch:PutMetricAlarm'
+            - 'cloudwatch:DescribeAlarms'
+            Resource: '*'
+        - Statement:
+          - Sid: AmazonKinesisAnalyticsPolicyForAppAutoScaling
+            Effect: Allow
+            Action:
+            - 'kinesisanalytics:UpdateApplication'
+            - 'kinesisanalytics:DescribeApplication'
+            Resource: '*'
+        - Statement:
+          - Sid: AppAutoscalingFullPolicy
+            Effect: Allow
+            Action:
+            - 'application-autoscaling:*'
+            Resource: '*'
+      Environment:
+        Variables:
+          ParameterStore: !Ref KDADesiredCapacityParameter
+          KDAAppName: !Ref KDAAppName
+          KinesisStreamName: !Ref KinesisStreamName
+          CloudWatchAlarmNameIn: !Ref CloudWatchAlarmNameIn
+          CloudWatchAlarmNameOut: !Ref CloudWatchAlarmNameOut
+          MaxThroughputPerKPU: !Ref ThroughputPerKPU
+          MaxKPUs: !Ref MaxKPUs
+      Events:
+        KinesisAPI:
+          Type: Api
+          Properties:
+            Path: /scalableTargetDimensions/{scalableTargetDimensionId}
+            Method: GET
+            RestApiId: !Ref ScalerApi
+        KinesisAPIPatch:
+          Type: Api
+          Properties:              
+            Path: /scalableTargetDimensions/{scalableTargetDimensionId}
+            Method: PATCH                      
+            RestApiId: !Ref ScalerApi
+
+  ScalerApi:
+    #DeletionPolicy: Retain
+    Type: AWS::Serverless::Api
+    Properties:
+        StageName: prod
+        DefinitionBody:
+          swagger: 2.0
+          info:
+            title:
+              Ref: AWS::StackName
+          securityDefinitions:
+            sigv4:
+              type: apiKey
+              name: Authorization
+              in: header
+              x-amazon-apigateway-authtype: awsSigv4
+          paths:
+            "/scalableTargetDimensions/{scalableTargetDimensionId}":
+              get:
+                security:
+                  - sigv4: []                
+                x-amazon-apigateway-any-method:
+                  produces:
+                    - application/json
+                  consumes:
+                    - application/json
+                x-amazon-apigateway-integration:
+                  httpMethod: POST
+                  type: aws_proxy
+                  uri:
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaScaler.Arn}/invocations
+                responses: {} 
+
+              patch:              
+                security:
+                  - sigv4: []                                
+                x-amazon-apigateway-any-method:
+                  security:
+                    - sigv4: []
+                  produces:
+                    - application/json
+                  consumes:
+                    - application/json
+                x-amazon-apigateway-integration:
+                  httpMethod: POST
+                  type: aws_proxy
+                  uri:
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaScaler.Arn}/invocations
+                responses: {} 
+
+  KDADesiredCapacityParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Type: "String"
+      Value: !Ref KDAParallelism
+      Description: "Store DesiredCapacity in Parameter Store"
+      AllowedPattern: "[0-9]"
+
+  KDAAutoScaling:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    DependsOn: LambdaScaler
+    DependsOn: ScalerApi
+    DependsOn: CustomApplicationAutoScalingServiceRole
+    Properties:
+      MaxCapacity: 32
+      MinCapacity: 1
+      ResourceId: !Sub https://${ScalerApi}.execute-api.${AWS::Region}.amazonaws.com/prod/scalableTargetDimensions/${KDAAppName}
+      RoleARN: !Sub ${CustomApplicationAutoScalingServiceRole.Arn}
+      ScalableDimension: 'custom-resource:ResourceType:Property'
+      ServiceNamespace: custom-resource
+
+  KDAAutoScalingPolicyOut:
+    Type : "AWS::ApplicationAutoScaling::ScalingPolicy"
+    DependsOn: KDAAutoScaling
+    Properties: 
+      PolicyName: KDAScaleOut
+      PolicyType: StepScaling
+      ResourceId: !Sub https://${ScalerApi}.execute-api.${AWS::Region}.amazonaws.com/prod/scalableTargetDimensions/${KDAAppName}      
+      ScalableDimension: "custom-resource:ResourceType:Property"
+      ServiceNamespace: custom-resource
+      StepScalingPolicyConfiguration: 
+        AdjustmentType: ChangeInCapacity
+        Cooldown: 600
+        MetricAggregationType: Average
+        StepAdjustments:
+         - MetricIntervalLowerBound: 0
+           MetricIntervalUpperBound: 4400
+           ScalingAdjustment: 1
+         - MetricIntervalLowerBound: 4400
+           MetricIntervalUpperBound: 8800
+           ScalingAdjustment: 2
+         - MetricIntervalLowerBound: 8800
+           MetricIntervalUpperBound: 13200
+           ScalingAdjustment: 4
+         - MetricIntervalLowerBound: 13200
+           ScalingAdjustment: 8
+
+  KDAAutoScalingPolicyIn:
+    Type : "AWS::ApplicationAutoScaling::ScalingPolicy"
+    DependsOn: KDAAutoScaling
+    Properties: 
+      PolicyName: KDAScaleIn
+      PolicyType: StepScaling
+      ResourceId: !Sub https://${ScalerApi}.execute-api.${AWS::Region}.amazonaws.com/prod/scalableTargetDimensions/${KDAAppName}      
+      ScalableDimension: "custom-resource:ResourceType:Property"
+      ServiceNamespace: custom-resource
+      StepScalingPolicyConfiguration: 
+        AdjustmentType: ChangeInCapacity
+        Cooldown: 600
+        MetricAggregationType: Average
+        # ADDED
+        StepAdjustments:
+         - MetricIntervalUpperBound: 0
+           MetricIntervalLowerBound: -4400
+           ScalingAdjustment: -1
+         - MetricIntervalUpperBound: -4400
+           MetricIntervalLowerBound: -8800
+           ScalingAdjustment: -2
+         - MetricIntervalUpperBound: -8800
+           MetricIntervalLowerBound: -13200
+           ScalingAdjustment: -3
+         - MetricIntervalUpperBound: -13200
+           ScalingAdjustment: -4
+
+
+
+# #added
+
+  KDACWAlarmOut:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: KDA scale out alarm
+      AlarmName: !Ref CloudWatchAlarmNameOut
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: 1
+      Threshold: 4400
+      AlarmActions:
+        - !Ref KDAAutoScalingPolicyOut
+      Metrics:
+      - Expression: FILL(ir/60, 0)
+        Id: ad1
+        ReturnData: false
+      - Id: ir
+        MetricStat:
+          Metric:
+            MetricName: IncomingRecords
+            Namespace: AWS/Kinesis
+            Dimensions:
+              -
+                Name: StreamName
+                Value: !Ref KinesisStreamName
+          Period: 60
+          Stat: Sum
+        ReturnData: true
+
+  KDACWAlarmIn:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: KDA scale in alarm
+      AlarmName: !Ref CloudWatchAlarmNameIn
+      ComparisonOperator: LessThanOrEqualToThreshold
+      EvaluationPeriods: 2
+      Threshold: 0
+      AlarmActions:
+        - !Ref KDAAutoScalingPolicyIn
+      Metrics:
+      - Expression: FILL(ir/60, 0)
+        Id: ad1
+        ReturnData: false
+      - Id: ir
+        MetricStat:
+          Metric:
+            MetricName: IncomingRecords
+            Namespace: AWS/Kinesis
+            Dimensions:
+              -
+                Name: StreamName
+                Value: !Ref KinesisStreamName
+          Period: 60
+          Stat: Sum
+        ReturnData: true
+      TreatMissingData: "breaching"
+
+Outputs:
+  URL:
+    Description: the URL
+    Value: !Sub https://${ScalerApi}.execute-api.${AWS::Region}.amazonaws.com/prod/scalableTargetDimensions/${KDAAppName}
+  CustomAASServiceRoleArn:
+    Description: Custom AASService Role Arn
+    Value: !Sub ${CustomApplicationAutoScalingServiceRole.Arn}
