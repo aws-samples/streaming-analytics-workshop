@@ -69,7 +69,7 @@ java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-repla
 
 ![In Alarm](/images/flink-on-kda/cw-alarm-in-alarm.png)
 
-From here, navigate back to your Kinesis Data Analytics application see if the parallelism has been impacted by this alarm.
+From here, navigate back to your Kinesis Data Analytics application and see if the parallelism has been impacted by this alarm.
 
 ![Parallelism Updated](/images/flink-on-kda/parallelism-updated-cw-alarm-scale-out.png)
 
@@ -79,10 +79,11 @@ From here, navigate back to your Kinesis Data Analytics application see if the p
 
 
 .{{% /expand%}}
+------------------------------------------
 
 
 {{% notice warning %}} 
 Once you've validated that it has scaled out, please stop the producer on your remote desktop, otherwise your application will continue to scale.
 {{% /notice %}} 
 
- Turning off the producer should show an inverse effect, causing the application to trigger the `KDAScaleInAlarm`, and the application parallelism will scale back down to 1 within 2 minutes!
+ Turning off the producer should show an inverse effect, causing the application to trigger the `KDAScaleInAlarm`, and the application parallelism should scale back down to 1 within 2 minutes!
