@@ -14,9 +14,10 @@ The CloudFormation Template includes the following components:
 3. API Gateway Endpoint for triggering AWS Lambda (scale in and scale out)
 4. Lambda function responsible for handling scale in and scale out functions.
 
-Each of these components work in tandem to monitor the metric configured in the CloudWatch Alarm and respond to metrics accordingly. This existing alarm is configured to scale out and in baed on the IncomingRecords on the existing Kinesis Data Stream. Let's see it in action by sending some data to the stream to observe behavior.
+Each of these components work in tandem to monitor the metric configured in the CloudWatch Alarm and respond to metrics accordingly. This existing alarm is configured to scale out and in based on the IncomingRecords on the existing Kinesis Data Stream. 
 
-----------------------------------
+Let's see it in action by sending some data to the stream to observe behavior.
+
 
 ## But first, let's modify the CloudWatch Scale Out alarm to be more sensitive to incoming records. 
 Currently, the settings are tuned to the max throughput per KPU, which is ideal for a production workload. For this lab, let's tune this setting down to a lower value to more quickly see results.
@@ -53,9 +54,9 @@ Currently, the settings are tuned to the max throughput per KPU, which is ideal 
 
 ## {{%expand "3. Ingest Data to Kinesis Data Stream and Observe Autoscaling" %}}
 
-Currently, our Kinesis Data Analytics for Apache Flink application is set to a parallelism of 1. Let's send some data to see how the throughput impacts the parallelism.
+#### Currently, our Kinesis Data Analytics for Apache Flink application is set to a parallelism of 1. Let's send some data to see how the throughput impacts the parallelism.
 
-Head back to your already running Remote Desktop and rerun the command in terminal to send data to our Kinesis Data Stream:
+#### Head back to your already running Remote Desktop and rerun the command in terminal to send data to our Kinesis Data Stream:
 
 ```
 java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName streaming-analytics-workshop -speedup 100
