@@ -66,7 +66,11 @@ This section of the Flink Dashboard can run a measurement to identify if backpre
 
    {{%expand "Metrics" %}}
 
-   TODO: Fill this out...
+  As stated in the Job Level metrics, The **Metrics** tab showcases many of the same metrics that would otherwise be available within CloudWatch metrics for Kinesis Data Analytics for Apache Flink jobs. 
+
+The primary benefit to the metrics being made available in the Flink Dashboard would be higher granularity: It can sometimes be helpful to enable Parallelism level metrics on for Kinesis Data Analytics application, however this can come at a higher incurred cost for CloudWatch logs being generated at a higher volume. The Flink Dashboard metrics give you this granularity out of the box. This being said, keep in mind that these metrics and any views that are generated are strictly `temporal`. As soon as the page is reloaded, these metrics and views will disappear. You cannot alert off of these metrics, and they should only be used for debugging purposes.
+
+For most cases, these metrics will not be necessary to use for troubleshooting, but some metrics may be useful depending on your application. A full list of metrics and their usability for debugging purposes can be found [here](https://ci.apache.org/projects/flink/flink-docs-stable/ops/metrics.html#system-metrics).
    {{% /expand %}}
 
 

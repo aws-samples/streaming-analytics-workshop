@@ -48,14 +48,16 @@ Pay close attention to checkpoint size over time to ensure that the checkpoint s
 
 ------------------------------
 
+#### Summary
 The **Summary** tab can be useful for seeing if there is any large variance to the checkpoint size or duration, as it showcases the Minimum, Average and Maximum Duration and Checkpoint Size.
 
+#### Configuration
 The Configuration tab will showcase the current checkpoint configuration set in your application. You can utilize the Configuration tab to ensure that the settings you have set through the AWS CLI have properly taken effect within your job. Otherwise, these values will be the defaults specified [here](https://docs.aws.amazon.com/kinesisanalytics/latest/java/reference-flink-settings.title.html#reference-defaults-checkpoint).
 
 
+#### Metrics
+The **Metrics** tab showcases many of the same metrics that would otherwise be available within CloudWatch metrics for Kinesis Data Analytics for Apache Flink jobs. 
 
-### TODO:
+The primary benefit to the metrics being made available in the Flink Dashboard would be higher granularity: It can sometimes be helpful to enable Parallelism level metrics on for Kinesis Data Analytics application, however this can come at a higher incurred cost for CloudWatch logs being generated at a higher volume. The Flink Dashboard metrics give you this granularity out of the box. This being said, keep in mind that these metrics and any views that are generated are strictly `temporal`. As soon as the page is reloaded, these metrics and views will disappear. You cannot alert off of these metrics, and they should only be used for debugging purposes.
 
- - Flink Metrics:
-   - Ones to look for:
-     - ?? (ask steffen, hari or karthi, most look the same as what is available in CW)
+For most cases, these metrics will not be necessary to use for troubleshooting, but some metrics may be useful depending on your application. A full list of metrics and their usability for debugging purposes can be found [here](https://ci.apache.org/projects/flink/flink-docs-stable/ops/metrics.html#system-metrics).
