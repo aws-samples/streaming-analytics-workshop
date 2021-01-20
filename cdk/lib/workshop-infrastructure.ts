@@ -42,77 +42,10 @@ export class WorkshopInfrastructure extends cdk.Stack {
       extract: true
     });
 
-
-    const connectorKey = `target/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.zip`
-
-    new GithubBuildPipeline(this, 'FlinkConnectorKinesisPipeline', {
-      url: `https://github.com/apache/flink/archive/release-${props.flinkVersion}.zip`,
+    new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
+      url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.consumerApplicationVersion}.zip`,
       bucket: bucket,
-      extract: false,
-      objectKey: `${connectorKey}`,
-      buildspec: BuildSpec.fromObject({
-        version: '0.2',
-        phases: {
-          build: {
-            commands: [
-              `cd flink-release-${props.flinkVersion}`,
-              'mvn clean package -B -DskipTests -Dfast -Pinclude-kinesis -pl flink-connectors/flink-connector-kinesis'
-            ]
-          },
-          post_build: {
-            commands: [
-              'cd flink-connectors/flink-connector-kinesis/target',
-              `mv dependency-reduced-pom.xml flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.pom.xml`
-            ]
-          }
-        },
-        artifacts: {
-          files: [
-            `target/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.jar`,
-            `target/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.pom.xml`
-          ],
-          'base-directory': `flink-release-${props.flinkVersion}/flink-connectors/flink-connector-kinesis`,
-          'discard-paths': true
-        }
-      })
-    });
-
-
-    const connectorArtifactName = 'FlinkKinesisConnector';
-
-    new GithubBuildPipeline(this, 'ConsumerApplicationPipeline', {
-      url: `https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/${props.consumerApplicationVersion}.zip`,
-      bucket: bucket,
-      extract: true,
-      sourceAction: new codepipeline_actions.S3SourceAction({
-        actionName: 'FlinkKinesisConnectorSourceAction',
-        bucket: bucket,
-        bucketKey: connectorKey,
-        output: new codepipeline.Artifact(connectorArtifactName)
-      }),
-      buildspec: BuildSpec.fromObject({
-        version: '0.2',
-        phases: {
-          pre_build: {
-            commands: [
-              `mvn install:install-file -B -Dfile=$CODEBUILD_SRC_DIR_${connectorArtifactName}/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.jar -DpomFile=$CODEBUILD_SRC_DIR_${connectorArtifactName}/flink-connector-kinesis_${props.flinkScalaVersion}-${props.flinkVersion}.pom.xml`
-            ]
-          },
-          build: {
-            commands: [
-              'cd amazon-kinesis-analytics-taxi-consumer-*',
-              `mvn clean package -B -Dflink.version=${props.flinkVersion}`
-            ]
-          }
-        },
-        artifacts: {
-          files: [
-            'target/amazon-kinesis-analytics-taxi-consumer-*.jar'
-          ],
-          'base-directory': 'amazon-kinesis-analytics-taxi-consumer-*',
-          'discard-paths': false
-        }
-      })
+      extract: true
     });
 
 
@@ -313,11 +246,9 @@ export class WorkshopInfrastructure extends cdk.Stack {
             (New-Object System.Net.WebClient).DownloadFile($url, $file)
 
             # Wait until build pipelines have successfully build all artifacts
-            Wait-CFNStack -StackName "${cdk.Aws.STACK_NAME}" -Timeout 600
+            Wait-CFNStack -StackName "${cdk.Aws.STACK_NAME}" -Timeout 900
 
             Copy-S3Object -BucketName "${bucket.bucketName}" -KeyPrefix target -LocalFolder "$desktop\\workshop-resources"
-
-            Expand-Archive "$desktop\\workshop-resources\\flink-connector-kinesis*.zip" "$desktop\\workshop-resources"
           </powershell>`.split('\n').map(line => line.trimLeft()).join('\n')
         )
       }
