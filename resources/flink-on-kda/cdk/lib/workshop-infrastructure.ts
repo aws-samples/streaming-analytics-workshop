@@ -43,7 +43,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
     });
 
     new GithubBuildPipeline(this, 'ConsumerApplicationBuildPipeline', {
-      url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.consumerApplicationVersion}.zip`,
+      url: `https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/${props.consumerApplicationVersion}.zip`,
       bucket: bucket,
       extract: true
     });
