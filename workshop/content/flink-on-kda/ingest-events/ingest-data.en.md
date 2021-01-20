@@ -14,5 +14,5 @@ The Java application has already been compiled and loaded onto the EC2 instance.
 1. Enter the following command into the terminal prompt to start producing events into the Kinesis data stream
 
 	{{< highlight plain >}}
-java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.1.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName streaming-analytics-workshop -speedup 600
+java -jar C:\Users\Administrator\Desktop\workshop-resources\amazon-kinesis-replay-0.1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4 -aggregate -streamName streaming-analytics-workshop -speedup 600
 {{< /highlight >}}
