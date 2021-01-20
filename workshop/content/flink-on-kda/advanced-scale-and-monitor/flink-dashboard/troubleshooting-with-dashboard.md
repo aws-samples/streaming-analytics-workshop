@@ -24,6 +24,7 @@ In this section, we will cover some basics of navigating around your application
    Keep in mind, we are not seeing the full picture of this application from this directed acyclic graph. Notice the `Parallelism` at the bottom of each blue box. When you scale your application like we did in the previous exercise, you can imagine the parallelism multiplying the number of blue boxes for that specific task. It would look something like this, pulled apart:
 
    ![Parallel Data Flow Flink](/images/flink-on-kda/parallel-data-flow-flink.png)
+    - Source: https://ci.apache.org/projects/flink/flink-docs-release-1.12/concepts/flink-architecture.html
 
    This image showcases an application with a `Source Operator` sending data to a `Map Operator`. These operators are chained together into a single task, but they each have a `parallelism` of `2`. This is why you see two copies of the same operaton. 
 
