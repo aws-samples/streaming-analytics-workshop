@@ -14,7 +14,10 @@ weight: 210
 ![Flink Dashboard Wide View](/images/flink-on-kda/flink-dashboard-wide-view.png?classes=border,shadow)
 
 #### This is a running Apache Flink Web Dashboard you would access in any standard Apache Flink workload.
-#### It is set to Read-Only, so tasks like deploying jars and modifying configuration is not enabled.
+
+   {{% notice tip %}} 
+The Flink Dashboard made available to Kinesis Data Analytics for Apache Flink is set to Read-Only, so tasks like deploying jars and modifying configuration are not enabled.
+   {{% /notice %}} 
 
 Take note of the following components of the Flink Dashboard, as they can be useful for troubleshooting your Flink applciations.
 

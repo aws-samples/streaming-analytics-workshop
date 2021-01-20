@@ -39,6 +39,7 @@ Let's click on one of the Blue Boxes to see what other information is available 
   {{%expand "Watermarks" %}} 
   The Watermarks tab is going to showcase the latest watermark timestamp received by that operator, in other words, the Low Watermark. Where this may be useful is if your application is receiving an influx of late arriving data, the watermarks within each subtask would indicate the lateness and could be an early warning sign of the application falling behind.
 
+   For more details on watermarks, please consult the Flink Documentation on [Event Time](https://ci.apache.org/projects/flink/flink-docs-release-1.12/dev/event_time.html)
   ![Flink Dashboard Watermarks](/images/flink-on-kda/flink-dashboard-watermarks.png?classes=border,shadow)
   {{% /expand %}}
 
