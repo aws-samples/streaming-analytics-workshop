@@ -20,13 +20,12 @@ The skeleton of the application has now been created. But you still need to adap
 
 	![Configure Property Group](/images/flink-on-kda/kda-property-group.png)
 
-1. Expand the **Snapshots** section and **Disable** snapshots for the application
-	{{% notice info %}}
-Enabling snapshots allows the service to maintain the state of a Flink application in case of application updates but also when recovering from infrastructure or application errors. So for production environments it is highly desirable to keep snapshots enabled.
-	{{% /notice %}}
-
-1. Expand the **Monitoring** section. Select **Task** as **Monitoring metrics level** and enable **CloudWatch** logging.
+1. Expand the **Monitoring** section and verify that **Task** is selected as **Monitoring metrics level** and **CloudWatch logging** is eneabled.
 
 	![Configure Monitoring](/images/flink-on-kda/kda-monitoring.png)
 
-1. Keep the default settings for **Scaling** and **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application
+1. Expand the **Scaling** section and reduce the **Parallelism** to `1`
+
+        ![Configure Scaling](/images/flink-on-kda/kda-configure-scaling.png)
+
+1. Keep the default settings **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application

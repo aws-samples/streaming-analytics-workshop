@@ -10,7 +10,7 @@ You can then create the Kinesis Analytics application. A Kinesis Analytics for J
 
 	![Kinesis Dashboard](/images/flink-on-kda/kinesis-welcome-create-kda.png)
 
-1. Enter `streaming-analytics-workshop` as the **Application name** and select *Apache Flink 1.8* as the **Runtime**. 
+1. Enter `streaming-analytics-workshop` as the **Application name** and select *Apache Flink 1.11* as the **Runtime**. 
 
 	![Create KDA Application](/images/flink-on-kda/kda-create-app.png)
 

@@ -10,7 +10,9 @@ The application is finally ready for execution through the Kinesis Data Analytic
 Before you proceed, make sure that you are currently not producing any events into the Kinesis stream. Navigate to the Terminal pane in IntelliJ and if the Java producer application is still running, terminate it by pressing *Ctrl-C*.
 {{% /notice %}}
 
-1. Once the update has completed, press **Run** on the resulting page and confirm that you want to run the application by choosing **Run** again. The application will now start in the background, which can take a couple of minutes. Once it is running, you can inspect the operator graph of the Flink application. 
+1. Once the update has completed, press **Run** on the resulting page and confirm that you want to run the application by choosing **Run** again. 
+
+1. When promted, confirm to *Run without snapshot* and press the blue **Run** button. The application will now start in the background, which can take a couple of minutes. Once it is running, you can inspect the operator graph of the Flink application. 
 
 	![](/images/flink-on-kda/kda-running-app.png)
 
