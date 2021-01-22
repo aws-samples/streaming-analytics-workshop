@@ -16,9 +16,7 @@ import { EmptyBucketOnDelete } from './empty-bucket';
 export interface WorkshopInfrastructureProps extends cdk.StackProps {
   kinesisReplayVersion: String,
   consumerApplicationVersion: String,
-  consumerApplicationJarObject: String,
-  flinkVersion: String,
-  flinkScalaVersion: String
+  consumerApplicationJarObject: String
 }
 
 export class WorkshopInfrastructure extends cdk.Stack {
