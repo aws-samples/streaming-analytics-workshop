@@ -54,7 +54,7 @@ export class BuildWorkshopResources extends cdk.Stack {
           });
 
 
-        let cdkBuildProject = (path:string) => new codebuild.PipelineProject(this, 'CdkCodebuildProject', {
+        let cdkBuildProject = (path:string) => new codebuild.PipelineProject(this, `CdkCodebuildProject-${path}`, {
             environment: {
                 buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
             },
@@ -90,8 +90,8 @@ export class BuildWorkshopResources extends cdk.Stack {
         });
 
 
-        const flinkBuildOutput = new codepipeline.Artifact();
-        const beamBuildOutput = new codepipeline.Artifact();
+        const flinkBuildOutput = new codepipeline.Artifact('flinkCfnTemplate');
+        const beamBuildOutput = new codepipeline.Artifact('beamCfnTemplate');
 
         const flinkBuildAction = new codepipeline_actions.CodeBuildAction({
             actionName: 'flinkCdkBuildAction',
@@ -101,14 +101,14 @@ export class BuildWorkshopResources extends cdk.Stack {
         });
 
         const beamBuildAction = new codepipeline_actions.CodeBuildAction({
-            actionName: 'flinkCdkBuildAction',
+            actionName: 'beamCdkBuildAction',
             project: cdkBuildProject('resources/beam-on-kda/cdk'),
             input: sourceOutput,
             outputs: [beamBuildOutput]
         });
 
         let cdkCopyAction = (output:codepipeline.Artifact) => new codepipeline_actions.S3DeployAction({
-            actionName: 'CdkCopyAction',
+            actionName: `CdkCopyAction-${output.artifactName}`,
             bucket: outputBucket,
             input: beamBuildOutput,
             objectKey: outputPrefix.valueAsString,
