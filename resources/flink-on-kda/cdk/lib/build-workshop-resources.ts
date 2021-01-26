@@ -46,72 +46,26 @@ export class BuildWorkshopResources extends cdk.Stack {
 
         const sourceAction = new codepipeline_actions.GitHubSourceAction({
             actionName: 'SourceAction',
-            branch: 'master',
+            branch: 'mainline',
             owner: 'aws-samples',
             repo: 'streaming-analytics-workshop',
             output: sourceOutput,
             oauthToken: oauthToken
           });
 
-        
-        const hugoBuildProject = new codebuild.PipelineProject(this, 'HugoCodebuildProject', {
+
+        let cdkBuildProject = (path:string) => new codebuild.PipelineProject(this, 'CdkCodebuildProject', {
             environment: {
-                buildImage: codebuild.LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1,
-                environmentVariables: {
-                    VERSION_HUGO: {
-                        value: '0.59.1'
-                    }
-                }
+                buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
             },
             buildSpec: BuildSpec.fromObject({
                 version: '0.2',
                 phases: {
-                    pre_build: {
-                        commands: [
-                            'wget https://github.com/gohugoio/hugo/releases/download/v${VERSION_HUGO}/hugo_${VERSION_HUGO}_Linux-64bit.tar.gz',
-                            'tar -xvf hugo_${VERSION_HUGO}_Linux-64bit.tar.gz hugo',
-                            'mv -v hugo /usr/bin/hugo',
-                            'chmod +x /usr/bin/hugo',
-                            'rm -rvf hugo_${VERSION_HUGO}_Linux-64bit.tar.gz',
-                            'find .'
-                        ]
+                    install: {
+                        'runtime-versions': {
+                            nodejs: 10
+                        }
                     },
-                    build: {
-                        commands: [
-                            'git submodule init && git submodule update',
-                            'echo "<p class="build-number">${AWS_COMMIT_ID}</p>" >> layouts/partials/menu-footer.html',
-                            'hugo -v',
-                            'find .'
-                        ]
-                    }
-                },
-                artifacts: {
-                  files: [
-                    `**/*`
-                  ],
-                  'base-directory': 'public',
-                  'discard-paths': true,
-                }
-            })
-        });
-
-        const hugoBuildOutput = new codepipeline.Artifact();
-
-        const hugoBuildAction = new codepipeline_actions.CodeBuildAction({
-            actionName: 'HugoBuildAction',
-            project: hugoBuildProject,
-            input: sourceOutput,
-            outputs: [hugoBuildOutput]
-        });
-      
-
-        const cdkBuildProject = new codebuild.PipelineProject(this, 'CdkCodebuildProject', {
-            environment: {
-                buildImage: codebuild.LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1,
-            },
-            buildSpec: BuildSpec.fromObject({
-                version: '0.2',
-                phases: {
                     pre_build: {
                         commands: [
                             'npm install -g aws-cdk'
@@ -129,33 +83,34 @@ export class BuildWorkshopResources extends cdk.Stack {
                   files: [
                     'StreamingAnalyticsWorkshop*.template.json'
                   ],
-                  'base-directory': 'cdk/cdk.out',
+                  'base-directory': `${path}/cdk.out`,
                   'discard-paths': true,
                 }
             })
         });
 
-        const cdkBuildOutput = new codepipeline.Artifact();
 
-        const cdkBuildAction = new codepipeline_actions.CodeBuildAction({
-            actionName: 'CdkBuildAction',
-            project: cdkBuildProject,
+        const flinkBuildOutput = new codepipeline.Artifact();
+        const beamBuildOutput = new codepipeline.Artifact();
+
+        const flinkBuildAction = new codepipeline_actions.CodeBuildAction({
+            actionName: 'flinkCdkBuildAction',
+            project: cdkBuildProject('resources/flink-on-kda/cdk'),
             input: sourceOutput,
-            outputs: [cdkBuildOutput]
-        });
-  
-
-        const hugoCopyAction = new codepipeline_actions.S3DeployAction({
-            actionName: 'HugoCopyAction',
-            bucket: artifactBucket,
-            input: hugoBuildOutput,
-            extract: true
+            outputs: [flinkBuildOutput]
         });
 
-        const cdkCopyAction = new codepipeline_actions.S3DeployAction({
+        const beamBuildAction = new codepipeline_actions.CodeBuildAction({
+            actionName: 'flinkCdkBuildAction',
+            project: cdkBuildProject('resources/beam-on-kda/cdk'),
+            input: sourceOutput,
+            outputs: [beamBuildOutput]
+        });
+
+        let cdkCopyAction = (output:codepipeline.Artifact) => new codepipeline_actions.S3DeployAction({
             actionName: 'CdkCopyAction',
             bucket: outputBucket,
-            input: cdkBuildOutput,
+            input: beamBuildOutput,
             objectKey: outputPrefix.valueAsString,
             extract: true
         });
@@ -165,15 +120,15 @@ export class BuildWorkshopResources extends cdk.Stack {
             stages: [
               {
                 stageName: 'Source',
-                actions: [sourceAction]
+                actions: [ sourceAction ]
               },
               {
                 stageName: 'Build',
-                actions: [/*hugoBuildAction,*/ cdkBuildAction]
+                actions: [ flinkBuildAction, beamBuildAction ]
               },
               {
                 stageName: 'Copy',
-                actions: [/*hugoCopyAction,*/ cdkCopyAction]
+                actions: [ cdkCopyAction(flinkBuildOutput), cdkCopyAction(beamBuildOutput) ]
               }
             ],
             artifactBucket: artifactBucket

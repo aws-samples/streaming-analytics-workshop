@@ -41,7 +41,7 @@ export class GithubBuildPipeline extends cdk.Construct {
     const downloadLambda =  new lambda.Function(this, 'DownloadLambda', {
       runtime: lambda.Runtime.PYTHON_3_7,
       timeout: Duration.seconds(30),
-      code: lambda.Code.inline(lambdaSource),
+      code: lambda.Code.fromInline(lambdaSource),
       handler: 'index.download_sources',
       environment: {
         url: props.url,
@@ -123,7 +123,7 @@ export class GithubBuildPipeline extends cdk.Construct {
 
     const notifyLambda =  new lambda.Function(this, 'NotifyLambda', {
       runtime: lambda.Runtime.PYTHON_3_7,
-      code: lambda.Code.inline(lambdaSource),
+      code: lambda.Code.fromInline(lambdaSource),
       timeout: Duration.seconds(10),
       handler: 'index.notify_build_success',
       environment: {
