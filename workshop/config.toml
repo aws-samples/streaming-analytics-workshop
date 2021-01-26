@@ -15,7 +15,7 @@ pygmentsCodeFences = true
 pygmentsStyle = "monokai"
 
 [params]
-  editURL = "https://github.com/aws-samples/streaming-analytics-workshop/edit/master/content/"
+  editURL = "https://github.com/aws-samples/streaming-analytics-workshop/edit/mainline/content/"
   description = "Streaming Analytics Workshop"
   author = "Steffen Hausmann"
   disableBreadcrumb = false
