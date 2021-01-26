@@ -1,8 +1,12 @@
 ## Streaming Analytics Workshop
 
-In this workshop, you will build an end-to-end streaming architecture to ingest, analyze, and visualize streaming data in near real-time. You set out to improve the operations of a taxi company in New York City. You’ll analyze the telemetry data of a taxi fleet in New York City in near-real time to optimize their fleet operations.
+This is a collection of workshops and resources for running streaming analytics workloads on AWS.
 
-The ready to use workshop is available from https://streaming-analytics.workshop.aws/
+In the workshop [Apache Flink on Amazon Kinesis Data Analytics](https://streaming-analytics.workshop.aws/flink-on-kda/) you will learn how to deploy, operate, and scale an Apache Flink application with Kinesis Data Analytics. You will also explore the basic concepts of Apache Flink and running Flink applications in a fully managed environment on AWS.
+
+In the workshop [Apache Beam on Amazon Kinesis Data Analytics](https://streaming-analytics.workshop.aws/beam-on-kda/) you will learn how you can leverage Beam’s expressive programming model to unify batch and streaming. You will also learn how AWS can help you to effectively build and operate Beam based streaming architectures with low operational overhead in a fully managed environment on AWS.
+
+The full workshop is hosted on https://streaming-analytics.workshop.aws. If you want to adapt the content and file a pull request, you can use the steps below to create a local copy of the workshop.
 
 ## Requirements
 
