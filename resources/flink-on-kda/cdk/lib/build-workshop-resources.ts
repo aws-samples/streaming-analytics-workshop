@@ -56,14 +56,14 @@ export class BuildWorkshopResources extends cdk.Stack {
 
         let cdkBuildProject = (path:string) => new codebuild.PipelineProject(this, `CdkCodebuildProject-${path}`, {
             environment: {
-                buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
+                buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
             },
             buildSpec: BuildSpec.fromObject({
                 version: '0.2',
                 phases: {
                     install: {
                         'runtime-versions': {
-                            nodejs: 10
+                            nodejs: 14
                         }
                     },
                     pre_build: {
@@ -73,7 +73,7 @@ export class BuildWorkshopResources extends cdk.Stack {
                     },
                     build: {
                         commands: [
-                            'cd cdk',
+                            `cd ${path}`,
                             'npm install',
                             'cdk synthesize',
                         ]
@@ -81,7 +81,7 @@ export class BuildWorkshopResources extends cdk.Stack {
                 },
                 artifacts: {
                   files: [
-                    'StreamingAnalyticsWorkshop*.template.json'
+                    '*.template.json'
                   ],
                   'base-directory': `${path}/cdk.out`,
                   'discard-paths': true,
