@@ -1,23 +1,8 @@
-# Aws-workshop-template
+## Streaming Analytics Workshop
 
-This project allows you to scaffold a workshop using a AWS-styled Hugo theme similar to those available at [lunar-lander.workshop.aws](https://lunar-lander.workshop.aws/), and [eksworkshop.com](https://eksworkshop.com/)
+In this workshop, you will build an end-to-end streaming architecture to ingest, analyze, and visualize streaming data in near real-time. You set out to improve the operations of a taxi company in New York City. You’ll analyze the telemetry data of a taxi fleet in New York City in near-real time to optimize their fleet operations.
 
-```bash
-.
-├── metadata.yml                      <-- Metadata file with descriptive information about the workshop
-├── README.md                         <-- This instructions file
-├── deck                              <-- Directory for presentation deck
-├── resources                         <-- Directory for workshop resources
-│   ├── code                          <-- Directory for workshop modules code
-│   ├── policies                      <-- Directory for workshop modules IAM Roles and Policies
-│   └── templates                     <-- Directory for workshop modules CloudFormation templates
-└── workshop                          
-    ├── buildspec.yml                 <-- AWS CodeBuild build script for building the workshop website (Note this is being deprecated in favour of automated builds within the workshops.aws platform. You shouldn\'t need to touch this file)
-    ├── config.toml                   <-- Hugo configuration file for the workshop website
-    └── content                       <-- Markdown files for pages/steps in workshop
-    └── static                        <-- Any static assets to be hosted alongside the workshop (ie. images, scripts, documents, etc)
-    └── themes                        <-- AWS Style Hugo Theme (Do not edit!)
-```
+The ready to use workshop is available from https://streaming-analytics.workshop.aws/
 
 ## Requirements
 
@@ -39,7 +24,7 @@ This project the following folders:
 All command line directions in this documentation assume you are in the `workshop` directory. Navigate there now, if you aren't there already.
 
 ```bash
-cd my-first-workshop/workshop
+cd streaming-analytics/workshop
 ```
 
 ## Create your first chapter page
@@ -92,20 +77,4 @@ Alternatively, you can run the following command in a terminal window to tell Hu
 
 ```bash
 hugo server
-```
-
-## Things to be aware of:
-
-* Remove the links to "Event Outfitters" from the bottom of the front page before you publish your workshop.
-* Update the config.toml with your workshop name - the default is at the top, and also under the section [Languages.en]
-```
-title = "My AWS Workshop"
-```
-* The template includes two sample languages, French and English (eg "_index.en.md" and "_index.fr.md"). Please don't move everything to "_index.md" as other people may want to translate your workshop in future!
-* However, you should remove the example French language selection from the config.toml unless you plan to provide a French translation. Delete the following lines:
-```
-[Languages.fr]
-title = "Mon atelier AWS"
-weight = 2
-languageName = "Français"
 ```
