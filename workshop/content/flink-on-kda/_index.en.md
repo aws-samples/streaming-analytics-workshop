@@ -3,6 +3,7 @@ title: "Apache Flink on Amazon Kinesis Data Analytics"
 menuTitle: "Apache Flink on KDA"
 chapter: true
 weight: 10
+url: "/flink-on-kda/"
 ---
 
 In this workshop, you will build an end-to-end streaming architecture to ingest, analyze, and visualize streaming data in near real-time. You set out to improve the operations of a taxi company in New York City. You'll analyze the telemetry data of a taxi fleet in New York City in near-real time to optimize their fleet operations.
