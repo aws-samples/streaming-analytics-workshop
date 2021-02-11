@@ -9,7 +9,7 @@ title = "Streaming Analytics Workshop"
 theme = "learn"
 metaDataFormat = "yaml"
 
-uglyurls = false
+uglyurls = true
 sectionPagesMenu = "main"
 pygmentsCodeFences = true
 pygmentsStyle = "monokai"
