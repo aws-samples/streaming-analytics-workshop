@@ -28,4 +28,4 @@ The skeleton of the application has now been created. But you still need to adap
 
 	![Configure Scaling](/images/flink-on-kda/kda-configure-scaling.png)
 
-1. Keep the default settings **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application
+1. Keep the default settings **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application.
