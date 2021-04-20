@@ -19,7 +19,7 @@ The full workshop is hosted on https://streaming-analytics.workshop.aws. If you 
 This project the following folders:
 
 * `deck`: The location to store your presentation materials
-* `resources`: Store any example code, IAM policies, or Cloudformation templates needed by your workshop here.
+* `resources`: Store any example code, IAM policies, or CloudFormation templates needed by your workshop here.
 * `workshop`: This is the core workshop folder. This is generated as HTML and hosted for presentation for customers.
 
 
