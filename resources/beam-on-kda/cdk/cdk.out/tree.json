@@ -6,7 +6,11 @@
     "children": {
       "Tree": {
         "id": "Tree",
-        "path": "Tree"
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "@aws-cdk/core.Construct",
+          "version": "1.103.0"
+        }
       },
       "streaming-analytics-workshop-beam": {
         "id": "streaming-analytics-workshop-beam",
@@ -26,12 +30,24 @@
                       "status": "Enabled"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-s3.CfnBucket",
+                  "version": "1.103.0"
                 }
               },
               "Notifications": {
                 "id": "Notifications",
-                "path": "streaming-analytics-workshop-beam/HistoricTrips/Notifications"
+                "path": "streaming-analytics-workshop-beam/HistoricTrips/Notifications",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.103.0"
+                }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-s3.Bucket",
+              "version": "1.103.0"
             }
           },
           "EmptyBucket": {
@@ -79,6 +95,10 @@
                               }
                             ]
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnRole",
+                          "version": "1.103.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -136,10 +156,22 @@
                                   }
                                 ]
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Policy",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Role",
+                      "version": "1.103.0"
                     }
                   },
                   "Resource": {
@@ -169,8 +201,16 @@
                         "runtime": "python3.7",
                         "timeout": 900
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.Function",
+                  "version": "1.103.0"
                 }
               },
               "EmptyBucketResource": {
@@ -186,8 +226,16 @@
                       ]
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-cloudformation.CfnCustomResource",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Construct",
+              "version": "1.103.0"
             }
           },
           "Vpc": {
@@ -211,6 +259,10 @@
                       }
                     ]
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnVPC",
+                  "version": "1.103.0"
                 }
               },
               "publicSubnet1": {
@@ -251,11 +303,19 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ec2.CfnSubnet",
+                      "version": "1.103.0"
                     }
                   },
                   "Acl": {
                     "id": "Acl",
-                    "path": "streaming-analytics-workshop-beam/Vpc/publicSubnet1/Acl"
+                    "path": "streaming-analytics-workshop-beam/Vpc/publicSubnet1/Acl",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.Resource",
+                      "version": "1.103.0"
+                    }
                   },
                   "RouteTable": {
                     "id": "RouteTable",
@@ -273,6 +333,10 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ec2.CfnRouteTable",
+                      "version": "1.103.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -288,6 +352,10 @@
                           "Ref": "VpcpublicSubnet1Subnet2BB74ED7"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ec2.CfnSubnetRouteTableAssociation",
+                      "version": "1.103.0"
                     }
                   },
                   "DefaultRoute": {
@@ -304,8 +372,16 @@
                           "Ref": "VpcIGWD7BA715C"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ec2.CfnRoute",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.PublicSubnet",
+                  "version": "1.103.0"
                 }
               },
               "publicSubnet2": {
@@ -346,11 +422,19 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ec2.CfnSubnet",
+                      "version": "1.103.0"
                     }
                   },
                   "Acl": {
                     "id": "Acl",
-                    "path": "streaming-analytics-workshop-beam/Vpc/publicSubnet2/Acl"
+                    "path": "streaming-analytics-workshop-beam/Vpc/publicSubnet2/Acl",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.Resource",
+                      "version": "1.103.0"
+                    }
                   },
                   "RouteTable": {
                     "id": "RouteTable",
@@ -368,6 +452,10 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ec2.CfnRouteTable",
+                      "version": "1.103.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -383,6 +471,10 @@
                           "Ref": "VpcpublicSubnet2SubnetE34B022A"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ec2.CfnSubnetRouteTableAssociation",
+                      "version": "1.103.0"
                     }
                   },
                   "DefaultRoute": {
@@ -399,8 +491,16 @@
                           "Ref": "VpcIGWD7BA715C"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ec2.CfnRoute",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.PublicSubnet",
+                  "version": "1.103.0"
                 }
               },
               "IGW": {
@@ -416,6 +516,10 @@
                       }
                     ]
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnInternetGateway",
+                  "version": "1.103.0"
                 }
               },
               "VPCGW": {
@@ -431,8 +535,16 @@
                       "Ref": "VpcIGWD7BA715C"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnVPCGatewayAttachment",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-ec2.Vpc",
+              "version": "1.103.0"
             }
           },
           "SecurityGroup": {
@@ -466,6 +578,10 @@
                       "Ref": "Vpc8378EB38"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnSecurityGroup",
+                  "version": "1.103.0"
                 }
               },
               "from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC": {
@@ -489,8 +605,16 @@
                       ]
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnSecurityGroupIngress",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-ec2.SecurityGroup",
+              "version": "1.103.0"
             }
           },
           "WindowsDevEnvironment": {
@@ -542,6 +666,10 @@
                                   }
                                 ]
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnRole",
+                              "version": "1.103.0"
                             }
                           },
                           "DefaultPolicy": {
@@ -587,10 +715,22 @@
                                       }
                                     ]
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.Policy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Role",
+                          "version": "1.103.0"
                         }
                       },
                       "Resource": {
@@ -621,8 +761,16 @@
                             "runtime": "python3.7",
                             "timeout": 30
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-lambda.Function",
+                      "version": "1.103.0"
                     }
                   },
                   "DownloadLambdaResource": {
@@ -631,8 +779,16 @@
                     "children": {
                       "Default": {
                         "id": "Default",
-                        "path": "streaming-analytics-workshop-beam/WindowsDevEnvironment/KinesisReplayBuildPipeline/DownloadLambdaResource/Default"
+                        "path": "streaming-analytics-workshop-beam/WindowsDevEnvironment/KinesisReplayBuildPipeline/DownloadLambdaResource/Default",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.CfnResource",
+                          "version": "1.103.0"
+                        }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-cloudformation.CustomResource",
+                      "version": "1.103.0"
                     }
                   },
                   "CodebuildProject": {
@@ -662,6 +818,10 @@
                                   "Version": "2012-10-17"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnRole",
+                              "version": "1.103.0"
                             }
                           },
                           "DefaultPolicy": {
@@ -810,10 +970,22 @@
                                       }
                                     ]
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.Policy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Role",
+                          "version": "1.103.0"
                         }
                       },
                       "Resource": {
@@ -844,8 +1016,16 @@
                             },
                             "encryptionKey": "alias/aws/s3"
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-codebuild.CfnProject",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-codebuild.PipelineProject",
+                      "version": "1.103.0"
                     }
                   },
                   "WaitHandle": {
@@ -854,6 +1034,10 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudFormation::WaitConditionHandle",
                       "aws:cdk:cloudformation:props": {}
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-cloudformation.CfnWaitConditionHandle",
+                      "version": "1.103.0"
                     }
                   },
                   "WaitCondition": {
@@ -868,6 +1052,10 @@
                         },
                         "timeout": "1200"
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-cloudformation.CfnWaitCondition",
+                      "version": "1.103.0"
                     }
                   },
                   "NotifyLambda": {
@@ -911,6 +1099,10 @@
                                   }
                                 ]
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnRole",
+                              "version": "1.103.0"
                             }
                           },
                           "DefaultPolicy": {
@@ -943,10 +1135,22 @@
                                       }
                                     ]
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.Policy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Role",
+                          "version": "1.103.0"
                         }
                       },
                       "Resource": {
@@ -975,8 +1179,16 @@
                             "runtime": "python3.7",
                             "timeout": 10
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-lambda.Function",
+                      "version": "1.103.0"
                     }
                   },
                   "CodePipeline": {
@@ -1006,6 +1218,10 @@
                                   "Version": "2012-10-17"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnRole",
+                              "version": "1.103.0"
                             }
                           },
                           "DefaultPolicy": {
@@ -1103,10 +1319,22 @@
                                       }
                                     ]
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.Policy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Role",
+                          "version": "1.103.0"
                         }
                       },
                       "Resource": {
@@ -1251,6 +1479,10 @@
                               }
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-codepipeline.CfnPipeline",
+                          "version": "1.103.0"
                         }
                       },
                       "Source": {
@@ -1299,6 +1531,10 @@
                                           "Version": "2012-10-17"
                                         }
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                                      "version": "1.103.0"
                                     }
                                   },
                                   "DefaultPolicy": {
@@ -1383,14 +1619,34 @@
                                               }
                                             ]
                                           }
+                                        },
+                                        "constructInfo": {
+                                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                          "version": "1.103.0"
                                         }
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.Policy",
+                                      "version": "1.103.0"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.Role",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/core.Construct",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.103.0"
                         }
                       },
                       "Build": {
@@ -1439,6 +1695,10 @@
                                           "Version": "2012-10-17"
                                         }
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                                      "version": "1.103.0"
                                     }
                                   },
                                   "DefaultPolicy": {
@@ -1477,14 +1737,34 @@
                                               }
                                             ]
                                           }
+                                        },
+                                        "constructInfo": {
+                                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                          "version": "1.103.0"
                                         }
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.Policy",
+                                      "version": "1.103.0"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.Role",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/core.Construct",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.103.0"
                         }
                       },
                       "Copy": {
@@ -1533,6 +1813,10 @@
                                           "Version": "2012-10-17"
                                         }
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                                      "version": "1.103.0"
                                     }
                                   },
                                   "DefaultPolicy": {
@@ -1617,12 +1901,28 @@
                                               }
                                             ]
                                           }
+                                        },
+                                        "constructInfo": {
+                                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                          "version": "1.103.0"
                                         }
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.Policy",
+                                      "version": "1.103.0"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.Role",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/core.Construct",
+                              "version": "1.103.0"
                             }
                           },
                           "InvokeAction": {
@@ -1667,6 +1967,10 @@
                                           "Version": "2012-10-17"
                                         }
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                                      "version": "1.103.0"
                                     }
                                   },
                                   "DefaultPolicy": {
@@ -1706,18 +2010,46 @@
                                               }
                                             ]
                                           }
+                                        },
+                                        "constructInfo": {
+                                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                          "version": "1.103.0"
                                         }
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.Policy",
+                                      "version": "1.103.0"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.Role",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/core.Construct",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-codepipeline.Pipeline",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.103.0"
                 }
               },
               "TemplatedSecret": {
@@ -1738,8 +2070,16 @@
                           "includeSpace": false
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-secretsmanager.CfnSecret",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-secretsmanager.Secret",
+                  "version": "1.103.0"
                 }
               },
               "InstanceEip": {
@@ -1748,6 +2088,10 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
                   "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnEIP",
+                  "version": "1.103.0"
                 }
               },
               "InstanceRole": {
@@ -1892,8 +2236,16 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.103.0"
                 }
               },
               "InstanceProfile": {
@@ -1908,6 +2260,10 @@
                       }
                     ]
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnInstanceProfile",
+                  "version": "1.103.0"
                 }
               },
               "InstanceWaitHandle": {
@@ -1916,6 +2272,10 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::CloudFormation::WaitConditionHandle",
                   "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-cloudformation.CfnWaitConditionHandle",
+                  "version": "1.103.0"
                 }
               },
               "InstanceBootstrapWaitCondition": {
@@ -1930,6 +2290,10 @@
                     },
                     "timeout": "1200"
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-cloudformation.CfnWaitCondition",
+                  "version": "1.103.0"
                 }
               },
               "LaunchTemplate": {
@@ -2004,6 +2368,10 @@
                       }
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnLaunchTemplate",
+                  "version": "1.103.0"
                 }
               },
               "AutoScalingGroup": {
@@ -2065,25 +2433,49 @@
                       }
                     ]
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-autoscaling.CfnAutoScalingGroup",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Construct",
+              "version": "1.103.0"
             }
           },
           "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": {
             "id": "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
-            "path": "streaming-analytics-workshop-beam/SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter"
+            "path": "streaming-analytics-workshop-beam/SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnParameter",
+              "version": "1.103.0"
+            }
           },
           "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118": {
             "id": "SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118",
-            "path": "streaming-analytics-workshop-beam/SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118"
+            "path": "streaming-analytics-workshop-beam/SsmParameterValue:--aws--service--ami-windows-latest--Windows_Server-2019-English-Full-Base:C96584B6-F00A-464E-AD19-53AFF4B05118",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Resource",
+              "version": "1.103.0"
+            }
           },
           "DevEnvironmentIp": {
             "id": "DevEnvironmentIp",
-            "path": "streaming-analytics-workshop-beam/DevEnvironmentIp"
+            "path": "streaming-analytics-workshop-beam/DevEnvironmentIp",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.103.0"
+            }
           },
           "DevEnvironmentCredentials": {
             "id": "DevEnvironmentCredentials",
-            "path": "streaming-analytics-workshop-beam/DevEnvironmentCredentials"
+            "path": "streaming-analytics-workshop-beam/DevEnvironmentCredentials",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.103.0"
+            }
           },
           "BeamConsumerBuildPipeline": {
             "id": "BeamConsumerBuildPipeline",
@@ -2130,6 +2522,10 @@
                               }
                             ]
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnRole",
+                          "version": "1.103.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -2175,10 +2571,22 @@
                                   }
                                 ]
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Policy",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Role",
+                      "version": "1.103.0"
                     }
                   },
                   "Resource": {
@@ -2209,8 +2617,16 @@
                         "runtime": "python3.7",
                         "timeout": 30
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.Function",
+                  "version": "1.103.0"
                 }
               },
               "DownloadLambdaResource": {
@@ -2219,8 +2635,16 @@
                 "children": {
                   "Default": {
                     "id": "Default",
-                    "path": "streaming-analytics-workshop-beam/BeamConsumerBuildPipeline/DownloadLambdaResource/Default"
+                    "path": "streaming-analytics-workshop-beam/BeamConsumerBuildPipeline/DownloadLambdaResource/Default",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.CfnResource",
+                      "version": "1.103.0"
+                    }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-cloudformation.CustomResource",
+                  "version": "1.103.0"
                 }
               },
               "CodebuildProject": {
@@ -2250,6 +2674,10 @@
                               "Version": "2012-10-17"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnRole",
+                          "version": "1.103.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -2398,10 +2826,22 @@
                                   }
                                 ]
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Policy",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Role",
+                      "version": "1.103.0"
                     }
                   },
                   "Resource": {
@@ -2432,8 +2872,16 @@
                         },
                         "encryptionKey": "alias/aws/s3"
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-codebuild.CfnProject",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-codebuild.PipelineProject",
+                  "version": "1.103.0"
                 }
               },
               "WaitHandle": {
@@ -2442,6 +2890,10 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::CloudFormation::WaitConditionHandle",
                   "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-cloudformation.CfnWaitConditionHandle",
+                  "version": "1.103.0"
                 }
               },
               "WaitCondition": {
@@ -2456,6 +2908,10 @@
                     },
                     "timeout": "1200"
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-cloudformation.CfnWaitCondition",
+                  "version": "1.103.0"
                 }
               },
               "NotifyLambda": {
@@ -2499,6 +2955,10 @@
                               }
                             ]
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnRole",
+                          "version": "1.103.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -2531,10 +2991,22 @@
                                   }
                                 ]
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Policy",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Role",
+                      "version": "1.103.0"
                     }
                   },
                   "Resource": {
@@ -2563,8 +3035,16 @@
                         "runtime": "python3.7",
                         "timeout": 10
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.Function",
+                  "version": "1.103.0"
                 }
               },
               "CodePipeline": {
@@ -2594,6 +3074,10 @@
                               "Version": "2012-10-17"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnRole",
+                          "version": "1.103.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -2691,10 +3175,22 @@
                                   }
                                 ]
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Policy",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Role",
+                      "version": "1.103.0"
                     }
                   },
                   "Resource": {
@@ -2839,6 +3335,10 @@
                           }
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-codepipeline.CfnPipeline",
+                      "version": "1.103.0"
                     }
                   },
                   "Source": {
@@ -2887,6 +3387,10 @@
                                       "Version": "2012-10-17"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                                  "version": "1.103.0"
                                 }
                               },
                               "DefaultPolicy": {
@@ -2971,14 +3475,34 @@
                                           }
                                         ]
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                      "version": "1.103.0"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.Policy",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.Role",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.Construct",
+                      "version": "1.103.0"
                     }
                   },
                   "Build": {
@@ -3027,6 +3551,10 @@
                                       "Version": "2012-10-17"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                                  "version": "1.103.0"
                                 }
                               },
                               "DefaultPolicy": {
@@ -3065,14 +3593,34 @@
                                           }
                                         ]
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                      "version": "1.103.0"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.Policy",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.Role",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.Construct",
+                      "version": "1.103.0"
                     }
                   },
                   "Copy": {
@@ -3121,6 +3669,10 @@
                                       "Version": "2012-10-17"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                                  "version": "1.103.0"
                                 }
                               },
                               "DefaultPolicy": {
@@ -3205,12 +3757,28 @@
                                           }
                                         ]
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                      "version": "1.103.0"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.Policy",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.Role",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.103.0"
                         }
                       },
                       "InvokeAction": {
@@ -3255,6 +3823,10 @@
                                       "Version": "2012-10-17"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                                  "version": "1.103.0"
                                 }
                               },
                               "DefaultPolicy": {
@@ -3294,18 +3866,46 @@
                                           }
                                         ]
                                       }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                                      "version": "1.103.0"
                                     }
                                   }
+                                },
+                                "constructInfo": {
+                                  "fqn": "@aws-cdk/aws-iam.Policy",
+                                  "version": "1.103.0"
                                 }
                               }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.Role",
+                              "version": "1.103.0"
                             }
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.Construct",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-codepipeline.Pipeline",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Construct",
+              "version": "1.103.0"
             }
           },
           "EnrichEventsLambda": {
@@ -3349,8 +3949,16 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.103.0"
                 }
               },
               "Resource": {
@@ -3372,8 +3980,16 @@
                     "runtime": "nodejs12.x",
                     "timeout": 60
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.103.0"
             }
           },
           "TerminateAppLambda": {
@@ -3417,6 +4033,10 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.103.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -3465,10 +4085,22 @@
                               }
                             ]
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.103.0"
                 }
               },
               "Resource": {
@@ -3496,6 +4128,10 @@
                     "runtime": "python3.7",
                     "timeout": 900
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.103.0"
                 }
               },
               "AllowInvoke:streaminganalyticsworkshopbeamApplicationTerminatedTopicA81E801B": {
@@ -3516,6 +4152,10 @@
                       "Ref": "ApplicationTerminatedTopic94FBC4F2"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnPermission",
+                  "version": "1.103.0"
                 }
               },
               "ApplicationTerminatedTopic": {
@@ -3539,10 +4179,22 @@
                           ]
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-sns.CfnSubscription",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-sns.Subscription",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.103.0"
             }
           },
           "ApplicationTerminatedTopic": {
@@ -3555,8 +4207,16 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
                   "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-sns.CfnTopic",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-sns.Topic",
+              "version": "1.103.0"
             }
           },
           "KdaRole": {
@@ -3582,6 +4242,10 @@
                       "Version": "2012-10-17"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                  "version": "1.103.0"
                 }
               },
               "DefaultPolicy": {
@@ -3683,15 +4347,31 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Policy",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.Role",
+              "version": "1.103.0"
             }
           },
           "PublicDatasetBucket": {
             "id": "PublicDatasetBucket",
-            "path": "streaming-analytics-workshop-beam/PublicDatasetBucket"
+            "path": "streaming-analytics-workshop-beam/PublicDatasetBucket",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Resource",
+              "version": "1.103.0"
+            }
           },
           "EmrSecurityGroup": {
             "id": "EmrSecurityGroup",
@@ -3715,6 +4395,10 @@
                       "Ref": "Vpc8378EB38"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnSecurityGroup",
+                  "version": "1.103.0"
                 }
               },
               "from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC": {
@@ -3738,8 +4422,16 @@
                       ]
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ec2.CfnSecurityGroupIngress",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-ec2.SecurityGroup",
+              "version": "1.103.0"
             }
           },
           "EmrClusterRole": {
@@ -3779,8 +4471,16 @@
                       }
                     ]
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.Role",
+              "version": "1.103.0"
             }
           },
           "EmrInstanceRole": {
@@ -3842,8 +4542,16 @@
                       }
                     ]
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.Role",
+              "version": "1.103.0"
             }
           },
           "EmrInstanceProfile": {
@@ -3858,6 +4566,10 @@
                   }
                 ]
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.CfnInstanceProfile",
+              "version": "1.103.0"
             }
           },
           "EmrCluster": {
@@ -3917,6 +4629,10 @@
                 "releaseLabel": "emr-5.27.0",
                 "visibleToAllUsers": true
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-emr.CfnCluster",
+              "version": "1.103.0"
             }
           },
           "GetEmrInstanceIdLambda": {
@@ -3960,6 +4676,10 @@
                           }
                         ]
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.103.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -4011,10 +4731,22 @@
                               }
                             ]
                           }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.103.0"
                         }
                       }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.103.0"
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.103.0"
                 }
               },
               "Resource": {
@@ -4036,8 +4768,16 @@
                     "runtime": "python3.7",
                     "timeout": 30
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.103.0"
             }
           },
           "GetEmrInstanceIdResource": {
@@ -4046,8 +4786,16 @@
             "children": {
               "Default": {
                 "id": "Default",
-                "path": "streaming-analytics-workshop-beam/GetEmrInstanceIdResource/Default"
+                "path": "streaming-analytics-workshop-beam/GetEmrInstanceIdResource/Default",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnResource",
+                  "version": "1.103.0"
+                }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-cloudformation.CustomResource",
+              "version": "1.103.0"
             }
           },
           "BeamWorkshopDashboard": {
@@ -4077,21 +4825,41 @@
                       ]
                     }
                   }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-cloudwatch.CfnDashboard",
+                  "version": "1.103.0"
                 }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-cloudwatch.Dashboard",
+              "version": "1.103.0"
             }
           },
           "ConnectToEmrCluster": {
             "id": "ConnectToEmrCluster",
-            "path": "streaming-analytics-workshop-beam/ConnectToEmrCluster"
+            "path": "streaming-analytics-workshop-beam/ConnectToEmrCluster",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.103.0"
+            }
           },
           "DownloadJarFile": {
             "id": "DownloadJarFile",
-            "path": "streaming-analytics-workshop-beam/DownloadJarFile"
+            "path": "streaming-analytics-workshop-beam/DownloadJarFile",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.103.0"
+            }
           },
           "StartBeamApplication": {
             "id": "StartBeamApplication",
-            "path": "streaming-analytics-workshop-beam/StartBeamApplication"
+            "path": "streaming-analytics-workshop-beam/StartBeamApplication",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.103.0"
+            }
           },
           "CDKMetadata": {
             "id": "CDKMetadata",
@@ -4099,16 +4867,36 @@
             "children": {
               "Default": {
                 "id": "Default",
-                "path": "streaming-analytics-workshop-beam/CDKMetadata/Default"
+                "path": "streaming-analytics-workshop-beam/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnResource",
+                  "version": "1.103.0"
+                }
               },
               "Condition": {
                 "id": "Condition",
-                "path": "streaming-analytics-workshop-beam/CDKMetadata/Condition"
+                "path": "streaming-analytics-workshop-beam/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnCondition",
+                  "version": "1.103.0"
+                }
               }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Construct",
+              "version": "1.103.0"
             }
           }
+        },
+        "constructInfo": {
+          "fqn": "@aws-cdk/core.Stack",
+          "version": "1.103.0"
         }
       }
+    },
+    "constructInfo": {
+      "fqn": "@aws-cdk/core.App",
+      "version": "1.103.0"
     }
   }
 }

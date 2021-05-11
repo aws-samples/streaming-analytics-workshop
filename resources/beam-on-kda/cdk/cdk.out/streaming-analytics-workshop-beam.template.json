@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-02-04)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-05-11)",
   "Resources": {
     "HistoricTripsEF9D049F": {
       "Type": "AWS::S3::Bucket",
@@ -3516,7 +3516,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Modules": "aws-cdk=1.88.0,@aws-cdk/assets=1.88.0,@aws-cdk/aws-applicationautoscaling=1.88.0,@aws-cdk/aws-autoscaling=1.88.0,@aws-cdk/aws-autoscaling-common=1.88.0,@aws-cdk/aws-autoscaling-hooktargets=1.88.0,@aws-cdk/aws-cloudformation=1.88.0,@aws-cdk/aws-cloudwatch=1.88.0,@aws-cdk/aws-codebuild=1.88.0,@aws-cdk/aws-codeguruprofiler=1.88.0,@aws-cdk/aws-codepipeline=1.88.0,@aws-cdk/aws-codepipeline-actions=1.88.0,@aws-cdk/aws-ec2=1.88.0,@aws-cdk/aws-ecr=1.88.0,@aws-cdk/aws-ecr-assets=1.88.0,@aws-cdk/aws-ecs=1.88.0,@aws-cdk/aws-elasticloadbalancingv2=1.88.0,@aws-cdk/aws-emr=1.88.0,@aws-cdk/aws-events=1.88.0,@aws-cdk/aws-events-targets=1.88.0,@aws-cdk/aws-iam=1.88.0,@aws-cdk/aws-kms=1.88.0,@aws-cdk/aws-lambda=1.88.0,@aws-cdk/aws-logs=1.88.0,@aws-cdk/aws-s3=1.88.0,@aws-cdk/aws-s3-assets=1.88.0,@aws-cdk/aws-sam=1.88.0,@aws-cdk/aws-secretsmanager=1.88.0,@aws-cdk/aws-servicediscovery=1.88.0,@aws-cdk/aws-sns=1.88.0,@aws-cdk/aws-sns-subscriptions=1.88.0,@aws-cdk/aws-sqs=1.88.0,@aws-cdk/aws-ssm=1.88.0,@aws-cdk/cloud-assembly-schema=1.88.0,@aws-cdk/core=1.88.0,@aws-cdk/custom-resources=1.88.0,@aws-cdk/cx-api=1.88.0,@aws-cdk/region-info=1.88.0,jsii-runtime=node.js/v15.8.0"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31T224TMRD9Ft5dt6ESz4QAJRISqyQqz7PeSeLEl5XHJoqs/XfG9rYpIPHkc2aOx3PzQi4eHuXDu49woTs1nO+z8gFl3kZQZ7HyjmJIKooNkk9BoVjt3VvcQQCLEUMhP1IcUyyILw46au8mUQJnepT5U1JnrN6GJmHA9gPI/DU5VcTF9xZ3GKwmqmE0WJk33rQMytl5o9W16l7RmvMFp7ALfq8NTkIZn4a9DxZKUJlLbomit7ci/qJ79xN0fC3gG7jB/GueBKr3Mj+Pqrieu5XoUs9ZbFPvWpE3tPEp4g76FqbZb7YlkVcaXmqujlYKd5WVTxDxAtf5mZktI8/naNFFsUWVgo7Xp+DTWB/4r2HtDgGJiv3LuivHd+CWH3doR8PBuWV+wD5pM8jc6RGNdqWdJ1S1mBk22Tj7b8oqmfEkCFXASBYcHDDwVlU+5xTKCkCKnhSw/CDZvGS6bbSlT474WupJBT2+9OgPvvOjrkOogOdiQ4m0MjxXXsu6ABeI6ijzZ6Bj7yEMRf5KpmkSjouRJ7r/tfggF/wdTqT1XUguaoty087fCDLtUysDAAA="
       },
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam/CDKMetadata/Default"
@@ -3608,6 +3608,14 @@
                 {
                   "Ref": "AWS::Region"
                 },
+                "af-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
                 "ap-east-1"
               ]
             },
@@ -3674,14 +3682,6 @@
                 },
                 "cn-northwest-1"
               ]
-            },
-            {
-              "Fn::Equals": [
-                {
-                  "Ref": "AWS::Region"
-                },
-                "eu-central-1"
-              ]
             }
           ]
         },
@@ -3692,7 +3692,23 @@
                 {
                   "Ref": "AWS::Region"
                 },
+                "eu-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
                 "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-south-1"
               ]
             },
             {
@@ -3750,7 +3766,11 @@
                 },
                 "us-east-2"
               ]
-            },
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
             {
               "Fn::Equals": [
                 {
