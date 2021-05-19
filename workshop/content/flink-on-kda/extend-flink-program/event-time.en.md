@@ -6,7 +6,7 @@ weight: 10
 
 Using event time for window operators provides much more stable semantics compared to processing time, as it is more robust against reordering of events and late arriving events. To activate event time processing, we first need to configure the Flink execution environment appropriately.
 
-{{< highlight java "linenos=inline,linenostart=75">}}
+{{< highlight java >}}
 if (parameter.get("EventTime", "true").equals("true")) {
   env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 }
@@ -16,10 +16,10 @@ In addition to merely activating event time, we need to tell the Flink program, 
 
 Extracting watermark information and generating watermarks is done with the `TimestampAssigner` class. The class is also responsible for assigning the correct time to individual events. 
 
-{{< highlight java "linenos=inline,linenostart=101">}}
+{{< highlight java >}}
 DataStream<TripEvent> trips = kinesisStream
     //extract watermarks from watermark events
-    .assignTimestampsAndWatermarks(new TimestampAssigner())
+    .assignTimestampsAndWatermarks(new AssignerWithPunctuatedWatermarksAdapter.Strategy<>(new TimestampAssigner()))
     ...
 {{< / highlight >}}
 

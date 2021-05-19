@@ -6,7 +6,7 @@ weight: 30
 
 Finally, we want to send the derived insights to Elasticsearch and Kibana for visualization. To this end, we use an Elasticsearch sink that has been extended to sign the requests with IAM credentials so that they are accepted by Amazon Elasticsearch Service.
 
-{{< highlight java "linenos=inline,linenostart=129">}}
+{{< highlight java >}}
 if (parameter.has("ElasticsearchEndpoint")) {
   String elasticsearchEndpoint = parameter.get("ElasticsearchEndpoint");
   final String region = parameter.get("Region", DEFAULT_REGION_NAME);
@@ -17,9 +17,9 @@ if (parameter.has("ElasticsearchEndpoint")) {
   }
 
   pickupCounts.addSink(AmazonElasticsearchSink.buildElasticsearchSink(
-      elasticsearchEndpoint, region, "pickup_count", "pickup_count"));
+      elasticsearchEndpoint, region, "pickup_count", "_doc"));
 
   tripDurations.addSink(AmazonElasticsearchSink.buildElasticsearchSink(
-      elasticsearchEndpoint, region, "trip_duration", "trip_duration"));
+      elasticsearchEndpoint, region, "trip_duration", "_doc"));
 }
 {{< / highlight >}}

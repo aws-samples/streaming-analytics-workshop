@@ -27,20 +27,18 @@ If you receive an error message that *User: anonymous is not authorized to perfo
 1. Create an Elasticsearch index for *pickup_count* documents with the following command. Make sure your cursor is *marking a line* of the command to execute it.
 
 	{{< highlight plain>}}
-PUT pickup_count?include_type_name=true
+PUT pickup_count
 {
   "mappings": {
-    "pickup_count": {
-      "properties": {
-        "location": {
-          "type": "geo_point"
-        },
-        "pickup_count": {
-          "type": "long"
-        },
-        "timestamp": {
-          "type": "date"
-        }
+    "properties": {
+      "location": {
+        "type": "geo_point"
+      },
+      "pickup_count": {
+        "type": "long"
+      },
+      "timestamp": {
+        "type": "date"
       }
     }
   }
@@ -55,25 +53,23 @@ If you encounter an *resource_already_exists_exception* exception, make sure tha
 1. Repeat the process to create a second index for *trip_duration* documents
 
 	{{< highlight plain>}}
-PUT trip_duration?include_type_name=true
+PUT trip_duration
 {
   "mappings": {
-    "trip_duration": {
-      "properties": {
-        "airport_code": {
-          "type": "keyword"
+    "properties": {
+      "airport_code": {
+        "type": "keyword"
+      },
+      "location": {
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
         },
-        "location": {
-          "fields": {
-            "raw": {
-              "type": "keyword"
-            }
-          },
-          "type": "geo_point"
-        },
-        "timestamp": {
-          "type": "date"
-        }
+        "type": "geo_point"
+      },
+      "timestamp": {
+        "type": "date"
       }
     }
   }

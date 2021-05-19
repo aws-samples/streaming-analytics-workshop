@@ -11,7 +11,7 @@ If the Flink application is executed with Kinesis Data Analytics, we can obtain 
 
 If the Flink application is executed in the local development environment, we continue to use the command line arguments that are specified when the `main` method is invoked.
 
-{{< highlight java "linenos=inline,linenostart=55" >}}
+{{< highlight java >}}
 ParameterTool parameter;
 
 if (env instanceof LocalStreamEnvironment) {
