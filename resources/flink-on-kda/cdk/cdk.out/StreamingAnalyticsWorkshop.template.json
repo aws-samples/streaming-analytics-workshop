@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced-2021-05-11)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced-2021-05-20)",
   "Resources": {
     "Bucket83908E77": {
       "Type": "AWS::S3::Bucket",
@@ -1284,11 +1284,11 @@
         },
         "Environment": {
           "Variables": {
-            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/release-0.2.0.zip",
+            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/release-0.2.1.zip",
             "bucket": {
               "Ref": "Bucket83908E77"
             },
-            "key": "sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.0.zip"
+            "key": "sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.1.zip"
           }
         },
         "Handler": "index.download_sources",
@@ -1502,7 +1502,7 @@
           ]
         },
         "Source": {
-          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-analytics-taxi-consumer-release-0.2.0\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-analytics-taxi-consumer-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-analytics-taxi-consumer-release-0.2.0\"\n  }\n}",
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-analytics-taxi-consumer-release-0.2.1\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-analytics-taxi-consumer-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-analytics-taxi-consumer-release-0.2.1\"\n  }\n}",
           "Type": "CODEPIPELINE"
         },
         "EncryptionKey": "alias/aws/s3"
@@ -1757,7 +1757,7 @@
                   "S3Bucket": {
                     "Ref": "Bucket83908E77"
                   },
-                  "S3ObjectKey": "sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.0.zip"
+                  "S3ObjectKey": "sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.1.zip"
                 },
                 "Name": "SourceAction",
                 "OutputArtifacts": [
@@ -2779,7 +2779,7 @@
                   {
                     "Ref": "InstanceWaitHandle"
                   },
-                  "\"\n\n\n# Download artifacts\nNew-Item -Path \"$desktop\" -Name \"workshop-resources\" -ItemType \"directory\"\n\n$url = \"https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/release-0.2.0/misc/streaming-analytics-workshop-dashboard.json\"\n$file = \"$desktop\\workshop-resources\\streaming-analytics-workshop-dashboard.json\"\n(New-Object System.Net.WebClient).DownloadFile($url, $file)\n\n# Wait until build pipelines have successfully build all artifacts\nWait-CFNStack -StackName \"",
+                  "\"\n\n\n# Download artifacts\nNew-Item -Path \"$desktop\" -Name \"workshop-resources\" -ItemType \"directory\"\n\n$url = \"https://raw.githubusercontent.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/release-0.2.1/misc/streaming-analytics-workshop-dashboard.json\"\n$file = \"$desktop\\workshop-resources\\streaming-analytics-workshop-dashboard.json\"\n(New-Object System.Net.WebClient).DownloadFile($url, $file)\n\n# Wait until build pipelines have successfully build all artifacts\nWait-CFNStack -StackName \"",
                   {
                     "Ref": "AWS::StackName"
                   },
@@ -2960,7 +2960,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VSy24bMQz8lt4VJW6Anuu6bRqgQBd2kJ65XDqWrcdCohoYi/33UtLGRpuThsMROaS00qu7e3334TO8phscTrcThkh62jHgSW2CTxwzstrs/ZZSyBFJXYCQHURwxBRL8CvzmKtWLg6GTfCzKoWndK+nLxlPVLMNzcqC6wfQ0/fssYhL7g3PyoDT0zbY2qeeXbAGz7XtBT2KQ/BIXQx7Y2lWaEMe9iE6KGX0VNzkxMFdbf8X7v1vMHyx/AP8YN/TUjkM1GdjBz11ZiRrfOl6pLaeBTbZuOSvyipZ8KwSYSRODjy8UJR117hoGpoV4cfq/dtjp55HLKnnbqO63Mvku9z7RX5B25CZnqBv1ht/5dYpBTTwtuWaaOuTtxPlAzC9wnlps0Rrll9wcORZia0cDZ8fYsjj4vNf4ifIyx2eyI1WbssAFhIbTAQRD1oEX4MD4xVkDglB9vBS2LWEuxbWUvOsvCxQH9Ptn9UnvZK/eUzG3MTs2TjS23b+BZKd0l64AgAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VSy24bMQz8lt4VJW7Rnuu6bRqgQBd2kJ65XDqWrcdCohoYi/33UtLGRtOThsMROaS00qu7j/ru3Wd4STc4nG4nDJH0tGPAk9oEnzhmZLXZ+y2lkCOSugAhO4jgiCmW4FfmMVetXBwMm+BnVQpP6YOevmQ8Uc02NCsLrh9AT9+zxyIuuVc8KwNOT9tga596dsEaPNe2F/QgDsEjdTHsjaVZoQ152IfooJTRU3GTEwd3tf0m3PvfYPhi+Qf4wf5PS+UwUJ+NHfTUmZGs8aXrkdp6Fthk45K/KqtkwbNKhJE4OfDwTFHWXeOiaWhWhO+r928PnXoasaSeuo3qci+T73LvF/kFbUNmeoS+WW/8lVunFNDA65Zroq1P3k6U98D0AuelzRKtWX7BwZFnJbZyNHy+jyGPi89/iZ8gL3d4JDdauS0DWEhsMBFEPGgRfA0OjFeQOSQE2cNzYdcS7lpYS82z8rJAfUy3f1af9Er+5jEZcxOzZ+NIb9v5F94twjK4AgAA"
       },
       "Metadata": {
         "aws:cdk:path": "StreamingAnalyticsWorkshop/CDKMetadata/Default"
@@ -3012,7 +3012,7 @@
       }
     },
     "FlinkApplicationJarObject": {
-      "Value": "target/amazon-kinesis-analytics-taxi-consumer-0.2.0.jar"
+      "Value": "target/amazon-kinesis-analytics-taxi-consumer-0.2.1.jar"
     }
   },
   "Conditions": {
