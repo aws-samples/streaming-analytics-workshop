@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-05-11)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-06-01)",
   "Resources": {
     "HistoricTripsEF9D049F": {
       "Type": "AWS::S3::Bucket",
@@ -3516,7 +3516,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31T224TMRD9Ft5dt6ESz4QAJRISqyQqz7PeSeLEl5XHJoqs/XfG9rYpIPHkc2aOx3PzQi4eHuXDu49woTs1nO+z8gFl3kZQZ7HyjmJIKooNkk9BoVjt3VvcQQCLEUMhP1IcUyyILw46au8mUQJnepT5U1JnrN6GJmHA9gPI/DU5VcTF9xZ3GKwmqmE0WJk33rQMytl5o9W16l7RmvMFp7ALfq8NTkIZn4a9DxZKUJlLbomit7ci/qJ79xN0fC3gG7jB/GueBKr3Mj+Pqrieu5XoUs9ZbFPvWpE3tPEp4g76FqbZb7YlkVcaXmqujlYKd5WVTxDxAtf5mZktI8/naNFFsUWVgo7Xp+DTWB/4r2HtDgGJiv3LuivHd+CWH3doR8PBuWV+wD5pM8jc6RGNdqWdJ1S1mBk22Tj7b8oqmfEkCFXASBYcHDDwVlU+5xTKCkCKnhSw/CDZvGS6bbSlT474WupJBT2+9OgPvvOjrkOogOdiQ4m0MjxXXsu6ABeI6ijzZ6Bj7yEMRf5KpmkSjouRJ7r/tfggF/wdTqT1XUguaoty087fCDLtUysDAAA="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31Sy24bMQz8ltwVJU6BnOM6bWqgQBe2kZy5XNqWrcdClGoYwv57Je3GTlqgJ86QI4qvmZzdP8rZzROc+Ba7411C50mmdQA8ioWzHHzEIFbELnoksdjaj7gBD4YC+UJ+xdDHUFB+2KmgnB1ESZz4i0xfIx6pRkc0CA2m7UCm79FiEZfYR9yQN4q5plFgZFo5PVZQbOO0wnPVXdAy1wsWqfFuqzQNArWL3dZ5AyWpTKW2yMGZaxN/0a19AxUuDfwA2+l/3YMgfJDptccSem0WooltrmIdWzs2eUUrFwNtoB3TjP6rb87sUMF7zzUwtpKnmpUvEOgE5+mbic1D3s/ekA1iTRi9CucX72JfP/ivY2l3npiL/9uyKeYn5JHvN2R6nZPnkbmO2qh0J1OjetLKlnEeCGszExxl/RS/KqtkwoNgQk+BDVjYkc9XVflUky8nADE4RsjynczueabrkY7ls+X8LLaMXvXvM/rEN65XdQkV5L0YXzItdN5rPst6ACcIuJfpGXjfOvBdkV/IMAzC5mbkge9+zx7lg7y/ObBStz7aoAzJ1Wj/AAhfMiMrAwAA"
       },
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam/CDKMetadata/Default"
