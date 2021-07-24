@@ -12,7 +12,7 @@ import cloudwatch = require('@aws-cdk/aws-cloudwatch');
 import { Duration, RemovalPolicy } from "@aws-cdk/core";
 import { EmptyBucketOnDelete } from "./empty-bucket";
 import { GithubBuildPipeline } from "./github-build-pipeline";
-import { WindowsDevEnvironment } from "./windows-dev-environment";
+import { Cloud9DevEnvironment } from "./cloud9-dev-environment";
 
 export interface WorkshopInfrastructureProps extends cdk.StackProps {
   kinesisReplayVersion: string;
@@ -40,7 +40,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
 
     const vpc = new ec2.Vpc(this, 'Vpc', {
-      subnetConfiguration: [{  
+      subnetConfiguration: [{
         name: 'public',
         subnetType: ec2.SubnetType.PUBLIC
       }]
@@ -53,16 +53,14 @@ export class WorkshopInfrastructure extends cdk.Stack {
     sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3389));
     sg.addIngressRule(sg, ec2.Port.allTraffic());
 
-    const devEnvironment = new WindowsDevEnvironment(this, "WindowsDevEnvironment", {
-      ...props,
+    const cloud9DevEnvironment = new Cloud9DevEnvironment(this, 'Cloud9DevEnvironment', {
       vpc: vpc,
-      sg: sg,
       bucket: bucket,
+      repositoryUrl: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git`
     });
 
     // make sure that the bucket is emptied only after the instance sending data has been terminated
-    devEnvironment.autoscaling.addDependsOn(emptyBucket.customResource);
-
+    // devEnvironment.autoscaling.addDependsOn(emptyBucket.customResource);
 
     new GithubBuildPipeline(this, "BeamConsumerBuildPipeline", {
       url: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/${props.beamApplicationVersion}.zip`,
@@ -145,48 +143,48 @@ export class WorkshopInfrastructure extends cdk.Stack {
     const emrClusterRole = new iam.Role(this, 'EmrClusterRole', {
       assumedBy: new iam.ServicePrincipal('elasticmapreduce.amazonaws.com'),
       managedPolicies: [
-          iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonElasticMapReduceRole')
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonElasticMapReduceRole')
       ]
     });
 
     const emrInstanceRole = new iam.Role(this, 'EmrInstanceRole', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
       managedPolicies: [
-          iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonElasticMapReduceforEC2Role'),
-          iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonElasticMapReduceforEC2Role'),
+        iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
       ]
     });
 
     const emrProfile = new iam.CfnInstanceProfile(this, 'EmrInstanceProfile', {
-        roles: [
-          emrInstanceRole.roleName
-        ]
+      roles: [
+        emrInstanceRole.roleName
+      ]
     });
 
     const cluster = new emr.CfnCluster(this, 'EmrCluster', {
       name: 'beam-workshop',
       applications: [
-          { name: 'Hadoop' }, 
-          { name: 'Ganglia' }, 
-          { name: 'Flink' }, 
-          { name: 'ZooKeeper'}
+        { name: 'Hadoop' },
+        { name: 'Ganglia' },
+        { name: 'Flink' },
+        { name: 'ZooKeeper' }
       ],
       instances: {
-          emrManagedMasterSecurityGroup: emrSg.securityGroupId,
-          emrManagedSlaveSecurityGroup: emrSg.securityGroupId,
-          masterInstanceGroup: {
-              instanceCount: 1,
-              instanceType: 'c5n.xlarge',
-              name: 'Master'
-          },
-          coreInstanceGroup: {
-              instanceCount: 2,
-              instanceType: 'r5.xlarge',
-              name: 'Core'
-          },
-          ec2SubnetId: vpc.publicSubnets[0].subnetId
+        emrManagedMasterSecurityGroup: emrSg.securityGroupId,
+        emrManagedSlaveSecurityGroup: emrSg.securityGroupId,
+        masterInstanceGroup: {
+          instanceCount: 1,
+          instanceType: 'c5n.xlarge',
+          name: 'Master'
+        },
+        coreInstanceGroup: {
+          instanceCount: 2,
+          instanceType: 'r5.xlarge',
+          name: 'Core'
+        },
+        ec2SubnetId: vpc.publicSubnets[0].subnetId
       },
-      serviceRole : emrClusterRole.roleName,
+      serviceRole: emrClusterRole.roleName,
       releaseLabel: 'emr-5.27.0',
       visibleToAllUsers: true,
       jobFlowRole: emrProfile.ref,
@@ -205,7 +203,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     getEmrInstanceId.addToRolePolicy(new iam.PolicyStatement({
       actions: ['elasticmapreduce:ListInstances'],
-      resources: [ `arn:${cdk.Aws.PARTITION}:elasticmapreduce:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:cluster/${cluster.ref}` ]
+      resources: [`arn:${cdk.Aws.PARTITION}:elasticmapreduce:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:cluster/${cluster.ref}`]
     }));
 
     const customResource = new cfn.CustomResource(this, 'GetEmrInstanceIdResource', {
