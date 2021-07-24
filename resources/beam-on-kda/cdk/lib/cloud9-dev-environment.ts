@@ -86,10 +86,7 @@ export class Cloud9DevEnvironment extends cdk.Construct {
         });
 
         /* Output */
-        const arn = c9env.attrArn.split(':')
-        const v = arn[arn.length - 1]
-
-        new cdk.CfnOutput(this, 'Tag', { value: v });
+        new cdk.CfnOutput(this, 'Tag', { value: c9env.attrArn.toString() });
         new cdk.CfnOutput(this, 'ProfileName', { value: instance_profile_name });
     }
 }
