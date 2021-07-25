@@ -11,7 +11,7 @@ You can then execute the Beam pipeline with Amazon Kinesis Data Analytics in a f
 1. Enter `beam-workshop` as the **Application name**
 
 
-1. Select _Apache Flink 1.8_ as the **Runtime**.
+1. Select _Apache Flink 1.11_ as the **Runtime**.
 
 1. Choose _Choose from IAM roles that Kinesis Kinesis Analytics can assume_ as **Access permissions**. If you are attending an AWS hosted event, select the only role that is suggested. If you are running the workshop on your own, select the role that contains `KdaRole`.
 
