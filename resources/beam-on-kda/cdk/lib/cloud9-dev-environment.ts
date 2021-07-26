@@ -3,11 +3,13 @@ import ec2 = require('@aws-cdk/aws-ec2');
 import iam = require('@aws-cdk/aws-iam');
 import s3 = require('@aws-cdk/aws-s3');
 import c9 = require('@aws-cdk/aws-cloud9');
+import { GithubBuildPipeline } from "./github-build-pipeline";
 
 export interface Cloud9DevEnvironmentProps extends cdk.StackProps {
     vpc: ec2.Vpc,
     bucket: s3.Bucket,
-    repositoryUrl: string
+    repositoryUrl: string,
+    kinesisReplayVersion: string,
 }
 
 export class Cloud9DevEnvironment extends cdk.Construct {
@@ -19,6 +21,14 @@ export class Cloud9DevEnvironment extends cdk.Construct {
         const name = 'beam-workshop-devenv'
         const instance_profile_name = name + '-profile'
         const subnet = (props.vpc.publicSubnets.map(subnet => subnet.subnetId))[0]
+
+        new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
+            url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.kinesisReplayVersion}.zip`,
+            bucket: props.bucket,
+            extract: true
+        });
+
+        //   Copy-S3Object -BucketName "${props.bucket.bucketName}" -KeyPrefix target -LocalFolder "$desktop\\workshop-resources"
 
         const c9env = new c9.CfnEnvironmentEC2(this, name,
             {
@@ -71,7 +81,7 @@ export class Cloud9DevEnvironment extends cdk.Construct {
         const instanceRole = new iam.Role(this, 'InstanceRole', {
             assumedBy: new iam.ServicePrincipal('cloud9.amazonaws.com'),
             managedPolicies: [
-                iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCloud9User')
+                iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCloud9Administrator')
             ],
             inlinePolicies: {
                 WorkshopPermissions: policy
@@ -86,7 +96,23 @@ export class Cloud9DevEnvironment extends cdk.Construct {
         });
 
         /* Output */
-        new cdk.CfnOutput(this, 'Tag', { value: c9env.attrArn.toString() });
-        new cdk.CfnOutput(this, 'ProfileName', { value: instance_profile_name });
+        new cdk.CfnOutput(this, 'Tag',
+            {
+                exportName: 'Tag',
+                description: 'Cloud9 environment ARN',
+                value: c9env.attrArn.toString()
+            });
+        new cdk.CfnOutput(this, 'ProfileName',
+            {
+                exportName: 'ProfileName',
+                description: 'Instance Profile Name',
+                value: instance_profile_name
+            });
+        new cdk.CfnOutput(this, 'ReplayJarS3Url',
+            {
+                exportName: 'ReplayJarS3Url',
+                description: 'S3 Url for the replay jar file',
+                value: props.bucket.s3UrlForObject('target')
+            });
     }
 }

@@ -58,7 +58,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
       vpc: vpc,
 
       bucket: bucket,
-      repositoryUrl: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git`
+      repositoryUrl: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git`,
+      kinesisReplayVersion: props.kinesisReplayVersion
     });
 
     // make sure that the bucket is emptied only after the instance sending data has been terminated
