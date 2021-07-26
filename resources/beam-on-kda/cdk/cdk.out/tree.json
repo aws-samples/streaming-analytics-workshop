@@ -42,6 +42,7 @@
                 "constructInfo": {
                   "fqn": "@aws-cdk/aws-s3.CfnBucket",
                   "version": "1.115.0"
+
                 }
               }
             },
@@ -624,6 +625,99 @@
               "beam-workshop-devenv": {
                 "id": "beam-workshop-devenv",
                 "path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/beam-workshop-devenv",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Cloud9::EnvironmentEC2",
                   "aws:cdk:cloudformation:props": {
@@ -639,7 +733,23 @@
                     ],
                     "subnetId": {
                       "Ref": "VpcpublicSubnet1Subnet2BB74ED7"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     }
+
                   }
                 },
                 "constructInfo": {
@@ -689,6 +799,7 @@
                             "policyDocument": {
                               "Statement": [
                                 {
+
                                   "Action": [
                                     "ec2:AssociateAddress",
                                     "cloudwatch:PutMetricData",
@@ -806,6 +917,10 @@
               "Tag": {
                 "id": "Tag",
                 "path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/Tag",
+
+
+
+
                 "constructInfo": {
                   "fqn": "@aws-cdk/core.CfnOutput",
                   "version": "1.115.0"
@@ -825,6 +940,15 @@
               "version": "1.115.0"
             }
           },
+
+
+
+
+
+
+
+
+
           "BeamConsumerBuildPipeline": {
             "id": "BeamConsumerBuildPipeline",
             "path": "streaming-analytics-workshop-beam/BeamConsumerBuildPipeline",

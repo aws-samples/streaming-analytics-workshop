@@ -418,6 +418,9 @@
         "Description": "Cloud9 environment for beam workshop",
         "Name": "beam-workshop-devenv",
         "Repositories": [
+
+
+
           {
             "PathComponent": "/code",
             "RepositoryUrl": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git"
@@ -465,6 +468,7 @@
             "PolicyDocument": {
               "Statement": [
                 {
+
                   "Action": [
                     "ec2:AssociateAddress",
                     "cloudwatch:PutMetricData",
@@ -563,6 +567,7 @@
         ],
         "InstanceProfileName": "beam-workshop-devenv-profile"
       },
+
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/InstanceProfile"
       }
@@ -2300,12 +2305,15 @@
       "Condition": "CDKMetadataAvailable"
     }
   },
+
   "Outputs": {
     "Cloud9DevEnvironmentTag28CB9B1B": {
       "Value": {
         "Fn::GetAtt": [
           "Cloud9DevEnvironmentbeamworkshopdevenvFF8BF8C9",
           "Arn"
+
+
         ]
       }
     },

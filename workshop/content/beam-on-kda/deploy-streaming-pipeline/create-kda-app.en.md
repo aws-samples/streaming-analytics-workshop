@@ -17,4 +17,6 @@ You can then execute the Beam pipeline with Amazon Kinesis Data Analytics in a f
 
    ![Create KDA Application](/images/beam-on-kda/kda-create-app.png)
 
+1. Choose *Production* as the **Template for application settings**
+
 1. Create the application by pressing the blue **Create Application** button. This will take you to the overview screen where you will configure further properties of the application.

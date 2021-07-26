@@ -6,7 +6,7 @@ weight: 45
 
 The application is finally ready for execution through the Kinesis Data Analytics service in a fully managed Flink environment. You can now start the execution and send events into the Kinesis data stream. The Flink application will then continuously process the data that is ingested into the data stream and send derived insights to Amazon CloudWatch for visualization.
 
-1.  Once the update has completed, press **Run** on the resulting page and confirm that you want to run the application by choosing **Run** again. The application will now start in the background, which can take a couple of minutes. Once it is running, you can inspect the operator graph of the Flink application.
+1.  Once the update has completed, press **Run** on the resulting page and confirm that you want to run the application *without a snapshot* by choosing **Run** again. The application will now start in the background, which can take a couple of minutes. Once it is running, you can inspect the operator graph of the Flink application.
 
     ![kda-running-app](/images/beam-on-kda/kda-running-beamapp.png)
 

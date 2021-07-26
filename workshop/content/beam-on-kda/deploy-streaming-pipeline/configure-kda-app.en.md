@@ -30,21 +30,22 @@ The skeleton of the application has now been created. But you still need to adap
 1. Expand the **Snapshots** section and **Disable** snapshots for the application
 
    {{% notice info %}}
-   Enabling snapshots allows the service to maintain the state of a Flink application in case of application updates but also when recovering from infrastructure or application errors. So for production environments it is highly desirable to keep snapshots enabled.
+   Enabling snapshots allows the service to maintain the state of a Flink application in case of application updates but also when recovering from infrastructure or application errors. For production environments it is highly desirable to keep snapshots enabled. For development purposes, disabling snapshots allows you to iterate faster, though.
    {{% /notice %}}
 
-1. Expand the **Monitoring** section. Select **Task** as **Monitoring metrics level** and enable **CloudWatch** logging. Select **Info** as the Monitoring Log Level
+1. Expand the **Monitoring** section. Verify that **Task** is set to **Monitoring metrics level** ,  **CloudWatch** logging is enabled, and **Info** is set as the **Monitoring Log Level**.
 
-1. Set the parallelism of the application to `4`. This determines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html) factor used for the application within Kinesis Data Analytics. Leave the parallelism per KPU as default to 1. To learn more about how Kinesis Data Analytics does scaling see [here](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html).
+1. Expand the **Scaling** section. Set the parallelism of the application to `4` and **Disable** automatic scaling.
 
-   {{% notice info %}}
-   Parallelism — This property to set the default Apache Flink application parallelism. All operators, sources, and sinks execute with this parallelism unless they are overridden in the application code. The default is 1, and the default maximum is 256.
-   <br /><br />
-   ParallelismPerKPU — This property to set the number of parallel tasks that can be scheduled per Kinesis Processing Unit (KPU) of your application. The default is 1, and the maximum is 8. For applications that have blocking operations (for example, I/O), a higher value of ParallelismPerKPU leads to full utilization of KPU resources.
-   {{% /notice %}}
+This determines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html) factor used for the application within Kinesis Data Analytics. Leave the parallelism per KPU as default to 1. To learn more about how Kinesis Data Analytics does scaling see [here](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html).
+   <dl>
+      <dt>Parallelism</dt>
+      <dd>This property to set the default Apache Flink application parallelism. All operators, sources, and sinks execute with this parallelism unless they are overridden in the application code.</dd>
+      <dt>ParallelismPerKPU</dt>
+      <dd>This property to set the number of parallel tasks that can be scheduled per Kinesis Processing Unit (KPU) of your application. The default is 1, and the maximum is 8. For applications that have blocking operations (for example, I/O), a higher value of ParallelismPerKPU leads to full utilization of KPU resources.</dd>
+   </dl>
 
-   ![Configure KDA Settings](/images/beam-on-kda/kda-config2.png)
 
-1. Keep the default settings for **Scaling** and **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application. After a few minutes the application will be ready to run.
+8. Keep the default settings for **Scaling** and **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application. After a few minutes the application will be ready to run.
 
    ![Configure Complete](/images/beam-on-kda/kda-configure-review.png)

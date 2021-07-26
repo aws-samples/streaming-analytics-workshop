@@ -215,6 +215,6 @@ export class WindowsDevEnvironment extends cdk.Construct {
     });
 
     new cdk.CfnOutput(scope, 'DevEnvironmentIp', { value: eip.ref });
-    new cdk.CfnOutput(scope, 'DevEnvironmentCredentials', { value: `https://console.aws.amazon.com/secretsmanager/#/secret?name=${localAdminPassword.secretArn}` });    
+    new cdk.CfnOutput(scope, 'DevEnvironmentCredentials', { value: `https://console.aws.amazon.com/secretsmanager/#!/secret?name=${localAdminPassword.secretArn}` });    
   }
 }
