@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@aws-cdk/aws-autoscaling": "^1.56.0",
+    "@aws-cdk/aws-cloud9": "^1.115.0",
     "@aws-cdk/aws-cloudwatch-actions": "^1.56.0",
     "@aws-cdk/aws-codebuild": "^1.56.0",
     "@aws-cdk/aws-codepipeline": "^1.56.0",
@@ -34,7 +35,6 @@
     "@aws-cdk/aws-s3": "^1.56.0",
     "@aws-cdk/aws-secretsmanager": "^1.56.0",
     "@aws-cdk/core": "^1.56.0",
-    "@aws-cdk/aws-cloud9": "^1.56.0",
     "@types/node": "^13.13.15",
     "fs": "0.0.1-security",
     "source-map-support": "^0.5.19"

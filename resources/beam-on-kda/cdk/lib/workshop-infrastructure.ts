@@ -136,30 +136,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
     s3.Bucket.fromBucketName(this, 'PublicDatasetBucket', 'nyc-tlc').grantRead(kdaRole);
 
-
-    const emrSg = new ec2.SecurityGroup(this, 'EmrSecurityGroup', {
-      vpc: vpc
-    });
-
-    emrSg.addIngressRule(sg, ec2.Port.allTraffic());
-
-    const emrClusterRole = new iam.Role(this, 'EmrClusterRole', {
-      assumedBy: new iam.ServicePrincipal('elasticmapreduce.amazonaws.com'),
-      managedPolicies: [
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
     const metric = (dimensions?: cloudwatch.DimensionHash) => new cloudwatch.Metric({
       metricName: 'Number of Trips',
       namespace: 'Beam',
