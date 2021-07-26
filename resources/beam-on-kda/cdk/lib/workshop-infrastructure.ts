@@ -154,7 +154,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
     dashboard.addWidgets(new cloudwatch.GraphWidget({
       title: 'Number of trips (total)',
       left: [metric()],
-      width: 24
+      width: 24,
+      liveData: true
     }));
 
     dashboard.addWidgets(new cloudwatch.GraphWidget({
@@ -168,9 +169,17 @@ export class WorkshopInfrastructure extends cdk.Stack {
         metric({ Borough: 'Manhattan' }),
       ],
       width: 24,
-      stacked: true
+      stacked: true,
+      liveData: true
     }));
 
-    new cdk.CfnOutput(this, "DownloadJarFile", { value: `aws s3 cp --recursive --exclude '*' --include '${props.beamApplicationJarFile}' 's3://${bucket.bucketName}/target/' .` })
+    dashboard.addWidgets(new cloudwatch.LogQueryWidget({
+      title: `Flink error log: /aws/kinesis-analytics/${props.appName}`,
+      logGroupNames: [ `/aws/kinesis-analytics/${props.appName}`],
+      queryString: 'fields @timestamp, @message\n| filter isPresent(throwableInformation) or @message like /Error/\n| | filter not(logger like /org.apache.commons.beanutils/)\n|sort @timestamp desc',
+      width: 24
+    }));
+
+    new cdk.CfnOutput(this, "InputS3Pattern", { value: `s3://${bucket.bucketName}/historic-trip-events/*/*/*/*/*` });
   }
 }

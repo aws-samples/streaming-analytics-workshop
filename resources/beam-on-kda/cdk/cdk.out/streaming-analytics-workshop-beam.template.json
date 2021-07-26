@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-07-19)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-07-26)",
   "Resources": {
     "HistoricTripsEF9D049F": {
       "Type": "AWS::S3::Bucket",
@@ -3175,11 +3175,15 @@
               {
                 "Ref": "AWS::Region"
               },
-              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (per borough)\",\"region\":\"",
+              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{},\"liveData\":true}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (per borough)\",\"region\":\"",
               {
                 "Ref": "AWS::Region"
               },
-              "\",\"stacked\":true,\"metrics\":[[\"Beam\",\"Number of Trips\",\"Borough\",\"Bronx\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Brooklyn\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"EWR\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Queens\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Staten Island\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Manhattan\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{}}}]}"
+              "\",\"stacked\":true,\"metrics\":[[\"Beam\",\"Number of Trips\",\"Borough\",\"Bronx\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Brooklyn\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"EWR\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Queens\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Staten Island\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Manhattan\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{},\"liveData\":true}},{\"type\":\"log\",\"width\":24,\"height\":6,\"x\":0,\"y\":12,\"properties\":{\"view\":\"table\",\"title\":\"Flink error log: /aws/kinesis-analytics/beam-workshop\",\"region\":\"",
+              {
+                "Ref": "AWS::Region"
+              },
+              "\",\"query\":\"SOURCE '/aws/kinesis-analytics/beam-workshop' | fields @timestamp, @message\\n| filter isPresent(throwableInformation) or @message like /Error/\\n| | filter not(logger like /org.apache.commons.beanutils/)\\n|sort @timestamp desc\"}}]}"
             ]
           ]
         }
@@ -3216,7 +3220,7 @@
         "Fn::Join": [
           "",
           [
-            "https://console.aws.amazon.com/secretsmanager/#/secret?name=",
+            "https://console.aws.amazon.com/secretsmanager/#!/secret?name=",
             {
               "Ref": "WindowsDevEnvironmentTemplatedSecret21391F15"
             }
@@ -3224,16 +3228,16 @@
         ]
       }
     },
-    "DownloadJarFile": {
+    "InputS3Pattern": {
       "Value": {
         "Fn::Join": [
           "",
           [
-            "aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar' 's3://",
+            "s3://",
             {
               "Ref": "HistoricTripsEF9D049F"
             },
-            "/target/' ."
+            "/historic-trip-events/*/*/*/*/*"
           ]
         ]
       }

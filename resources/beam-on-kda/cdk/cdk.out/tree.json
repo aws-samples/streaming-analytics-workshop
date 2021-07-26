@@ -4401,11 +4401,15 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (per borough)\",\"region\":\"",
+                          "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{},\"liveData\":true}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Number of trips (per borough)\",\"region\":\"",
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"stacked\":true,\"metrics\":[[\"Beam\",\"Number of Trips\",\"Borough\",\"Bronx\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Brooklyn\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"EWR\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Queens\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Staten Island\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Manhattan\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{}}}]}"
+                          "\",\"stacked\":true,\"metrics\":[[\"Beam\",\"Number of Trips\",\"Borough\",\"Bronx\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Brooklyn\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"EWR\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Queens\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Staten Island\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Manhattan\",\"StreamName\",\"beam-workshop\",{\"period\":1,\"stat\":\"Maximum\"}]],\"yAxis\":{},\"liveData\":true}},{\"type\":\"log\",\"width\":24,\"height\":6,\"x\":0,\"y\":12,\"properties\":{\"view\":\"table\",\"title\":\"Flink error log: /aws/kinesis-analytics/beam-workshop\",\"region\":\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"query\":\"SOURCE '/aws/kinesis-analytics/beam-workshop' | fields @timestamp, @message\\n| filter isPresent(throwableInformation) or @message like /Error/\\n| | filter not(logger like /org.apache.commons.beanutils/)\\n|sort @timestamp desc\"}}]}"
                         ]
                       ]
                     }
@@ -4422,9 +4426,9 @@
               "version": "1.114.0"
             }
           },
-          "DownloadJarFile": {
-            "id": "DownloadJarFile",
-            "path": "streaming-analytics-workshop-beam/DownloadJarFile",
+          "InputS3Pattern": {
+            "id": "InputS3Pattern",
+            "path": "streaming-analytics-workshop-beam/InputS3Pattern",
             "constructInfo": {
               "fqn": "@aws-cdk/core.CfnOutput",
               "version": "1.114.0"
