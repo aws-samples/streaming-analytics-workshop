@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-07-26)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-07-29)",
   "Resources": {
     "HistoricTripsEF9D049F": {
       "Type": "AWS::S3::Bucket",
@@ -413,7 +413,7 @@
     "Cloud9DevEnvironmentbeamworkshopdevenvFF8BF8C9": {
       "Type": "AWS::Cloud9::EnvironmentEC2",
       "Properties": {
-        "InstanceType": "t2.small",
+        "InstanceType": "t2.2xlarge",
         "AutomaticStopTimeMinutes": 30,
         "Description": "Cloud9 environment for beam workshop",
         "Name": "beam-workshop-devenv",
@@ -455,7 +455,7 @@
                 {
                   "Ref": "AWS::Partition"
                 },
-                ":iam::aws:policy/AWSCloud9User"
+                ":iam::aws:policy/AWSCloud9Administrator"
               ]
             ]
           }
@@ -1971,7 +1971,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31SwVLjMAz9Fu7GUHZghhvQZYETmZaBs6OoW7WJlbFsOh1P/h3bCS27zHDSk/TypKd4pmezS31+cmN2cgrN9iwCO9Rx6Q1s1ZyteBfAqwUKBweo5iv7HHwffEZfq4nbkCe2g8paUX7peBdgi4U5oTHcGcFBtaarG6Pjn2Ahf5dpX3GFriORokim03HBbZlUYsUtwb7wDugpbWssYOV4RW0aAS2HZsWuM1lUx7xmEM/dcfH/0pV9M+QPXh6Nbdrv5UEhXOj42kNuvVZzVYU6bbEMtR39HtGCg8cXU48yY/1YuxVhIPPpuTRGKx5dYj4Yjzuzn8ZM2a1Pf2fdofVqiRAc+f2D49CXAT8WnuxfhyLTZa516t/bd3Jss9r9/EIBN1gHahsdK+qxJZvPuUEoZiY4FFo/9Y/MQpnwoMRKekihFnDUfzr8J3/hnsoJC5i22hkPax1/G1nXbFyT+4dkGAZl02y9kbP32ZXOb3cjRKcuWE8d6sUYPwDFKYSR2AIAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31SwU4jMQz9Fu4hUFYgcQO6LHBi1CI4Zzzu1u1MPIoTqiqafyfJDC27SJz8bL/Yfo5neja70ucnN2Ynp9BszyKwQx2X3sBWzdmKdwG8WqBwcIBqvrLPwffBZ/Q1mrgNeWI7qFwryi8d7wJssTAnNJo7Izio1nR1Y3T8Eyzkd5n2FVfoOhIpFcl0Oi64LZ2Krbgl2BfeAT2laY0FrByvqE0toOXQrNh1JhfVMY8ZxHN3HPw/d2XfDPmDlkdjm/Z7eFAIFzq+9pBTr9VcVaFOUyxDbUe9R7Tg4PHF1GOZMX6M3YowkPnUXBKjFI8uMR+Mx53ZT20m79an31l3aL1aIgRHfv/gOPSlwY+BJ/vXoci0mWud8vf2nRzbXO1+fqGAG6wDtY2OFfXYks3r3CAUMRMcCq2f8kdmoUx4UGIlHVKoBRz1nwr/8V+4p7LCAqapdsbDWsffRtY1G9fk/MEZhkHZ1Ftv5Ow9Xe5lut2NEJ26YD11qBej/QCkTx+N2AIAAA=="
       },
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam/CDKMetadata/Default"
@@ -1981,15 +1981,41 @@
   },
   "Outputs": {
     "Cloud9DevEnvironmentTag28CB9B1B": {
+      "Description": "Cloud9 environment ARN",
       "Value": {
         "Fn::GetAtt": [
           "Cloud9DevEnvironmentbeamworkshopdevenvFF8BF8C9",
           "Arn"
         ]
+      },
+      "Export": {
+        "Name": "Tag"
       }
     },
     "Cloud9DevEnvironmentProfileName8E3031AD": {
-      "Value": "beam-workshop-devenv-profile"
+      "Description": "Instance Profile Name",
+      "Value": "beam-workshop-devenv-profile",
+      "Export": {
+        "Name": "ProfileName"
+      }
+    },
+    "Cloud9DevEnvironmentReplayJarS3Url9ECA1A84": {
+      "Description": "S3 Url for the replay jar file",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "s3://",
+            {
+              "Ref": "HistoricTripsEF9D049F"
+            },
+            "/target"
+          ]
+        ]
+      },
+      "Export": {
+        "Name": "ReplayJarS3Url"
+      }
     },
     "InputS3Pattern": {
       "Value": {
