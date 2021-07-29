@@ -14,7 +14,7 @@ The Java application has already been compiled and loaded onto the Cloud9 develo
 2.  Enter the following command into the terminal prompt to start producing events into the Kinesis data stream created earlier, `beam-workshop`.
 
 	{{< highlight plain >}}
-java -jar ./replay/amazon-kinesis-replay-0.1.0.jar -streamName beam-workshop -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720
+java -jar ./replay/amazon-kinesis-replay-*.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-workshop
 {{< /highlight >}}
 
 	You should see lines similar to the one below in the terminal if the above operation was successful. Please keep the ingestion running while you continue with the next step.

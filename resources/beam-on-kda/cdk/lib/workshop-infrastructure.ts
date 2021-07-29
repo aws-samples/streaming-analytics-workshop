@@ -54,11 +54,9 @@ export class WorkshopInfrastructure extends cdk.Stack {
     sg.addIngressRule(sg, ec2.Port.allTraffic());
 
     const cloud9DevEnvironment = new Cloud9DevEnvironment(this, 'Cloud9DevEnvironment', {
-
       vpc: vpc,
-
       bucket: bucket,
-      repositoryUrl: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git`,
+      beamSourceRepositoryUrl: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git`,
       kinesisReplayVersion: props.kinesisReplayVersion
     });
 

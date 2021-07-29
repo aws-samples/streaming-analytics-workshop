@@ -8,7 +8,7 @@ import { GithubBuildPipeline } from "./github-build-pipeline";
 export interface Cloud9DevEnvironmentProps extends cdk.StackProps {
     vpc: ec2.Vpc,
     bucket: s3.Bucket,
-    repositoryUrl: string,
+    beamSourceRepositoryUrl: string,
     kinesisReplayVersion: string,
 }
 
@@ -17,24 +17,22 @@ export class Cloud9DevEnvironment extends cdk.Construct {
     constructor(scope: cdk.Construct, id: string, props: Cloud9DevEnvironmentProps) {
         super(scope, id);
 
-        /* Cloud9 environment */
-        const name = 'beam-workshop-devenv'
-        const instance_profile_name = name + '-profile'
-        const subnet = (props.vpc.publicSubnets.map(subnet => subnet.subnetId))[0]
+        new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
+            url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.kinesisReplayVersion}.zip`,
+            bucket: props.bucket,
+            extract: true
+        });
+      
 
-        //   Copy-S3Object -BucketName "${props.bucket.bucketName}" -KeyPrefix target -LocalFolder "$desktop\\workshop-resources"
-
-        const c9env = new c9.CfnEnvironmentEC2(this, name,
+        const c9env = new c9.Ec2Environment(this, 'Cloud9Instance',
             {
-                name: 'beam-workshop-devenv',
+                vpc: props.vpc,
+                ec2EnvironmentName: cdk.Aws.STACK_NAME,
                 description: 'Cloud9 environment for beam workshop',
-                automaticStopTimeMinutes: 30,
-                instanceType: 't2.2xlarge',
-                subnetId: subnet,
-                repositories: [
+                clonedRepositories: [
                     {
                         pathComponent: '/code',
-                        repositoryUrl: props.repositoryUrl
+                        repositoryUrl: props.beamSourceRepositoryUrl
                     }
                 ]
             })
@@ -75,7 +73,8 @@ export class Cloud9DevEnvironment extends cdk.Construct {
         const instanceRole = new iam.Role(this, 'InstanceRole', {
             assumedBy: new iam.ServicePrincipal('cloud9.amazonaws.com'),
             managedPolicies: [
-                iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCloud9Administrator')
+                iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCloud9Administrator'),
+                iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
             ],
             inlinePolicies: {
                 WorkshopPermissions: policy
@@ -83,30 +82,28 @@ export class Cloud9DevEnvironment extends cdk.Construct {
         });
 
         const instanceProfile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
-            instanceProfileName: instance_profile_name,
             roles: [
                 instanceRole.roleName
             ]
         });
 
-        /* Output */
-        new cdk.CfnOutput(this, 'Tag',
-            {
-                exportName: 'Tag',
-                description: 'Cloud9 environment ARN',
-                value: c9env.attrArn.toString()
-            });
-        new cdk.CfnOutput(this, 'ProfileName',
-            {
-                exportName: 'ProfileName',
-                description: 'Instance Profile Name',
-                value: instance_profile_name
-            });
-        new cdk.CfnOutput(this, 'ReplayJarS3Url',
-            {
-                exportName: 'ReplayJarS3Url',
-                description: 'S3 Url for the replay jar file',
-                value: props.bucket.s3UrlForObject('target')
-            });
+        /* Output for Cloud9 bootstrap script*/
+        new cdk.CfnOutput(this, 'Tag', {
+            exportName: 'Tag',
+            description: 'Cloud9 environment ARN',
+            value: c9env.ec2EnvironmentArn
+        });
+
+        new cdk.CfnOutput(this, 'ProfileName', {
+            exportName: 'ProfileName',
+            description: 'Instance Profile Name',
+            value: instanceProfile.ref
+        });
+
+        new cdk.CfnOutput(this, 'ReplayJarS3Url', {
+            exportName: 'ReplayJarS3Url',
+            description: 'S3 Url for the replay jar file',
+            value: props.bucket.s3UrlForObject('target')
+        });
     }
 }

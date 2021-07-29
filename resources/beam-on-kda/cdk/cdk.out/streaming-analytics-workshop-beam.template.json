@@ -410,13 +410,1064 @@
         "aws:cdk:path": "streaming-analytics-workshop-beam/SecurityGroup/from streaminganalyticsworkshopbeamSecurityGroup88030EF5:ALL TRAFFIC"
       }
     },
-    "Cloud9DevEnvironmentbeamworkshopdevenvFF8BF8C9": {
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambdaServiceRole7677047F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicy35C1955E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "HistoricTripsEF9D049F",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicy35C1955E",
+        "Roles": [
+          {
+            "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambdaServiceRole7677047F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambda6291C00E": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambdaServiceRole7677047F",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/release-0.1.0.zip",
+            "bucket": {
+              "Ref": "HistoricTripsEF9D049F"
+            },
+            "key": "sources/amazon-kinesis-replay-release-0.1.0.zip"
+          }
+        },
+        "Handler": "index.download_sources",
+        "Runtime": "python3.7",
+        "Timeout": 30
+      },
+      "DependsOn": [
+        "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicy35C1955E",
+        "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambdaServiceRole7677047F"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/DownloadLambda/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambdaResourceF936F387": {
+      "Type": "AWS::CloudFormation::CustomResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "Cloud9DevEnvironmentKinesisReplayBuildPipelineDownloadLambda6291C00E",
+            "Arn"
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/DownloadLambdaResource/Default"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProjectRole65736AD5": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodebuildProject/Role/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicyBC72076A": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProject4A3A65B0"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProject4A3A65B0"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases",
+                "codebuild:BatchPutCodeCoverages"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProject4A3A65B0"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "HistoricTripsEF9D049F",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "HistoricTripsEF9D049F",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicyBC72076A",
+        "Roles": [
+          {
+            "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProjectRole65736AD5"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProject4A3A65B0": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "CODEPIPELINE"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/standard:2.0",
+          "ImagePullCredentialsType": "CODEBUILD",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProjectRole65736AD5",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-replay-release-0.1.0\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-replay-release-0.1.0\"\n  }\n}",
+          "Type": "CODEPIPELINE"
+        },
+        "EncryptionKey": "alias/aws/s3"
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodebuildProject/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineWaitHandle0BE76523": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle",
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/WaitHandle"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineWaitConditionAC504110": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "Properties": {
+        "Count": 1,
+        "Handle": {
+          "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineWaitHandle0BE76523"
+        },
+        "Timeout": "1200"
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/WaitCondition"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambdaServiceRole36013F58": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicyF9774EB1": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codepipeline:PutJobSuccessResult",
+                "codepipeline:PutJobFailureResult"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicyF9774EB1",
+        "Roles": [
+          {
+            "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambdaServiceRole36013F58"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambda2EA48A2F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambdaServiceRole36013F58",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "waitHandleUrl": {
+              "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineWaitHandle0BE76523"
+            }
+          }
+        },
+        "Handler": "index.notify_build_success",
+        "Runtime": "python3.7",
+        "Timeout": 10
+      },
+      "DependsOn": [
+        "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicyF9774EB1",
+        "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambdaServiceRole36013F58"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/NotifyLambda/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineRole5BBB6631": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codepipeline.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Role/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy416CFF7B": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "HistoricTripsEF9D049F",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "HistoricTripsEF9D049F",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleBD6C2112",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleB60DC10F",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleF7610889",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole561EADEC",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy416CFF7B",
+        "Roles": [
+          {
+            "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineRole5BBB6631"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Role/DefaultPolicy/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineA4323C69": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineRole5BBB6631",
+            "Arn"
+          ]
+        },
+        "Stages": [
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "S3Bucket": {
+                    "Ref": "HistoricTripsEF9D049F"
+                  },
+                  "S3ObjectKey": "sources/amazon-kinesis-replay-release-0.1.0.zip"
+                },
+                "Name": "SourceAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleBD6C2112",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Source"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProject4A3A65B0"
+                  }
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "Name": "BuildAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleB60DC10F",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Build"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "BucketName": {
+                    "Ref": "HistoricTripsEF9D049F"
+                  },
+                  "Extract": "true"
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "Name": "CopyAction",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleF7610889",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Invoke",
+                  "Owner": "AWS",
+                  "Provider": "Lambda",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "FunctionName": {
+                    "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambda2EA48A2F"
+                  }
+                },
+                "Name": "InvokeAction",
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole561EADEC",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 2
+              }
+            ],
+            "Name": "Copy"
+          }
+        ],
+        "ArtifactStore": {
+          "Location": {
+            "Ref": "HistoricTripsEF9D049F"
+          },
+          "Type": "S3"
+        }
+      },
+      "DependsOn": [
+        "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineRoleDefaultPolicy416CFF7B",
+        "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineRole5BBB6631"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleBD6C2112": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy0C71C776": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "HistoricTripsEF9D049F",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "HistoricTripsEF9D049F",
+                          "Arn"
+                        ]
+                      },
+                      "/sources/amazon-kinesis-replay-release-0.1.0.zip"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "HistoricTripsEF9D049F",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "HistoricTripsEF9D049F",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy0C71C776",
+        "Roles": [
+          {
+            "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleBD6C2112"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleB60DC10F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy7203C6FE": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:StopBuild"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodebuildProject4A3A65B0",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy7203C6FE",
+        "Roles": [
+          {
+            "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleB60DC10F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleF7610889": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy88E0827E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "HistoricTripsEF9D049F",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "HistoricTripsEF9D049F",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "HistoricTripsEF9D049F",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "HistoricTripsEF9D049F",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy88E0827E",
+        "Roles": [
+          {
+            "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleF7610889"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole561EADEC": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyA1A69E5C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:ListFunctions",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Cloud9DevEnvironmentKinesisReplayBuildPipelineNotifyLambda2EA48A2F",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyA1A69E5C",
+        "Roles": [
+          {
+            "Ref": "Cloud9DevEnvironmentKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole561EADEC"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "Cloud9DevEnvironmentCloud9Instance80B599CE": {
       "Type": "AWS::Cloud9::EnvironmentEC2",
       "Properties": {
-        "InstanceType": "t2.2xlarge",
-        "AutomaticStopTimeMinutes": 30,
+        "InstanceType": "t2.micro",
         "Description": "Cloud9 environment for beam workshop",
-        "Name": "beam-workshop-devenv",
+        "Name": {
+          "Ref": "AWS::StackName"
+        },
         "Repositories": [
           {
             "PathComponent": "/code",
@@ -428,7 +1479,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/beam-workshop-devenv"
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/Cloud9Instance/Resource"
       }
     },
     "Cloud9DevEnvironmentInstanceRole8EC50DAF": {
@@ -456,6 +1507,18 @@
                   "Ref": "AWS::Partition"
                 },
                 ":iam::aws:policy/AWSCloud9Administrator"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonSSMManagedInstanceCore"
               ]
             ]
           }
@@ -560,8 +1623,7 @@
           {
             "Ref": "Cloud9DevEnvironmentInstanceRole8EC50DAF"
           }
-        ],
-        "InstanceProfileName": "beam-workshop-devenv-profile"
+        ]
       },
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/InstanceProfile"
@@ -1971,7 +3033,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31SwU4jMQz9Fu4hUFYgcQO6LHBi1CI4Zzzu1u1MPIoTqiqafyfJDC27SJz8bL/Yfo5neja70ucnN2Ynp9BszyKwQx2X3sBWzdmKdwG8WqBwcIBqvrLPwffBZ/Q1mrgNeWI7qFwryi8d7wJssTAnNJo7Izio1nR1Y3T8Eyzkd5n2FVfoOhIpFcl0Oi64LZ2Krbgl2BfeAT2laY0FrByvqE0toOXQrNh1JhfVMY8ZxHN3HPw/d2XfDPmDlkdjm/Z7eFAIFzq+9pBTr9VcVaFOUyxDbUe9R7Tg4PHF1GOZMX6M3YowkPnUXBKjFI8uMR+Mx53ZT20m79an31l3aL1aIgRHfv/gOPSlwY+BJ/vXoci0mWud8vf2nRzbXO1+fqGAG6wDtY2OFfXYks3r3CAUMRMcCq2f8kdmoUx4UGIlHVKoBRz1nwr/8V+4p7LCAqapdsbDWsffRtY1G9fk/MEZhkHZ1Ftv5Ow9Xe5lut2NEJ26YD11qBej/QCkTx+N2AIAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31SwW7bMAz9lt1VdUmxAb2tzdKupxlJ0Z1lmlmY2KIhSg0Cwf9eSXaTbAV64iP5TL5Ha6Zns+/665cf5iBX0OyvI7BDHdfewF4t2Ip3AbxaoXBwgGqxsZf4d/B98BklbkOe2A4qz4pyo+N9gD2W7oTGcG8EB9Warm6Mjg/BQv4u0y5xha4jkTKRTKfjittxf44VtwTHwjuhp6TWWMDK8YbatAJaDs2GXWfyUB2zzCCeu7OF/9KN/WPIn7z8MrZpP5YHhTDX8aWH3HqpFqoKdVKxDrUd/Z7RioPHZ1OPY8b6uXYnwkDm3XNpjFY8usR8NB4P5jitmbI7n/7OtkPr1RohOPLHR8ehLws+LTzZvw5F0mW4wTpQ2+hYUY8t2Xy1HULRPMGR1k/9M7NQJjwd+VbHJcyX9pUc26IscS7S5WI+KLGSXlaoBRz175b/yZ+5p3LTAqbZB+Nhq+NPI9uajWty/5QMw6BsUql3cv2anvK39Jh3QnTlgvXUoV6N8Q2503LX6QIAAA=="
       },
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam/CDKMetadata/Default"
@@ -1984,7 +3046,7 @@
       "Description": "Cloud9 environment ARN",
       "Value": {
         "Fn::GetAtt": [
-          "Cloud9DevEnvironmentbeamworkshopdevenvFF8BF8C9",
+          "Cloud9DevEnvironmentCloud9Instance80B599CE",
           "Arn"
         ]
       },
@@ -1994,7 +3056,9 @@
     },
     "Cloud9DevEnvironmentProfileName8E3031AD": {
       "Description": "Instance Profile Name",
-      "Value": "beam-workshop-devenv-profile",
+      "Value": {
+        "Ref": "Cloud9DevEnvironmentInstanceProfile91C1959C"
+      },
       "Export": {
         "Name": "ProfileName"
       }

@@ -6,21 +6,17 @@ weight: 21
 
 The AWS Cloud9 development environment is created for you as part of the CloudFormation template. You have to complete the configuration of the environment by following the steps below:
 
-1. Navigate to the [CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and select the correct CloudFormation stack. If you are running the workshop on your own the Stack is called **streaming-analytics-workshop-beam** and if you are attending an AWS hosted event, there is only one Stack available in the account. Please copy the stack name (highlighted with a blue box in the image below). 
+1. Navigate to the [AWS Cloud9 console](https://console.aws.amazon.com/cloud9/home).If you are running the workshop on your own the environment is called *beam-workshop*. If you are attending an AWS hosted event, there is only one development environment available in the account. Once you have found the development environment, click on the **Open IDE** button.
 
-   ![Lauch stack](/images/beam-on-kda/cfn_c9_output.png)
+1. The code [repository](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git") is automatically cloned into your environment the first time you open the IDE.
 
-2. Navigate to the [AWS Cloud9 console](https://console.aws.amazon.com/cloud9/home).If you are running the workshop on your own the environment is called **beam-workshop-devenv** and if you are attending an AWS hosted event, there is only one development environment available in the account. Once you have found the development environment, click on the "Open Ide" button.
+1. Open a terminal window and execute the following commands to configure your environment.
+    {{< highlight bash >}}
+sh ./code/misc/prepare-env.sh -s $C9_PROJECT
+{{< / highlight >}}
 
-2. The code [repository](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git") is automatically cloned into your environment the first time you open the IDE.
-
-3. Open a terminal window and execute the following commands to configure your environment.
-```bash
-sh ./code/misc/prepare-env.sh -s <PLEASE REPLACE THIS TEXT WITH THE STACK NAME YOU COPIED IN STEP 1>
-```
-
-4. The output should look like the following:
-```json
+1. The last output that is generated should look like the following:
+    {{< highlight json >}}
 {
     "IamInstanceProfileAssociation": {
         "AssociationId": "iip-assoc-032d69fed92042104",
@@ -32,4 +28,4 @@ sh ./code/misc/prepare-env.sh -s <PLEASE REPLACE THIS TEXT WITH THE STACK NAME Y
         "State": "associating"
     }
 }
-```
+{{< / highlight >}}
