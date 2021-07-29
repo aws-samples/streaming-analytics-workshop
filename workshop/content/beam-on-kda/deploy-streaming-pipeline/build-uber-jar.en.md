@@ -8,7 +8,7 @@ You first need to package the Flink application and all its dependencies into a 
 
 1. You can see the Beam code in detail to see what we do with the data as we read it from the Kinesis stream.
 
-2. Build the jar file by running the following commands in a terminal window from AWS Cloud9 development environment:
+2. Open a new **Terminal** window in Cloud9 IDE. Build the jar file by running the following commands in a terminal window from AWS Cloud9 development environment:
 ```bash
 cd code
 mvn clean compile package

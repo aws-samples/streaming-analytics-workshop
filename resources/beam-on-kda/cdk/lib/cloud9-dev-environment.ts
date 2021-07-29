@@ -22,12 +22,6 @@ export class Cloud9DevEnvironment extends cdk.Construct {
         const instance_profile_name = name + '-profile'
         const subnet = (props.vpc.publicSubnets.map(subnet => subnet.subnetId))[0]
 
-        new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
-            url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.kinesisReplayVersion}.zip`,
-            bucket: props.bucket,
-            extract: true
-        });
-
         //   Copy-S3Object -BucketName "${props.bucket.bucketName}" -KeyPrefix target -LocalFolder "$desktop\\workshop-resources"
 
         const c9env = new c9.CfnEnvironmentEC2(this, name,
@@ -35,7 +29,7 @@ export class Cloud9DevEnvironment extends cdk.Construct {
                 name: 'beam-workshop-devenv',
                 description: 'Cloud9 environment for beam workshop',
                 automaticStopTimeMinutes: 30,
-                instanceType: 't2.small',
+                instanceType: 't2.2xlarge',
                 subnetId: subnet,
                 repositories: [
                     {

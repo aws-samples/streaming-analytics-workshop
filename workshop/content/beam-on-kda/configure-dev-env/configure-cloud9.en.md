@@ -6,7 +6,7 @@ weight: 21
 
 The AWS Cloud9 development environment is created for you as part of the CloudFormation template. You have to complete the configuration of the environment by following the steps below:
 
-1. Navigate to the [CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and select the correct CloudFormation stack. If you are running the workshop on your own the Stack is called **beam-workshop** and if you are attending an AWS hosted event, there is only one Stack available in the account. Please copy the stack name (highlighted with a blue box in the image below). 
+1. Navigate to the [CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and select the correct CloudFormation stack. If you are running the workshop on your own the Stack is called **streaming-analytics-workshop-beam** and if you are attending an AWS hosted event, there is only one Stack available in the account. Please copy the stack name (highlighted with a blue box in the image below). 
 
    ![Lauch stack](/images/beam-on-kda/cfn_c9_output.png)
 
