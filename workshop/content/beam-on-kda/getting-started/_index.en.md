@@ -5,7 +5,7 @@ disableToc: false
 weight: 10
 ---
 
-To perform this workshop, you need access to a computer with Wi-Fi and Microsoft Windows, MacOS, or Linux (Ubuntu, SUSE, or Red Hat) and one of the internet browsers such as: 
+To perform this workshop, you need access to a computer with Wi-Fi, Microsoft Windows, MacOS, or Linux (Ubuntu, SUSE, or Red Hat) and one of the internet browsers such as: 
 | Browser                   | Versions                      |
 | :---                      | :----                         |
 | Google Chrome             | Latest three versions         |
