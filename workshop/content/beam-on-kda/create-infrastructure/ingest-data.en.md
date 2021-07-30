@@ -7,9 +7,7 @@ weight: 32
 We will use a Java application to replay a historic set of taxi trips made in NYC that are stored in objects in Amazon S3 into the Kinesis stream.
 The Java application has already been compiled and loaded onto the Cloud9 development environment. If you are interested in the details of the application, you can obtain the sources, including a CloudFormation template to build the Java application with Amazon CodePipeline, from [GitHub](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer).
 
-1.  Open a new **Terminal** window in Cloud9 IDE.
-
-    ![Cloud9 Terminal Window](/images/beam-on-kda/cloud9-3-ingest.png)
+1.  Navigate back to the terminal window in the Cloud9 IDE.
 
 2.  Enter the following command into the terminal prompt to start producing events into the Kinesis data stream created earlier, `beam-workshop`.
 
