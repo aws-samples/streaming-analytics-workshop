@@ -15,11 +15,11 @@ This workshop walks through a sample Apache Beam pipeline that can be deployed t
 
 4. Once the application is running, you will take a closer look at the source code and learn how to best integrate a Beam pipeline with Amazon Kinesis Data Analytics.
 
-Once the Beam pipeline is operating properly, you adapt the pipeline to generate a more fine grained visualisation per borough instead of the entire city. You implement the change by adapting the parameters of the Beam pipeline. However, this only produces the additional metrics for new events. To derive this information for past events, you need to backfill the additional metrics using the raw data that has been persisted to Amazon S3.
+5. Once the Beam pipeline is operating properly, you adapt the pipeline to generate a more fine grained visualisation per borough instead of the entire city. You implement the change by adapting the parameters of the Beam pipeline. However, this only produces the additional metrics for new events. To derive this information for past events, you need to backfill the additional metrics using the raw data that has been persisted to Amazon S3.
 
-5. To run the Beam pipeline in a batch fashion, you provision an Apache Flink cluster on Amazon Elastic Map Reduce (Amazon EMR). You can then submit the same Beam pipeline you have been using in streaming mode to backfill the additional metrics.
+6. You will configure the same Apache Beam pipeline to process data stored in Amazon S3 in a batch fashion. You will experience the power of Apache Beam application to unify stream and batch processing using Amazon Kinesis Data Analytics.
 
-6. You can then optionally add monitoring and logging capabilities to the Beam application to monitor the health of the streaming application.
+7. You can then optionally add profiling(Amazon CodeGuru), monitoring and logging capabilities to the Beam application to monitor the health of the streaming application.
 
 {{% notice info %}}
 The code for this workshop is located at [https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer) github repository.
