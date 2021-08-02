@@ -1460,7 +1460,7 @@
         "aws:cdk:path": "streaming-analytics-workshop-beam-event-engine/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
       }
     },
-    "Cloud9DevEnvironmentbla53F866B3": {
+    "Cloud9DevEnvironmentCloud9Instance9C4F59C7": {
       "Type": "AWS::Cloud9::EnvironmentEC2",
       "Properties": {
         "InstanceType": "t3.large",
@@ -1491,7 +1491,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "streaming-analytics-workshop-beam-event-engine/Cloud9DevEnvironment/bla"
+        "aws:cdk:path": "streaming-analytics-workshop-beam-event-engine/Cloud9DevEnvironment/Cloud9Instance"
       }
     },
     "BeamConsumerBuildPipelineDownloadLambdaServiceRole2CCBE1F4": {

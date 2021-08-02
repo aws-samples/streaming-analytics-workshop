@@ -26,7 +26,7 @@ export class Cloud9DevEnvironment extends cdk.Construct {
       
         const owner =  props.eventEngine ? {ownerArn: `arn:aws:iam::${cdk.Aws.ACCOUNT_ID}:assumed-role/TeamRole/MasterKey`} : {};
 
-        const c9env = new c9.CfnEnvironmentEC2(this, 'bla', {
+        const c9env = new c9.CfnEnvironmentEC2(this, 'Cloud9Instance', {
             instanceType: 't3.large',
             subnetId: props.vpc.publicSubnets[0].subnetId,
             description: 'Cloud9 environment for Apache Beam on KDA workshop',

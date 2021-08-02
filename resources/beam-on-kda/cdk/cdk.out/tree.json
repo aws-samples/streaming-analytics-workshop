@@ -2052,9 +2052,9 @@
                   "version": "1.116.0"
                 }
               },
-              "bla": {
-                "id": "bla",
-                "path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/bla",
+              "Cloud9Instance": {
+                "id": "Cloud9Instance",
+                "path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/Cloud9Instance",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Cloud9::EnvironmentEC2",
                   "aws:cdk:cloudformation:props": {
@@ -6122,9 +6122,9 @@
                   "version": "1.116.0"
                 }
               },
-              "bla": {
-                "id": "bla",
-                "path": "streaming-analytics-workshop-beam-event-engine/Cloud9DevEnvironment/bla",
+              "Cloud9Instance": {
+                "id": "Cloud9Instance",
+                "path": "streaming-analytics-workshop-beam-event-engine/Cloud9DevEnvironment/Cloud9Instance",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Cloud9::EnvironmentEC2",
                   "aws:cdk:cloudformation:props": {
