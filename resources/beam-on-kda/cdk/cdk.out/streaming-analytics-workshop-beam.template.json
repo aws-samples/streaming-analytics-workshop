@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-07-29)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-self-paced-2021-08-02)",
   "Resources": {
     "HistoricTripsEF9D049F": {
       "Type": "AWS::S3::Bucket",
@@ -1463,7 +1463,7 @@
     "Cloud9DevEnvironmentCloud9Instance80B599CE": {
       "Type": "AWS::Cloud9::EnvironmentEC2",
       "Properties": {
-        "InstanceType": "t2.micro",
+        "InstanceType": "t3.large",
         "Description": "Cloud9 environment for beam workshop",
         "Name": {
           "Ref": "AWS::StackName"
@@ -3033,7 +3033,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31SwW7bMAz9lt1VdUmxAb2tzdKupxlJ0Z1lmlmY2KIhSg0Cwf9eSXaTbAV64iP5TL5Ha6Zns+/665cf5iBX0OyvI7BDHdfewF4t2Ip3AbxaoXBwgGqxsZf4d/B98BklbkOe2A4qz4pyo+N9gD2W7oTGcG8EB9Warm6Mjg/BQv4u0y5xha4jkTKRTKfjittxf44VtwTHwjuhp6TWWMDK8YbatAJaDs2GXWfyUB2zzCCeu7OF/9KN/WPIn7z8MrZpP5YHhTDX8aWH3HqpFqoKdVKxDrUd/Z7RioPHZ1OPY8b6uXYnwkDm3XNpjFY8usR8NB4P5jitmbI7n/7OtkPr1RohOPLHR8ehLws+LTzZvw5F0mW4wTpQ2+hYUY8t2Xy1HULRPMGR1k/9M7NQJjwd+VbHJcyX9pUc26IscS7S5WI+KLGSXlaoBRz175b/yZ+5p3LTAqbZB+Nhq+NPI9uajWty/5QMw6BsUql3cv2anvK39Jh3QnTlgvXUoV6N8Q2503LX6QIAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31SwW7bMAz9lt1VdUmBAb21zbK2pxlJ0Z1pmlmY2JIhSg0Cwf9eSXaTtAN24iP5TL5Ha6Znsx/6+7c7OMgVNvvriNaRjmsPuFcLa8S7gF6tSGxwSGqxMZf4d/B98BklbsOerRlUnhXlRseHgHsq3QmN4QGEBtVCVzeg469gMH+XaZe4ItexSJnI0Om4su24P8fKtozHwjuh56QWDFLl7IbbtAJbG5qNdR3koTpmmUG87c4WvqQb8wfYn7w8gWnaf8uDIpzr+Npjbr1WC1WFOqlYh9qMfs9oZYOnF6jHMWP9XLsXscjw4bk0RiueXGI+gqcDHKc1U3bv09/ZdmS8WhMGx/746Gzoy4L/Fp7NX0ci6TK2oTpw2+hYcU8tm3y1HWHRPMGR1k/9M7NQJjwd+VbHJc6X5o2dNUVZ4lyky8V8UGIkvaxQCzruPyx/yl9sz+WmBUyzD+Bxq+NPkG1twTW5f0qGYVAmqdQ7uX5LTzk/5p0wX7lgPHekV2N8B5F6bI/pAgAA"
       },
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam/CDKMetadata/Default"

@@ -1,5 +1,6 @@
 ---
-title: "Profiling your Apache Beam application using Amazon CodeGuru"
+title: "Profiling Apache Beam pipeline using Amazon CodeGuru"
+menuTitle: "Profiling pipelines"
 chapter: false
 weight: 73
 ---

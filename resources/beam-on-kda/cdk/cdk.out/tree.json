@@ -2062,7 +2062,7 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Cloud9::EnvironmentEC2",
                       "aws:cdk:cloudformation:props": {
-                        "instanceType": "t2.micro",
+                        "instanceType": "t3.large",
                         "description": "Cloud9 environment for beam workshop",
                         "name": {
                           "Ref": "AWS::StackName"

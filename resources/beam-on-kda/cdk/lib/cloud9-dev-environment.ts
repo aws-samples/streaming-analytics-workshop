@@ -4,6 +4,7 @@ import iam = require('@aws-cdk/aws-iam');
 import s3 = require('@aws-cdk/aws-s3');
 import c9 = require('@aws-cdk/aws-cloud9');
 import { GithubBuildPipeline } from "./github-build-pipeline";
+import { InstanceClass, InstanceSize } from '@aws-cdk/aws-ec2';
 
 export interface Cloud9DevEnvironmentProps extends cdk.StackProps {
     vpc: ec2.Vpc,
@@ -29,6 +30,7 @@ export class Cloud9DevEnvironment extends cdk.Construct {
                 vpc: props.vpc,
                 ec2EnvironmentName: cdk.Aws.STACK_NAME,
                 description: 'Cloud9 environment for beam workshop',
+                instanceType: ec2.InstanceType.of(InstanceClass.T3, InstanceSize.LARGE),
                 clonedRepositories: [
                     {
                         pathComponent: '/code',
