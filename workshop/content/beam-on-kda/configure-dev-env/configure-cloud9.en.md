@@ -17,5 +17,6 @@ sh ./code/misc/prepare-env.sh -s $C9_PROJECT
 
 1. The last output that is generated should look like the following:
     {{< highlight bash >}}
-download: s3://beam-workshop-historictripsef9d049f-1arhuc8rro6lx/target/amazon-kinesis-replay-0.1.0.jar to replay/amazon-kinesis-replay-0.1.0.jar
+download: s3://beam-workshop-historictripsef9d049f-8lf5u3xscqz4/target/amazon-kinesis-replay-0.1.0.jar to replay/amazon-kinesis-replay-0.1.0.jar
+download: s3://beam-workshop-historictripsef9d049f-8lf5u3xscqz4/target/amazon-kinesis-analytics-beam-taxi-consumer-0.2.0.jar to replay/amazon-kinesis-analytics-beam-taxi-consumer-0.2.0.jar
 {{< / highlight >}}

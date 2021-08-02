@@ -2,7 +2,7 @@
 title: "Profiling Apache Beam pipeline using Amazon CodeGuru"
 menuTitle: "Profiling pipelines"
 chapter: false
-weight: 73
+weight: 10
 ---
 
 One of the most common causes of failures and slowdowns in streaming applications managed by Amazon Kinesis Data Analytics is *Java virtual machines* running out of memory. This section will help you detect and troubleshoot out-of-memory (*OOM*) conditions in your application using **Amazon CodeGuru** profiler.
@@ -11,7 +11,7 @@ One of the most common causes of failures and slowdowns in streaming application
 
 2. Create a new profiling group by clicking on the **Create profiling group** button.
 
-3. Use **flink-beam-app** for the name your profiling group and click Create.
+3. Use `flink-beam-app` for the name your profiling group and click Create.
 
    ![](/images/beam-on-kda/profiler-group-1.png)
 
@@ -42,7 +42,7 @@ Please visit [Amazon CodeGuru documentation](https://docs.aws.amazon.com/codegur
 
 9. Expand the properties section, select the **BeamApplicationProperties** group and click on **Edit group**
 
-10. Add a row with the *Key* `CodeGuruProfilingGroupName` and the *Value* `flink-beam-app`.
+10. Add a row with the *Key* `CodeGuruProfilingGroupName` and the *Value* `flink-beam-app` and change **Source** back to `kinesis`.
    ![](/images/beam-on-kda/profiler-group-4.png)
 
 11. Confirm these changes by pressing **Save**. Apply the changes to the application by pressing **Update** at the bottom of the page. Once you have updated the settings, your application will be redeployed which takes 1-2 minutes.
