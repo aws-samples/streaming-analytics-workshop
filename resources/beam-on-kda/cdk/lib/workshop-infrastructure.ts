@@ -19,6 +19,7 @@ export interface WorkshopInfrastructureProps extends cdk.StackProps {
   beamApplicationVersion: string;
   beamApplicationJarFile: string;
   appName: string;
+  eventEngine: boolean;
 }
 
 export class WorkshopInfrastructure extends cdk.Stack {
@@ -57,7 +58,8 @@ export class WorkshopInfrastructure extends cdk.Stack {
       vpc: vpc,
       bucket: bucket,
       beamSourceRepositoryUrl: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git`,
-      kinesisReplayVersion: props.kinesisReplayVersion
+      kinesisReplayVersion: props.kinesisReplayVersion,
+      eventEngine: props.eventEngine
     });
 
     // make sure that the bucket is emptied only after the instance sending data has been terminated

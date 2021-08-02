@@ -1460,11 +1460,11 @@
         "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
       }
     },
-    "Cloud9DevEnvironmentCloud9Instance80B599CE": {
+    "Cloud9DevEnvironmentbla53F866B3": {
       "Type": "AWS::Cloud9::EnvironmentEC2",
       "Properties": {
         "InstanceType": "t3.large",
-        "Description": "Cloud9 environment for beam workshop",
+        "Description": "Cloud9 environment for Apache Beam on KDA workshop",
         "Name": {
           "Ref": "AWS::StackName"
         },
@@ -1479,154 +1479,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/Cloud9Instance/Resource"
-      }
-    },
-    "Cloud9DevEnvironmentInstanceRole8EC50DAF": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "cloud9.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/AWSCloud9Administrator"
-              ]
-            ]
-          },
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/AmazonSSMManagedInstanceCore"
-              ]
-            ]
-          }
-        ],
-        "Policies": [
-          {
-            "PolicyDocument": {
-              "Statement": [
-                {
-                  "Action": [
-                    "ec2:AssociateAddress",
-                    "cloudwatch:PutMetricData",
-                    "logs:Describe*",
-                    "logs:PutLogEvents",
-                    "kinesis:DescribeStream",
-                    "kinesis:ListShards",
-                    "kinesis:GetShardIterator",
-                    "kinesis:GetRecords",
-                    "kinesis:PutRecord",
-                    "kinesis:PutRecords",
-                    "kinesisanalytics:StartApplication"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": "*"
-                },
-                {
-                  "Action": "cloudformation:DescribeStacks",
-                  "Effect": "Allow",
-                  "Resource": {
-                    "Ref": "AWS::StackId"
-                  }
-                },
-                {
-                  "Action": [
-                    "s3:GetObject*",
-                    "s3:GetBucket*",
-                    "s3:List*"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": [
-                    {
-                      "Fn::GetAtt": [
-                        "HistoricTripsEF9D049F",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        "",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "HistoricTripsEF9D049F",
-                              "Arn"
-                            ]
-                          },
-                          "/*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        "",
-                        [
-                          "arn:",
-                          {
-                            "Ref": "AWS::Partition"
-                          },
-                          ":s3:::aws-bigdata-blog"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        "",
-                        [
-                          "arn:",
-                          {
-                            "Ref": "AWS::Partition"
-                          },
-                          ":s3:::aws-bigdata-blog/*"
-                        ]
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "Version": "2012-10-17"
-            },
-            "PolicyName": "WorkshopPermissions"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/InstanceRole/Resource"
-      }
-    },
-    "Cloud9DevEnvironmentInstanceProfile91C1959C": {
-      "Type": "AWS::IAM::InstanceProfile",
-      "Properties": {
-        "Roles": [
-          {
-            "Ref": "Cloud9DevEnvironmentInstanceRole8EC50DAF"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/InstanceProfile"
+        "aws:cdk:path": "streaming-analytics-workshop-beam/Cloud9DevEnvironment/bla"
       }
     },
     "BeamConsumerBuildPipelineDownloadLambdaServiceRole2CCBE1F4": {
@@ -1717,11 +1570,11 @@
         },
         "Environment": {
           "Variables": {
-            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/master.zip",
+            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/release-0.2.0.zip",
             "bucket": {
               "Ref": "HistoricTripsEF9D049F"
             },
-            "key": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
+            "key": "sources/amazon-kinesis-analytics-beam-taxi-consumer-release-0.2.0.zip"
           }
         },
         "Handler": "index.download_sources",
@@ -1935,7 +1788,7 @@
           ]
         },
         "Source": {
-          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-analytics-beam-taxi-consumer-master\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-analytics-beam-taxi-consumer-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-analytics-beam-taxi-consumer-master\"\n  }\n}",
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-analytics-beam-taxi-consumer-release-0.2.0\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-analytics-beam-taxi-consumer-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-analytics-beam-taxi-consumer-release-0.2.0\"\n  }\n}",
           "Type": "CODEPIPELINE"
         },
         "EncryptionKey": "alias/aws/s3"
@@ -2190,7 +2043,7 @@
                   "S3Bucket": {
                     "Ref": "HistoricTripsEF9D049F"
                   },
-                  "S3ObjectKey": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
+                  "S3ObjectKey": "sources/amazon-kinesis-analytics-beam-taxi-consumer-release-0.2.0.zip"
                 },
                 "Name": "SourceAction",
                 "OutputArtifacts": [
@@ -2378,7 +2231,7 @@
                           "Arn"
                         ]
                       },
-                      "/sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
+                      "/sources/amazon-kinesis-analytics-beam-taxi-consumer-release-0.2.0.zip"
                     ]
                   ]
                 }
@@ -3033,7 +2886,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31SwW7bMAz9lt1VdUmBAb21zbK2pxlJ0Z1pmlmY2JIhSg0Cwf9eSXaTtAN24iP5TL5Ha6Znsx/6+7c7OMgVNvvriNaRjmsPuFcLa8S7gF6tSGxwSGqxMZf4d/B98BklbsOerRlUnhXlRseHgHsq3QmN4QGEBtVCVzeg469gMH+XaZe4ItexSJnI0Om4su24P8fKtozHwjuh56QWDFLl7IbbtAJbG5qNdR3koTpmmUG87c4WvqQb8wfYn7w8gWnaf8uDIpzr+Npjbr1WC1WFOqlYh9qMfs9oZYOnF6jHMWP9XLsXscjw4bk0RiueXGI+gqcDHKc1U3bv09/ZdmS8WhMGx/746Gzoy4L/Fp7NX0ci6TK2oTpw2+hYcU8tm3y1HWHRPMGR1k/9M7NQJjwd+VbHJc6X5o2dNUVZ4lyky8V8UGIkvaxQCzruPyx/yl9sz+WmBUyzD+Bxq+NPkG1twTW5f0qGYVAmqdQ7uX5LTzk/5p0wX7lgPHekV2N8B5F6bI/pAgAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE31STU/DMAz9LdxDxkBC4sY2BuxEtaFxTlOPeWvjKk6Ypqj/nSTtGB8SJz/bL/az47Ecj2/l1cW9OvClrvajoMmCDCun9F7MyLCzXjuxBCZvNYjZxnzHL9613iUUuRU6JNOJVCvwjQxTr/eQswPqzVQxdKJWTVkpGR690eldon3HBdgGmXNFVI0MS6r7/skWVKM+Zl5GndA1+WpDtlGpggxJk2dHzVnvL3dj3hS6L+HPylT133AnQF/LsG51Sq2LmSh8GVuufGn64c5oSd7Bqyr7Mn38HJswk0Z1GjAnElgYBzYyn5SDgzoObQZv4uJXbBswTqxAe4vu+GTJt7nBv4GFebfAHDdDFZQe60qGAluo0UBhaQc6ax5gT2uH/JmZKQMelnwnY2xuPtCSScLms2vBhuPV+JK1xfY04Q//lVrMK8xgKHVQTm9leFC8LUnZKuW/nK7rhImi5I5HH/FM06HuGPHSeuOwAbns7Sc6nn6/xQIAAA=="
       },
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam/CDKMetadata/Default"
@@ -3042,27 +2895,6 @@
     }
   },
   "Outputs": {
-    "Cloud9DevEnvironmentTag28CB9B1B": {
-      "Description": "Cloud9 environment ARN",
-      "Value": {
-        "Fn::GetAtt": [
-          "Cloud9DevEnvironmentCloud9Instance80B599CE",
-          "Arn"
-        ]
-      },
-      "Export": {
-        "Name": "Tag"
-      }
-    },
-    "Cloud9DevEnvironmentProfileName8E3031AD": {
-      "Description": "Instance Profile Name",
-      "Value": {
-        "Ref": "Cloud9DevEnvironmentInstanceProfile91C1959C"
-      },
-      "Export": {
-        "Name": "ProfileName"
-      }
-    },
     "Cloud9DevEnvironmentReplayJarS3Url9ECA1A84": {
       "Description": "S3 Url for the replay jar file",
       "Value": {

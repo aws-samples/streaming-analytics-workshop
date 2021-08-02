@@ -4,13 +4,13 @@ import iam = require('@aws-cdk/aws-iam');
 import s3 = require('@aws-cdk/aws-s3');
 import c9 = require('@aws-cdk/aws-cloud9');
 import { GithubBuildPipeline } from "./github-build-pipeline";
-import { InstanceClass, InstanceSize } from '@aws-cdk/aws-ec2';
 
 export interface Cloud9DevEnvironmentProps extends cdk.StackProps {
     vpc: ec2.Vpc,
     bucket: s3.Bucket,
     beamSourceRepositoryUrl: string,
     kinesisReplayVersion: string,
+    eventEngine: boolean
 }
 
 export class Cloud9DevEnvironment extends cdk.Construct {
@@ -24,83 +24,21 @@ export class Cloud9DevEnvironment extends cdk.Construct {
             extract: true
         });
       
+        const owner =  props.eventEngine ? {ownerArn: `arn:aws:iam::${cdk.Aws.ACCOUNT_ID}:assumed-role/TeamRole/MasterKey`} : {};
 
-        const c9env = new c9.Ec2Environment(this, 'Cloud9Instance',
-            {
-                vpc: props.vpc,
-                ec2EnvironmentName: cdk.Aws.STACK_NAME,
-                description: 'Cloud9 environment for beam workshop',
-                instanceType: ec2.InstanceType.of(InstanceClass.T3, InstanceSize.LARGE),
-                clonedRepositories: [
-                    {
-                        pathComponent: '/code',
-                        repositoryUrl: props.beamSourceRepositoryUrl
-                    }
-                ]
-            })
-
-        /* IAM Policy */
-        const policy = new iam.PolicyDocument();
-
-        policy.addStatements(new iam.PolicyStatement({
-            actions: [
-                'ec2:AssociateAddress',
-                'cloudwatch:PutMetricData',
-                'logs:Describe*', 'logs:PutLogEvents',
-                'kinesis:DescribeStream', 'kinesis:ListShards', 'kinesis:GetShardIterator', 'kinesis:GetRecords', 'kinesis:PutRecord', 'kinesis:PutRecords',
-                'kinesisanalytics:StartApplication'
+        const c9env = new c9.CfnEnvironmentEC2(this, 'bla', {
+            instanceType: 't3.large',
+            subnetId: props.vpc.publicSubnets[0].subnetId,
+            description: 'Cloud9 environment for Apache Beam on KDA workshop',
+            name: cdk.Aws.STACK_NAME,
+            repositories: [
+                {
+                    pathComponent: '/code',
+                    repositoryUrl: props.beamSourceRepositoryUrl
+                }
             ],
-            resources: ['*']
-        }));
-
-        policy.addStatements(new iam.PolicyStatement({
-            actions: [
-                'cloudformation:DescribeStacks'
-            ],
-            resources: [cdk.Aws.STACK_ID]
-        }));
-
-        policy.addStatements(new iam.PolicyStatement({
-            actions: [
-                's3:GetObject*', 's3:GetBucket*', 's3:List*'
-            ],
-            resources: [
-                props.bucket.bucketArn,
-                `${props.bucket.bucketArn}/*`,
-                `arn:${cdk.Aws.PARTITION}:s3:::aws-bigdata-blog`,
-                `arn:${cdk.Aws.PARTITION}:s3:::aws-bigdata-blog/*`,
-            ]
-        }));
-
-        const instanceRole = new iam.Role(this, 'InstanceRole', {
-            assumedBy: new iam.ServicePrincipal('cloud9.amazonaws.com'),
-            managedPolicies: [
-                iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCloud9Administrator'),
-                iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
-            ],
-            inlinePolicies: {
-                WorkshopPermissions: policy
-            }
-        });
-
-        const instanceProfile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
-            roles: [
-                instanceRole.roleName
-            ]
-        });
-
-        /* Output for Cloud9 bootstrap script*/
-        new cdk.CfnOutput(this, 'Tag', {
-            exportName: 'Tag',
-            description: 'Cloud9 environment ARN',
-            value: c9env.ec2EnvironmentArn
-        });
-
-        new cdk.CfnOutput(this, 'ProfileName', {
-            exportName: 'ProfileName',
-            description: 'Instance Profile Name',
-            value: instanceProfile.ref
-        });
+            ...owner
+        })
 
         new cdk.CfnOutput(this, 'ReplayJarS3Url', {
             exportName: 'ReplayJarS3Url',
