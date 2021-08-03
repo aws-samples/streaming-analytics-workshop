@@ -15,7 +15,7 @@ One of the most common causes of failures and slowdowns in streaming application
 
    ![](/images/beam-on-kda/profiler-group-1.png)
 
-4. Once you have created the group, navigate back to the profiling groups [landing page](https://console.aws.amazon.com/codeguru/profiler/) and you should see the newly created group in the list of profiling groups. Select the radio button to theleft of the newly created group and select **Managed Permissions** from the **Actions** menu as shown below.
+4. Once you have created the group, navigate back to the profiling groups [landing page](https://console.aws.amazon.com/codeguru/profiler/) and you should see the newly created group in the list of profiling groups. Select the radio button to theleft of the newly created group and select **Manage Permissions** from the **Actions** menu as shown below.
 
    ![](/images/beam-on-kda/profiler-group-2.png)
 

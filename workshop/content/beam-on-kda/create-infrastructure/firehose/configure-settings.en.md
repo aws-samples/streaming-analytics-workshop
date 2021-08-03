@@ -14,7 +14,7 @@ Amazon Kinesis Data Firehose buffers incoming streaming data to a certain size o
 
 1. Enable **S3 compression** by selecting *GZIP* to optimise the storage of data in Amazon S3. Buffer size is is applied before compression. As a result, if you choose to compress your data, the size of the objects within your S3 bucket can be smaller than the buffer size you specify.
 
-1. Ensure that **Created or update IAM Role** is selected, so that Kinesis Data Firehose uses the correct permissions for operations.
+1. Ensure that **Create or update IAM role** is selected, so that Kinesis Data Firehose uses the correct permissions for operations.
 
 1. Leave all other values as default.
 
