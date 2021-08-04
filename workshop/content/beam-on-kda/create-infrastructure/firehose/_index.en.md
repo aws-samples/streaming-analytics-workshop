@@ -8,7 +8,7 @@ Next you create an Amazon Kinesis Data Firehose delivery stream to allow for tra
 
 Each event that is persisted in the Kinesis stream is automatically assigned an _approximate arrival timestamp_ in the event meta data. The Lambda function is simply adding the _approximate arrival timestamp_ from the meta data into the payload of the message when it is written to Amazon S3.
 
-The Lambda function that does this can be found under [Services->Lambda](https://console.aws.amazon.com/lambda/) and will be have the name _\*EnrichEventsLambda\*_
+The Lambda function that does this can be found under [Services->Lambda](https://console.aws.amazon.com/lambda/) and as _\*EnrichEventsLambda\*_ in the middle of the name.
 
 ```js
 function enrichPayload(record) {

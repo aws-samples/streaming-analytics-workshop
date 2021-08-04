@@ -50,4 +50,4 @@ metrics =
                 }));
 {{< / highlight >}}
 
-This was only a very brief overview of the Beam pipeline. If you are interested in learning more, you can use the Cloud9 editor to explore the full source code of the pipeline.
+This was only a very brief overview of the Beam pipeline. If you are interested in learning more, you can navigate through the code on [GitHub](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/release-0.2.0/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java) or use the Cloud9 editor to explore the sources under `code/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCount.java`. 
