@@ -16,7 +16,7 @@ In the Beam application, these properties are obtained from the environment.
 Map<String, Properties> applicationProperties = KinesisAnalyticsRuntime.getApplicationProperties();
 {{< / highlight >}}
 
-And then the properties are converted to a common `PipelineOption` with a [helper method](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/master/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCountOptions.java#L59).
+And then the properties are converted to a common `PipelineOption` with a [helper method](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/blob/release-0.2.0/src/main/java/com/amazonaws/samples/beam/taxi/count/TaxiCountOptions.java#L60).
 
 {{< highlight java >}}
 String[] kinesisArgs = TaxiCountOptions.argsFromKinesisApplicationProperties(
@@ -32,7 +32,7 @@ PipelineOptionsValidator.validate(TaxiCountOptions.class, options);
 {{< / highlight >}}
 
 
-You'll notice the `KinesisAnalyticsRuntime` class above; in order to access this class in your code, be sure to add the following dependency in your pom.xml:
+You'll notice the `KinesisAnalyticsRuntime` class above; in order to access this class in your code, be sure to add the following dependency in your `pom.xml`:
 
 {{< highlight xml >}}
 <dependency>
