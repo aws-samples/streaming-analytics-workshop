@@ -8,7 +8,7 @@ The AWS Cloud9 development environment is created for you as part of the CloudFo
 
 1. Navigate to the [AWS Cloud9 console](https://console.aws.amazon.com/cloud9/home). If you are running the workshop on your own the environment is called *beam-workshop*. If you are attending an AWS hosted event, there is only one development environment available in the account. Once you have found the development environment, click on the **Open IDE** button.
 
-1. The code [repository](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer.git") is automatically cloned into your environment the first time you open the IDE.
+1. The code [repository](https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer) is automatically cloned into your environment the first time you open the IDE.
 
 1. Open a terminal window by choosing **Window** and then **New Terminal** form the menu bar at the top. Execute the following commands to configure your environment.
     {{< highlight bash >}}
