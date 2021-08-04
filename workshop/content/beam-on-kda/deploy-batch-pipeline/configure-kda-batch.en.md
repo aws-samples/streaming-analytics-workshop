@@ -5,15 +5,16 @@ date = 2020-07-10T10:27:27+02:00
 weight = 20
 +++
 
+
+1. Navigate to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation) and select the CloudFormation stack of the workshop. Click on **Outputs** and copy the value of the key *InputS3Pattern*. 
+
 1. Navigate to the [Kinesis Data Analytics console](https://console.aws.amazon.com/kinesisanalytics/home#/applications/dashboard) and select the application you have created earlier
 
 1. Press the blue **Configure** button next to the name of the application
 
 1. Expand the properties section, select the **BeamApplicationProperties** group and click on **Edit group**
 
-1. Change the value of *Source* to `s3`
-
-1. Copy the *InputS3Pattern* from the output of the section of the CloudFormation template and add a row with the *Key* `InputS3Pattern` and the copied value
+1. Change the value of *Source* to `s3`and add a row with the *Key* `InputS3Pattern` and value you have copied from the output section of the CloudFormation template.
 
 	![KDA batch configuration](/images/beam-on-kda/kda-update-config-batch.png)
 
