@@ -8,7 +8,7 @@ In this step you pick the destination for the transformed records.
 
 1. Select **Amazon S3** as the Destination type
 
-1. For the S3 Bucket name select the pre-created S3 bucket whose name contains `historictrips`
+1. For the S3 Bucket name select the pre-created S3 bucket whose name contains `historictrips` in the middle
 
 1. For **Prefix** enter `historic-trip-events/` so that all the transformed records are easily identifiable in Amazon S3
 
