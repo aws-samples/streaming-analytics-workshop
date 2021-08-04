@@ -46,6 +46,6 @@ This determines the [scaling](https://docs.aws.amazon.com/kinesisanalytics/lates
    </dl>
 
 
-8. Keep the default settings for **Scaling** and **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application. After a few minutes the application will be ready to run.
+8. Keep the default settings for **VPC Connectivity** and press the blue **Update** button at the bottom of the page to update the properties of the application. After a few minutes the application will be ready to run.
 
    ![Configure Complete](/images/beam-on-kda/kda-configure-review.png)
