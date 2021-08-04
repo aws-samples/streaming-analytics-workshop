@@ -24,7 +24,7 @@ One of the most common causes of failures and slowdowns in streaming application
    ![](/images/beam-on-kda/profiler-group-3.png)
 
 6. The Apache Beam application is already instrumented and includes the Amazon CodeGuru profiler agent. 
-```java
+   {{< highlight java >}}
     // Setup the profiler
     if (!StringUtils.isNullOrEmpty(this.codeGuruProfilingGroupName)) {
       Profiler.builder()
@@ -33,8 +33,9 @@ One of the most common causes of failures and slowdowns in streaming application
           .build()
           .start();
     }
-```
-Please visit [Amazon CodeGuru documentation](https://docs.aws.amazon.com/codeguru/latest/profiler-ug/enabling-the-agent-with-code.html) to learn more about profiling your application.
+{{</ highlight >}}
+   
+   Please visit [Amazon CodeGuru documentation](https://docs.aws.amazon.com/codeguru/latest/profiler-ug/enabling-the-agent-with-code.html) to learn more about profiling your application.
 
 7. In this step, you will modify the Amazon Kinesis Data Analytics application configuration to trigger the instrumentation. Navigate to the [Kinesis Data Analytics console](https://console.aws.amazon.com/kinesisanalytics/home#/applications/dashboard) and select the application you have created earlier
 

@@ -1,5 +1,6 @@
 +++
-title = "Optional: Monitoring and Profiling"
+title = "Optional: Monitoring, Logging,  and Profiling"
+menuTitle = "Optional: Monitoring and Profiling"
 date = 2020-07-10T10:26:21+02:00
 weight = 80
 chapter = true

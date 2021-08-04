@@ -14,11 +14,10 @@ As you have enabled logging for your Kinesis Data Analytics application, the log
 
 1. In the dialog, choose the **Logs table** widget and confirm with **Configure**
 
-1. Search for `beam-workshop` and select the log stream of the KDA application named as:
- `aws/kinesis-analytics/beam-workshop`
+1. Search for `beam-workshop` and select the log stream of the KDA application named as: `aws/kinesis-analytics/beam-workshop`
 
-   ![](/images/beam-on-kda/cw-dashboard-4-configure-log.png)
+  ![](/images/beam-on-kda/cw-dashboard-4-configure-log.png)
 
 You will now have two widgets in your dashboard:
 
- ![](/images/beam-on-kda/cw-dashboard-6-log-result.png)
+  ![](/images/beam-on-kda/cw-dashboard-6-log-result.png)
