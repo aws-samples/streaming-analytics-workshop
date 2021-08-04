@@ -33,7 +33,7 @@ The skeleton of the application has now been created. But you still need to adap
    Enabling snapshots allows the service to maintain the state of a Flink application in case of application updates but also when recovering from infrastructure or application errors. For production environments it is highly desirable to keep snapshots enabled. For development purposes, disabling snapshots allows you to iterate faster, though.
    {{% /notice %}}
 
-1. Expand the **Monitoring** section. Verify that **Task** is set to **Monitoring metrics level** ,  **CloudWatch** logging is enabled, and **Info** is set as the **Monitoring Log Level**.
+1. Expand the **Monitoring** section. Verify that **Task** is set as **Monitoring metrics level** ,  **CloudWatch** logging is enabled, and **Info** is set as the **Monitoring Log Level**.
 
 1. Expand the **Scaling** section. Set the parallelism of the application to `4` and **Disable** automatic scaling.
 
