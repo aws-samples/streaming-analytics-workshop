@@ -6,7 +6,7 @@ weight: 71
 
 Now that the Kinesis data stream is scaling, we'll take a look at how we can identify this overloading situation by looking at the metrics of the stream. To this end, we'll create a CloudWatch dashboard that displays some of the relevant metrics.
 
-1. Navigate to the [CloudWatch console](https://console.aws.amazon.com/cloudwatch), select **Dashboards** in the navigation pane on the left, and click on **Create dashboard**
+1. Navigate to the [CloudWatch console](https://console.aws.amazon.com/cloudwatch), select **Dashboards** in the navigation pane on the left, and select the **BeamWorkshopDashboard** dashboard you have been using earlier.
 
 1. In the create dashboard dialog, enter `beam-workshop` as **Dashboard name** and confirm with **Create dashboard**
 

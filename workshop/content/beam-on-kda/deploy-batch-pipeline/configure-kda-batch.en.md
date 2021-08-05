@@ -6,9 +6,9 @@ weight = 20
 +++
 
 
-1. Navigate to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation) and select the CloudFormation that has been created for the workshop. Click on the **Outputs** tab and copy the value of the key *InputS3Pattern*. 
+1. Navigate to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation) and select the CloudFormation template that has been created for the workshop. Click on the **Outputs** tab and copy the value of the key *InputS3Pattern*. 
 
-1. Navigate to the [Kinesis Data Analytics console](https://console.aws.amazon.com/kinesisanalytics/home#/applications/dashboard) and select the application you have created earlier
+1. Then, navigate to the [Kinesis Data Analytics console](https://console.aws.amazon.com/kinesisanalytics/home#/applications/dashboard) and select the application you have created earlier
 
 1. Press the blue **Configure** button next to the name of the application
 
