@@ -6,13 +6,11 @@ weight: 71
 
 Now that the Kinesis data stream is scaling, we'll take a look at how we can identify this overloading situation by looking at the metrics of the stream. To this end, we'll create a CloudWatch dashboard that displays some of the relevant metrics.
 
-1. Navigate to the [CloudWatch console](https://console.aws.amazon.com/cloudwatch), select **Dashboards** in the navigation pane on the left, and select the **BeamWorkshopDashboard** dashboard you have been using earlier.
+1. Navigate to the [CloudWatch console](https://console.aws.amazon.com/cloudwatch), click on **Dashboards** in the navigation pane on the left, and select the *BeamWorkshopDashboard* dashboard you have been using earlier.
 
-1. In the create dashboard dialog, enter `beam-workshop` as **Dashboard name** and confirm with **Create dashboard**
+1. Click on **Add widget** and choose the **Line** widget to compare metrics over time. Confirm with **Next**.
 
-1. Choose the **Line** widget
-
-1. Choose "metrics" and confirm with **Configure**
+1. In the next dialog, choose *metrics* and confirm with **Configure**
 
 1. Enter `beam-workshop` in the search field and select **Kinesis > Stream metrics**
 
@@ -30,4 +28,4 @@ The dashboard now shows two metrics: the amount of incoming messages and the mil
 
 Other important metrics include, `ReadProvisionedThroughputExceeded` and `WriteProvisionedThroughputExceeded`. You can add them to the dashboard as well to see how the producer is throttled.
 
-![](/images/beam-on-kda/cw-dashboard-5-scale-kds.png)
+   ![](/images/beam-on-kda/cw-dashboard-5-scale-kds.png)
