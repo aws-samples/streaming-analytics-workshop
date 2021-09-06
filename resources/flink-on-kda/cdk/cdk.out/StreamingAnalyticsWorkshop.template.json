@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced-2021-06-23)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced-2021-09-06)",
   "Resources": {
     "Bucket83908E77": {
       "Type": "AWS::S3::Bucket",
@@ -895,7 +895,7 @@
                           "Arn"
                         ]
                       },
-                      "/*"
+                      "/sources/amazon-kinesis-replay-release-0.1.0.zip"
                     ]
                   ]
                 }
@@ -1945,7 +1945,7 @@
                           "Arn"
                         ]
                       },
-                      "/*"
+                      "/sources/amazon-kinesis-analytics-taxi-consumer-release-0.2.1.zip"
                     ]
                   ]
                 }
@@ -2960,7 +2960,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VSy24bMQz8lt4VJW6AAr3Vdds0QIEu7CA9c7l0LFuPhUQ1MBb776WkjY22Jw2HI3JIaaVXdx/13btP8JpucDjdThgi6WnHgCe1CT5xzMhqs/dbSiFHJHUBQnYQwRFTLMHPzGOuWrk4GDbBz6oUntK9nj5nPFHNNjQrC64fQE/fssciLrk3PCsDTk/bYGufenbBGjzXthf0KA7BI3Ux7I2lWaENediH6KCU0VNxkxMHd7X9T7j3v8DwxfJ38IP9n5bKYaA+GzvoqTMjWeNL1yO19SywycYlf1VWyYJnlQgjcXLg4YWirLvGRdPQrAjfV+9fHzv1PGJJPXcb1eVeJt/l3i/yC9qGzPQEfbPe+Cu3Timggbct10Rbn7ydKB+A6RXOS5slWrP8goMjz0ps5Wj4/BBDHheffxM/QF7u8ERutHJbBrCQ2GAiiHjQIvgSHBivIHNICLKHl8KuJdy1sJaaZ+VlgfqYbn+vPuh7+ZvHZMxNzJ6NI71t5x9JgdgzuAIAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VSy24bMQz8lt4VpU6Bose6bpsGKNCFHaRnLpeOZeuxkKgGxmL/vZS0sdH0pOFwRA4prfTqbqXfv/sML+kGh9PthCGSnnYMeFKb4BPHjKw2e7+lFHJEUhcgZAcRHDHFEvzKPOaqlYuDYRP8rErhKX3Q05eMJ6rZhmZlwfUD6Ol79ljEJfeKZ2XA6WkbbO1Tzy5Yg+fa9oIexCF4pC6GvbE0K7QhD/sQHZQyeipucuLgrrbfhHv/GwxfLP8AP9j/aakcBuqzsYOeOjOSNb50PVJbzwKbbFzyV2WVLHhWiTASJwceninKumtcNA3NivCuev/20KmnEUvqqduoLvcy+S73fpFf0DZkpkfom/XGX7l1SgENvG65Jtr65O1EeQ9ML3Be2izRmuUXHBx5VmIrR8Pn+xjyuPj8l/gJ8nKHR3KjldsygIXEBhNBxIMWwdfgwHgFmUNCkD08F3Yt4a6FtdQ8Ky8L1Md0+2f1UX+Sv3lMxtzE7Nk40tt2/gUJXdi1uAIAAA=="
       },
       "Metadata": {
         "aws:cdk:path": "StreamingAnalyticsWorkshop/CDKMetadata/Default"
