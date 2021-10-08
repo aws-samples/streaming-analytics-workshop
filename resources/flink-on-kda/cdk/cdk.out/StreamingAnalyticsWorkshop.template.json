@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced-2021-09-06)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the streaming analytics workshop (shausma-streaming-analytics-workshop-self-paced-2021-10-08)",
   "Resources": {
     "Bucket83908E77": {
       "Type": "AWS::S3::Bucket",
@@ -2960,7 +2960,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VSy24bMQz8lt4VpU6Bose6bpsGKNCFHaRnLpeOZeuxkKgGxmL/vZS0sdH0pOFwRA4prfTqbqXfv/sML+kGh9PthCGSnnYMeFKb4BPHjKw2e7+lFHJEUhcgZAcRHDHFEvzKPOaqlYuDYRP8rErhKX3Q05eMJ6rZhmZlwfUD6Ol79ljEJfeKZ2XA6WkbbO1Tzy5Yg+fa9oIexCF4pC6GvbE0K7QhD/sQHZQyeipucuLgrrbfhHv/GwxfLP8AP9j/aakcBuqzsYOeOjOSNb50PVJbzwKbbFzyV2WVLHhWiTASJwceninKumtcNA3NivCuev/20KmnEUvqqduoLvcy+S73fpFf0DZkpkfom/XGX7l1SgENvG65Jtr65O1EeQ9ML3Be2izRmuUXHBx5VmIrR8Pn+xjyuPj8l/gJ8nKHR3KjldsygIXEBhNBxIMWwdfgwHgFmUNCkD08F3Yt4a6FtdQ8Ky8L1Md0+2f1UX+Sv3lMxtzE7Nk40tt2/gUJXdi1uAIAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VSy24bMQz8lt4VJU6BnOu6bRqgQBd2kJ65XDqWrcdCohoYi/33UtLGRtuThsMROaS00qv7B3334RO8pRscTrcThkh62jHgSW2CTxwzstrs/ZZSyBFJXYCQHURwxBRL8DPzmKtWLg6GTfCzKoWn9FFPnzOeqGYbmpUF1w+gp2/ZYxGX3DuelQGnp22wtU89u2ANnmvbC3oSh+CRuhj2xtKs0IY87EN0UMroqbjJiYO72v4n3PtfYPhi+Tv4wf5PS+UwUJ+NHfTUmZGs8aXrkdp6Fthk45K/KqtkwbNKhJE4OfDwSlHWXeOiaWhWhPfV+9enTr2MWFIv3UZ1uZfJd7n3i/yCtiEzPUPfrDf+yq1TCmjgfcs10dYnbyfKR2B6g/PSZonWLL/g4MizEls5Gj4/xpDHxeffxA+Qlzs8kxut3JYBLCQ2mAgiHrQIvgQHxivIHBKC7OG1sGsJdy2speZZeVmgPqbb36sHvbqTz3lMxtzE7Nk40tt2/gFYYQHtuQIAAA=="
       },
       "Metadata": {
         "aws:cdk:path": "StreamingAnalyticsWorkshop/CDKMetadata/Default"
