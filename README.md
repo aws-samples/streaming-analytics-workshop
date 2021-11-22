@@ -12,7 +12,7 @@ The full workshop is hosted on https://streaming-analytics.workshop.aws. If you 
 
 1. [Install Hugo locally](https://gohugo.io/overview/quickstart/).
 1. [Clone this repository](https://help.github.com/articles/fork-a-repo/).
-1. Initalize the learn theme by running `git submodule init` `git submodule update` in the main directory
+1. Initalize the learn theme by running `git submodule init` and `git submodule update` in the main directory
 
 
 ## What's Included
