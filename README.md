@@ -10,8 +10,9 @@ The full workshop is hosted on https://streaming-analytics.workshop.aws. If you 
 
 ## Requirements
 
+1. [Install Hugo locally](https://gohugo.io/overview/quickstart/).
 1. [Clone this repository](https://help.github.com/articles/fork-a-repo/).
-2. [Install Hugo locally](https://gohugo.io/overview/quickstart/).
+1. Initalize the learn theme by running `git submodule init` `git submodule update` in the main directory
 
 
 ## What's Included
@@ -28,7 +29,7 @@ This project the following folders:
 All command line directions in this documentation assume you are in the `workshop` directory. Navigate there now, if you aren't there already.
 
 ```bash
-cd streaming-analytics/workshop
+cd streaming-analytics-workshop/workshop
 ```
 
 ## Create your first chapter page
