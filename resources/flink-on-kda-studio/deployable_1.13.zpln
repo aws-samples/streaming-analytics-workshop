@@ -1,0 +1,122 @@
+﻿{
+  "paragraphs": [
+    {
+      "user": "anonymous",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1634227069840_426479799",
+      "id": "paragraph_1634227069840_426479799",
+      "dateCreated": "2021-10-14T15:57:49+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:194",
+      "text": "%flink.pyflink\n\nst_env.get_config().get_configuration().set_string(\n    \"execution.checkpointing.mode\", \"EXACTLY_ONCE\"    \n)\n\nst_env.get_config().get_configuration().set_string(\n    \"execution.checkpointing.interval\", \"1min\"    \n)",
+      "dateUpdated": "2021-10-14T15:58:45+0000",
+      "dateFinished": "2021-10-14T15:58:46+0000",
+      "dateStarted": "2021-10-14T15:58:45+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "<pyflink.common.configuration.Configuration at 0x7f4628f85160>"
+          }
+        ]
+      }
+    },
+    {
+      "user": "anonymous",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "FLINK JOB",
+          "tooltip": "View in Flink web UI",
+          "group": "flink",
+          "values": [
+            {
+              "jobUrl": "/flinkdashboard/#/job/c164551a0002b511800de5013b6a778e",
+              "$$hashKey": "object:563"
+            }
+          ],
+          "interpreterSettingId": "flink"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1634227110486_612110229",
+      "id": "paragraph_1634227110486_612110229",
+      "dateCreated": "2021-10-14T15:58:30+0000",
+      "status": "ABORT",
+      "focus": true,
+      "$$hashKey": "object:270",
+      "text": "%flink.ssql(type=update)\n\nINSERT INTO S3_yellow_cab_1v13 SELECT * FROM yellow_cab_1v13",
+      "dateUpdated": "2021-10-14T15:58:54+0000",
+      "dateFinished": "2021-10-14T15:59:55+0000",
+      "dateStarted": "2021-10-14T15:58:54+0000",
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Fail to run sql command: INSERT INTO S3_yellow_cab_1v13 SELECT * FROM yellow_cab_1v13\n"
+          },
+          {
+            "type": "ANGULAR",
+            "data": "<div class='container ng-scope' style='padding-left:0px;padding-right:0px;'>\n    <div class='panel panel-danger'>\n        <div class='panel-heading' ng-click='isOpen=!isOpen' ng-init='isOpen=false' style=\"cursor:pointer\">\n            <div class='plainTextContainer' style='font-weight:bolder'><i class=\"fa fa-caret-right fa-fw\" style=\"padding-right:7px;transition:all 0.3s;{{isOpen?'transform:rotate(90deg);transform-origin:25% 45%':''}}\"></i>Job was cancelled.</div>\n        </div>\n        <div class='panel-collapse' uib-collapse='!isOpen'>\n            <div class='text' style='max-height:300px;overflow:auto;padding:10px'>java.io.IOException: org.apache.flink.client.program.ProgramInvocationException: Job failed (JobID: c164551a0002b511800de5013b6a778e)\n\tat org.apache.zeppelin.flink.FlinkSqlInterrpeter.callInsertInto(FlinkSqlInterrpeter.java:538)\n\tat org.apache.zeppelin.flink.FlinkStreamSqlInterpreter.callInsertInto(FlinkStreamSqlInterpreter.java:97)\n\tat org.apache.zeppelin.flink.FlinkSqlInterrpeter.callCommand(FlinkSqlInterrpeter.java:273)\n\tat org.apache.zeppelin.flink.FlinkSqlInterrpeter.runSqlList(FlinkSqlInterrpeter.java:160)\n\tat org.apache.zeppelin.flink.FlinkSqlInterrpeter.internalInterpret(FlinkSqlInterrpeter.java:112)\n\tat org.apache.zeppelin.interpreter.AbstractInterpreter.interpret(AbstractInterpreter.java:47)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.interpret(LazyOpenInterpreter.java:110)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer$InterpretJob.jobRun(RemoteInterpreterServer.java:852)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer$InterpretJob.jobRun(RemoteInterpreterServer.java:744)\n\tat org.apache.zeppelin.scheduler.Job.run(Job.java:172)\n\tat org.apache.zeppelin.scheduler.AbstractScheduler.runJob(AbstractScheduler.java:132)\n\tat org.apache.zeppelin.scheduler.ParallelScheduler.lambda$runJobInScheduler$0(ParallelScheduler.java:46)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:829)\nCaused by: org.apache.flink.client.program.ProgramInvocationException: Job failed (JobID: c164551a0002b511800de5013b6a778e)\n\tat org.apache.flink.client.deployment.ClusterClientJobClientAdapter.lambda$getJobExecutionResult$6(ClusterClientJobClientAdapter.java:125)\n\tat java.base/java.util.concurrent.CompletableFuture$UniApply.tryFire(CompletableFuture.java:642)\n\tat java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:506)\n\tat java.base/java.util.concurrent.CompletableFuture.complete(CompletableFuture.java:2073)\n\tat org.apache.flink.runtime.concurrent.FutureUtils.lambda$retryOperationWithDelay$9(FutureUtils.java:394)\n\tat java.base/java.util.concurrent.CompletableFuture.uniWhenComplete(CompletableFuture.java:859)\n\tat java.base/java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(CompletableFuture.java:837)\n\tat java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:506)\n\tat java.base/java.util.concurrent.CompletableFuture.complete(CompletableFuture.java:2073)\n\tat org.apache.flink.client.program.rest.RestClusterClient.lambda$pollResourceAsync$24(RestClusterClient.java:670)\n\tat java.base/java.util.concurrent.CompletableFuture.uniWhenComplete(CompletableFuture.java:859)\n\tat java.base/java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(CompletableFuture.java:837)\n\tat java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:506)\n\tat java.base/java.util.concurrent.CompletableFuture.complete(CompletableFuture.java:2073)\n\tat org.apache.flink.runtime.concurrent.FutureUtils.lambda$retryOperationWithDelay$9(FutureUtils.java:394)\n\tat java.base/java.util.concurrent.CompletableFuture.uniWhenComplete(CompletableFuture.java:859)\n\tat java.base/java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(CompletableFuture.java:837)\n\tat java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:506)\n\tat java.base/java.util.concurrent.CompletableFuture.postFire(CompletableFuture.java:610)\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1085)\n\tat java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:478)\n\t... 3 more\nCaused by: org.apache.flink.runtime.client.JobCancellationException: Job was cancelled.\n\tat org.apache.flink.runtime.jobmaster.JobResult.toJobExecutionResult(JobResult.java:146)\n\tat org.apache.flink.client.deployment.ClusterClientJobClientAdapter.lambda$getJobExecutionResult$6(ClusterClientJobClientAdapter.java:123)\n\t... 23 more\n</div>\n        </div>\n    </div>\n</div>\n"
+          }
+        ]
+      }
+    }
+  ],
+  "name": "deployable_1.13",
+  "id": "2GJ627FV9",
+  "defaultInterpreterGroup": "flink",
+  "version": "0.9.0",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/deployable_1.13"
+}
