@@ -18,10 +18,10 @@ We will implement the following architecture
 
 This workshop has 6 steps. A breif description of each is provided below.
 1. [Getting Started]({{<relref "./1_Getting_Started/">}}) - Create and/or log into your AWS account 
-2. [Enviorment Set Up]({{<relref "./2_Enviorment_Set_Up/">}}) - Deploy the necessary AWS resources for this workshop
+2. [Environment Set Up]({{<relref "./2_Enviorment_Set_Up/">}}) - Deploy the necessary AWS resources for this workshop
 3. [Send Data to Kinesis Data Stream]({{<relref "./3_Send_Data_to_Kinesis_Data_Stream/">}}) - Set up and run a KDA notebook that will send sample NYC Taxi Cab data to a Kinesis Data Stream
 4. [Interactive Flink Studio Notebook]({{<relref "./4_Interactive_Notebook/">}}) - Run an interactive KDA notebook that will cover key concepts for programming Flink applications via. Flink's support for the SQL language
 5. [Deployable Flink Studio Notebook]({{<relref "./5_Deployable_Notebook/">}}) - Build and deploy a KDA notebook as a long running KDA application
-6. [Enviorment Clean Up]({{<relref "./6_Clean_Up/">}}) - Delete the resources you created in your AWS account 
+6. [Environment Clean Up]({{<relref "./6_Clean_Up/">}}) - Delete the resources you created in your AWS account 
 
 When you are ready continue on to [Getting Started]({{<relref "./1_Getting_Started/">}})

@@ -41,4 +41,4 @@ Now that we have completed the workshop you can clean up (delete) the resources 
 
 ![delete_studio](/images/flink-on-kda-studio/delete_studio.png)
 
-You have completed deleting the resouses used in this workshop
+You have completed deleting the resources used in this workshop

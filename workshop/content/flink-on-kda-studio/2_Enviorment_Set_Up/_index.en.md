@@ -45,7 +45,7 @@ Alternatively you can navigate directly to AWS [CloudShell](https://console.aws.
 
 ![close_welcome_message](/images/flink-on-kda-studio/close_welcome_message.png)
 
-**Note** if this is the first time you are accessing CloudShell it may take several minutes for CloudShell to create the enviorment and prepare the terminal
+**Note** if this is the first time you are accessing CloudShell it may take several minutes for CloudShell to create the environment and prepare the terminal
 
 4. Run ```wget https://sharkech-public.s3.amazonaws.com/flink-on-kda/yellow_tripdata_2020-01_noHeader.csv``` in the CloudShell terminal
 
@@ -106,10 +106,10 @@ Different from what is pictured below you will need to search for the name of th
 
 ![Glue_Database_Select](/images/flink-on-kda-studio/select_IAM.png)
 
-3. Click on **Attach polocies**
+3. Click on **Attach policies**
 
 ![Glue_Database_Select](/images/flink-on-kda-studio/attach_policies.png)
 
 4. Search for and add ```AmazonS3FullAccess```, ```AmazonKinesisFullAccess``` and ```AWSGlueServiceRole```
 
-The environment set up is now complete. When you are ready procede to the next step [Send Data to Kinesis Data Stream]({{<relref "../3_Send_Data_to_Kinesis_Data_Stream/">}})
+The environment set up is now complete. When you are ready proceed to the next step [Send Data to Kinesis Data Stream]({{<relref "../3_Send_Data_to_Kinesis_Data_Stream/">}})
