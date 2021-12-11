@@ -24,4 +24,8 @@ weight: 10
 
 ![Producer_Notebook](/images/flink-on-kda-studio/producer_notebook.png)
 
-You are now sucssfully sending data to the Kinesis Data Stream you created earlier. When you are ready proceed to the next step [Interactive Notebook]({{<relref "../4_Interactive_Notebook/">}})
+You are now sucssfully sending data to the Kinesis Data Stream you created earlier. Leave a browser window open with the notebook running. This will ensure it continues to send data to your Kinesis Data Stream as you work on the next section of the lab.
+
+**Note** the [Nyc_Taxi_Produce_KDA_Zeppelin_Notebook.zpln](https://sharkech-public.s3.amazonaws.com/flink-on-kda/Nyc_Taxi_Produce_KDA_Zeppelin_Notebook.zpln) will send data to Kinesis Data Stream for approx 30 minutes. You may need to perodiclly rerun the notebook to sample data sending to Kinesis Data Stream. If you are working on the subseqent notebook and do not see any results check that your the [Nyc_Taxi_Produce_KDA_Zeppelin_Notebook.zpln](https://sharkech-public.s3.amazonaws.com/flink-on-kda/Nyc_Taxi_Produce_KDA_Zeppelin_Notebook.zpln) is still running and does not need to be restarted.
+
+When you are ready proceed to the next step [Interactive Notebook]({{<relref "../4_Interactive_Notebook/">}})

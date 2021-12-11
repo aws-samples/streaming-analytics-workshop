@@ -19,6 +19,8 @@ weight: 10
 
 ![KDA_Stuio](/images/flink-on-kda-studio/zeppelin_1.png)
 
+6. Open the [deployable_1.13.zpln](https://sharkech-public.s3.amazonaws.com/flink-on-kda/deployable_1.13.zpln)
+
 #### Build Notebook into Flink Application
 
 1. Click on **Actions for ...**
@@ -46,4 +48,6 @@ Your studio notebook is now deployed as a Kinesis Data Analytics application!
 
 The application will write data to your S3 bucket. Send data to Kinesis via. the [Nyc_Taxi_Produce_KDA_Zeppelin_Notebook.zpln](https://sharkech-public.s3.amazonaws.com/flink-on-kda/Nyc_Taxi_Produce_KDA_Zeppelin_Notebook.zpln) and the deployed application will continue to stream the data to S3.
 
-When you are readyprocede to the next step [Clean Up]({{<relref "../6_Clean_Up/">}}) if you want to delete the resoucses we used for this workshop
+ 
+
+When you are ready procede to the next step [Clean Up]({{<relref "../6_Clean_Up/">}}) if you want to delete the resoucses we used for this workshop

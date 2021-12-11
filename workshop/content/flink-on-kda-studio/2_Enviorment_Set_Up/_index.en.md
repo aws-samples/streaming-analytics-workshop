@@ -34,14 +34,33 @@ Follow the instructions below for each step
 
 #### Upload Sample Data to S3
 
-1. Download the [vendor_ref.csv](https://sharkech-public.s3.amazonaws.com/flink-on-kda/vendor_ref.csv) 
-2. Download the [yellow_tripdata_2020-01_noHeader.csv](https://sharkech-public.s3.amazonaws.com/flink-on-kda/yellow_tripdata_2020-01_noHeader.csv)
-3. Go to the [S3 Console](https://s3.console.aws.amazon.com/s3/home)
-4. Click on the bucket you just created
-5. Click on create folder and create a folder named ```reference_data```
-6. In the folder upload the vendor_ref.csv and yellow_tripdata_2020-01_noHeader.csv
+1. Go to the [AWS Console](https://console.aws.amazon.com/console/home)
+2. Click on the CloudShell icon 
 
-The final output has the vendor_ref.csv and yellow_tripdata_2020-01_noHeader.csv uploaded to the reference_data folder in S3
+![cloud_shell_button](/images/flink-on-kda-studio/cloud_shell_button.png)
+
+Alternatively you can navigate directly to AWS [CloudShell](https://console.aws.amazon.com/cloudshell/home)
+
+3. If presented with a welcome message 
+
+![close_welcome_message](/images/flink-on-kda-studio/close_welcome_message.png)
+
+**Note** if this is the first time you are accessing CloudShell it may take several minutes for CloudShell to create the enviorment and prepare the terminal
+
+4. Run ```wget https://sharkech-public.s3.amazonaws.com/flink-on-kda/yellow_tripdata_2020-01_noHeader.csv``` in the CloudShell terminal
+
+5. Run ```wget https://sharkech-public.s3.amazonaws.com/flink-on-kda/vendor_ref.csv```
+
+6. Copy down the following ```aws s3 cp yellow_tripdata_2020-01_noHeader.csv s3://yellowcabsharkech/reference_data/yellow_tripdata_2020-01_noHeader.csv``` **replace ```yellowcabsharkech``` with the name of the S3 bucket you created earlier**. Run the adjust command
+
+7. Copy down the following ```aws s3 cp vendor_ref.csv s3://yellowcabsharkech/reference_data/vendor_ref.csv``` **replace ```yellowcabsharkech``` with the name of the S3 bucket you created earlier**. Run the adjust command 
+
+8. Go to the [S3 Console](https://s3.console.aws.amazon.com/s3/home)
+9. Click on the bucket you just created
+10. You should see a folder ```reference_data``` click on the folder
+11. In the folder you should that [vendor_ref.csv](https://sharkech-public.s3.amazonaws.com/flink-on-kda/vendor_ref.csv) and [yellow_tripdata_2020-01_noHeader.csv](https://sharkech-public.s3.amazonaws.com/flink-on-kda/yellow_tripdata_2020-01_noHeader.csv) are both present
+
+You should see the following
 
 ![S3_final_view](/images/flink-on-kda-studio/S3_final_view.png)
 
