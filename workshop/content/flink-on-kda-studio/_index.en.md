@@ -6,8 +6,6 @@ weight: 10
 url: "/flink-on-kda-studio/"
 ---
 
-# Apache Flink on Amazon Kinesis Data Analytics Studio
-
 In this lab we will explore Kinesis Data Analytics (KDA) via. KDA Studio Notebooks. KDA Studio Notebooks provide an interactive development experience for Apache Flink. Studio notebooks allow us to easily develop Flink applications and then deploy them as long running KDA applications. 
 
 For this lab we will stream and analyze the [NYC Taxi Cab trips data set](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page) with the [SQL language in Flink](https://nightlies.apache.org/flink/flink-docs-release-1.13/docs/dev/table/sql/overview/). 
