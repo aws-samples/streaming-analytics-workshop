@@ -35,13 +35,13 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
 
     new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
-      url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.kinesisReplayVersion}.zip`,
+      url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/refs/tags/${props.kinesisReplayVersion}.zip`,
       bucket: bucket,
       extract: true
     });
 
     new GithubBuildPipeline(this, 'ConsumerApplicationBuildPipeline', {
-      url: `https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/${props.consumerApplicationVersion}.zip`,
+      url: `https://github.com/aws-samples/amazon-kinesis-analytics-taxi-consumer/archive/refs/tags/${props.consumerApplicationVersion}.zip`,
       bucket: bucket,
       extract: true
     });

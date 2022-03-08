@@ -26,7 +26,7 @@ export class GithubBuildPipeline extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: GithubBuildPipelineProps) {
     super(scope, id);
 
-    const match = props.url.match(/https:\/\/github.com\/[^\/]+\/([^\/]+)\/archive\/([^\/]+)\.zip/);
+    const match = props.url.match(/https:\/\/github.com\/[^\/]+\/([^\/]+)\/archive\/refs\/tags\/([^\/]+)\.zip/);
 
     if (! match) {
       throw Error(`Expecting valid GitHub archive url, found: ${props.url}`);

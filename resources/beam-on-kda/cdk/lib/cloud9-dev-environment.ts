@@ -19,7 +19,7 @@ export class Cloud9DevEnvironment extends cdk.Construct {
         super(scope, id);
 
         new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
-            url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.kinesisReplayVersion}.zip`,
+            url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/refs/tags/${props.kinesisReplayVersion}.zip`,
             bucket: props.bucket,
             extract: true
         });

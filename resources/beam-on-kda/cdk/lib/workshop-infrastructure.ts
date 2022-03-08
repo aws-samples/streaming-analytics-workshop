@@ -67,7 +67,7 @@ export class WorkshopInfrastructure extends cdk.Stack {
 
 
     new GithubBuildPipeline(this, "BeamConsumerBuildPipeline", {
-      url: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/${props.beamApplicationVersion}.zip`,
+      url: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/refs/tags/${props.beamApplicationVersion}.zip`,
       bucket: bucket,
       extract: true,
     });

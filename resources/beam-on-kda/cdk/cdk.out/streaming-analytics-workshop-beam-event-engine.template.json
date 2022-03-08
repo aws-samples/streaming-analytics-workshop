@@ -1,5 +1,5 @@
 {
-  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-ee-2021-10-08)",
+  "Description": "Creates all resources and compiles all artifacts that are required to run the beam workshop (shausma-beam-workshop-ee-2022-03-08)",
   "Resources": {
     "HistoricTripsEF9D049F": {
       "Type": "AWS::S3::Bucket",
@@ -498,7 +498,7 @@
         },
         "Environment": {
           "Variables": {
-            "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/release-0.1.0.zip",
+            "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/refs/tags/release-0.1.0.zip",
             "bucket": {
               "Ref": "HistoricTripsEF9D049F"
             },
@@ -718,6 +718,9 @@
         "Source": {
           "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-replay-release-0.1.0\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-replay-release-0.1.0\"\n  }\n}",
           "Type": "CODEPIPELINE"
+        },
+        "Cache": {
+          "Type": "NO_CACHE"
         },
         "EncryptionKey": "alias/aws/s3"
       },
@@ -1582,7 +1585,7 @@
         },
         "Environment": {
           "Variables": {
-            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/release-0.2.0.zip",
+            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/refs/tags/release-0.2.0.zip",
             "bucket": {
               "Ref": "HistoricTripsEF9D049F"
             },
@@ -1802,6 +1805,9 @@
         "Source": {
           "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-analytics-beam-taxi-consumer-release-0.2.0\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-analytics-beam-taxi-consumer-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-analytics-beam-taxi-consumer-release-0.2.0\"\n  }\n}",
           "Type": "CODEPIPELINE"
+        },
+        "Cache": {
+          "Type": "NO_CACHE"
         },
         "EncryptionKey": "alias/aws/s3"
       },
@@ -2898,7 +2904,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STW/CMAz9LbtnGTAJabcB++K0CqbtnKZmGNq4ipMhFPW/L0nL2Ie0k5/t1+dnN2M5nkzl6OJWHfhSV/uroMmCDGun9F4syLCzXjuxAiZvNYjFxnzHz9613iUUuRU6JNOJpBX4Woa513vI3QH1Ya4YOlGrpqyUDA/e6PRdon3HBdgGmbMiqkaGFdX9/BQLqlEfMy+jTuiafLUh26ikIEPy5NlRc/b7K92YN4Xuy/iTMlX9t9wJ0BMZXludWq/FQhS+jCPXvjT9cme0Iu/gRZW9TF8/12bMpFGdFsyNBJbGgY3MR+XgoI7DmCGbufgrtg0YJ9agvUV3fLTk2zzg38LSvFtgjpehCkqPdSVDgS3UaKCwtAOdPQ+wp7VD/8zMlAEPR76RsXZvPtCSScbuFxPBhuOr8SVri+1pwx/5C7WYT5jBIHVQTm9luFO8LUnZKvW/kq7rhImm5I6vPsZTOR7Fl7pjxEvrjcMG5KqPn4VCsY3GAgAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STU/DMAz9LdxDYAMxcQPG+DhRbQjOaeoxb21cxcmmKep/J0kLGyBx8rP9+vzsZiRHlxN5fnKjdnyqq81Z0GRBhoVTeiOmZNhZr52YA5O3GsR0aY7xi3etdwlFboUOyXQiaQW+kOHO6w3k7oD6cKcYOlGrpqyUDA/e6PRdoh3jAmyDzFkRVSPDnOp+fooF1aj3mZdRJ3RNvlqSbVRSkCF58uyoOfj9lS7Nu0L3bfxJmar+W+4E6LEMb61OrbdiKgpfxpELX5p+uQOak3fwqspepq8farfMpFF9LZgbCTwbBzYyH5WDndoPY4bs1sVfsWrAOLEA7S26/aMl3+YB/xaezYcF5ngZqqD0WFcyFNhCjQYKS2vQ2fMAe1o79A/MTBnwcORrGWszs0VLJhmbTceCDcdX40vWFtuvDX/kr9RiPmEGg9ROOb2S4V7xqiRlq9T/TrquEyaakms+244m8io+1DUjnlpvHDYg5338BAY7h4bFAgAA"
       },
       "Metadata": {
         "aws:cdk:path": "streaming-analytics-workshop-beam-event-engine/CDKMetadata/Default"
