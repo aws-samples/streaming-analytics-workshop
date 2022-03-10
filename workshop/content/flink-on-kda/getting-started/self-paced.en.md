@@ -12,7 +12,7 @@ Loft, Immersion Day, or any other event hosted by an AWS employee), continue wit
 
 1. Launch the following CloudFormation template to create a prepared development environment in your account. Supported regions include US East (N. Virginia), US West (Oregon), Asia Pacific (Tokyo), Asia Pacific (Sydney), EU (Ireland), EU (Frankfurt), and any other region supporting these resource types: **Amazon Code Pipeline**, **Amazon Elasticsearch Service**, and **Amazon Kinesis Data Analytics**.
 
-	[![Launch CloudFormation Stack](/images/flink-on-kda/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=streaming-analytics-workshop&templateURL=https://aws-bigdata-blog.s3.amazonaws.com/artifacts/kinesis-analytics-taxi-consumer/cfn-templates/StreamingAnalyticsWorkshop.template.json)
+	[![Launch CloudFormation Stack](/images/flink-on-kda/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=streaming-analytics-workshop&templateURL=https://aws-streaming-artifacts.s3.amazonaws.com/streaming-analytics-workshop/cfn-templates/StreamingAnalyticsWorkshop.template.json)
 
 1. In the following dialog, choose **Next**
 
